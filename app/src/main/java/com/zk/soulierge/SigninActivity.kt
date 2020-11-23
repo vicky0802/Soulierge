@@ -3,11 +3,14 @@ package com.zk.soulierge
 import android.os.Bundle
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
-import com.zk.soulierge.support.api.model.ApiResponse
+import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.subscribeToSingle
+import com.zk.soulierge.support.utilExt.setIsLogin
+import com.zk.soulierge.support.utilExt.setUserData
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
@@ -26,7 +29,7 @@ class SigninActivity : AppCompatActivity() {
         }
 
         btn_sign_in.setOnClickListener {
-            if (isValid()){
+            if (isValid()) {
                 callLoginAPI()
             }
 //            ActivityNavigationUtility.navigateWith(this)
@@ -67,11 +70,17 @@ class SigninActivity : AppCompatActivity() {
             observable = ApiClient.getApiClient().create(WebserviceBuilder::class.java).onLogin(
                 edt_email.text.toString().trim(), edt_password.text.toString().trim()
             ),
-            singleCallback = object : SingleCallback<ApiResponse<Any>> {
-                override fun onSingleSuccess(o: ApiResponse<Any>, message: String?) {
+            singleCallback = object : SingleCallback<LoginResponse> {
+                override fun onSingleSuccess(o: LoginResponse, message: String?) {
                     loadingDialog(false)
-                    ActivityNavigationUtility.navigateWith(this@SigninActivity)
-                        .setClearStack().navigateTo(MainActivity::class.java)
+                    if (o.failure.isNullOrEmpty()) {
+                        setIsLogin(true)
+                        setUserData(Gson().toJson(o))
+                        ActivityNavigationUtility.navigateWith(this@SigninActivity)
+                            .setClearStack().navigateTo(MainActivity::class.java)
+                    } else {
+                        showAppDialog(o.failure)
+                    }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {

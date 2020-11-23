@@ -30,9 +30,11 @@ object ApiClient {
     var BUILD_TYPE_DEBUG = false
         get() = BuildConfig.DEBUG
 
+    //Live Server (Production)
+//    const val BASE_URL = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest/"
 
-    //staging url
-    const val BASE_URL = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/"
+    //Development Server (Development)
+    const val BASE_URL = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest/"
 
 
     //    Live url
@@ -121,8 +123,9 @@ object ApiClient {
 
             builder.addInterceptor { chain ->
                 val requestBuilder = chain.request().newBuilder()
-                requestBuilder.header("Content-Type", "application/json")
-                requestBuilder.header("Accept", "application/json")
+                requestBuilder.header("content-type", "application/json; charset=UTF-8")
+                requestBuilder.header("accept", "application/json")
+                requestBuilder.header("cache-control", "no-cache")
                 try {
 //                    CoreApp.INSTANCE.getSelectedLanguage()
 //                        .let { requestBuilder.header("Accept-Language", it) }
@@ -200,8 +203,9 @@ object ApiClient {
         override fun intercept(chain: Interceptor.Chain): Response {
 //            Log.e("Header token 1 -", CoreApp.getInstance().getLoginToken())
             val request = chain.request().newBuilder()
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("Accept", "application/json")
+                .addHeader("content-type", "application/json; charset=UTF-8")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
                 .build()
 
             return chain.proceed(request)

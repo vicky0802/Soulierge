@@ -2,10 +2,12 @@ package com.zk.soulierge.support.api
 
 import android.os.Build
 import com.zk.soulierge.support.api.model.ApiResponse
+import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.base.CoreApp
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 
@@ -14,11 +16,28 @@ import retrofit2.http.*
  * e.g. Profile for Login/Register Apis
  */
 interface WebserviceBuilder {
-    @FormUrlEncoded
-    @POST("rest/UserService/loginUser")
+    @POST("UserService/loginUser")
     fun onLogin(
-        @Field("email") username: String? = null,
-        @Field("password") password: String? = null
-    ): Observable<ApiResponse<Any>>
+        @Query("email") username: String? = null,
+        @Query("password") password: String? = null
+    ): Observable<LoginResponse>
+
+    @POST("UserService/forgotPassword")
+    fun onForgotPassword(
+        @Query("email") username: String? = null
+    ): Observable<ResponseBody>
+
+    @POST("UserService/registerUser")
+    fun onSignUp(
+        @Query("user_type_id") user_type_id: Int = 1,
+        @Query("email") email: String? = null,
+        @Query("password") password: String? = null,
+        @Query("name") name: String? = null,
+        @Query("phone_number") phone_number: String? = null,
+        @Query("gender") gender: String? = "Male",
+        @Query("address") address: String? = "",
+        @Query("latitude") latitude: Double? = 0.0,
+        @Query("longitude") longitude: Double? = 0.0
+    ): Observable<LoginResponse>
 
 }

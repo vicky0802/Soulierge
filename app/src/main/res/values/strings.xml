@@ -99,4 +99,8 @@
     <string name="warnning_enter_email">Please insert email address</string>
     <string name="warnning_enter_valid_email">Please insert valid email address</string>
     <string name="warnning_enter_password">Please insert password</string>
+    <string name="phone_no">Phone No.</string>
+    <string name="warnning_enter_phone">Please insert phone no</string>
+    <string name="warnning_enter_last_name">Please insert last name</string>
+    <string name="warnning_enter_first_name">Please insert first name</string>
 </resources>

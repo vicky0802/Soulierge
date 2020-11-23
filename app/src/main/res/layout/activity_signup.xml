@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context=".SignupActivity">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="center"
@@ -26,7 +25,7 @@
             android:textStyle="bold" />
 
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -64,14 +63,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_first_name_sign_up"
                     style="@style/edit_text_style"
                     android:layout_width="0dp"
                     android:layout_marginEnd="@dimen/margin_small"
                     android:layout_weight="1"
                     android:hint="@string/ph_first_name" />
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_last_name_sign_up"
                     style="@style/edit_text_style"
                     android:layout_width="0dp"
                     android:layout_marginStart="@dimen/margin_small"
@@ -79,13 +80,24 @@
                     android:hint="@string/ph_last_name" />
             </LinearLayout>
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_phone_sign_up"
                 style="@style/edit_text_style"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:hint="@string/phone_no" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_email_sign_up"
+                style="@style/edit_text_style"
+                android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:hint="@string/email_address" />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_password_sign_up"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
@@ -93,6 +105,7 @@
                 android:inputType="textPassword" />
 
             <CheckBox
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
@@ -100,7 +113,8 @@
                 android:text="@string/message_other_profile_checkbox"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_sign_up"
                 style="@style/button_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
