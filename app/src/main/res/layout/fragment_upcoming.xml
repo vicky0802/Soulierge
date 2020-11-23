@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_normal"
+    android:orientation="vertical"
+    android:background="@color/grey_sec"
+    tools:context=".fragments.UpcomingFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/message_no_event"
+
+        android:textColor="@color/dark_grey" />
+
+    <Button
+        style="@style/button_style"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:background="@drawable/all_btn_app_color"
+        android:text="@string/find_an_event"
+        android:textColor="@color/white" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_normal"
+        android:clipToPadding="false"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:fontFamily="@font/trenda_bold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal" />
+
+            <include layout="@layout/row_event" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:fontFamily="@font/trenda_bold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal" />
+
+            <include
+                android:id="@+id/cv_organization"
+                layout="@layout/row_event" />
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

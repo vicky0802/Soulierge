@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/margin_normal"
+    tools:context=".fragments.AddCreditFragment">
+
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/add_credits"
+       android:textSize="22sp"
+       android:textColor="@color/dark_grey"
+       android:fontFamily="@font/trenda_bold"
+       />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_credit_message"
+        android:layout_marginTop="@dimen/margin_normal"
+        />
+
+    <TextView
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_days_remained"
+        android:textColor="@color/dark_grey"
+        android:fontFamily="@font/trenda_bold"
+        android:textSize="@dimen/text_size_normal"
+        />
+
+    <TextView
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/use_your_credit"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_add_credits"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_smallest"
+        android:paddingBottom="@dimen/margin_smallest"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal"
+            android:fontFamily="@font/trenda_bold"
+            android:textColor="@color/dark_grey"
+            android:text="2 credits"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 5.00"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_add_credits"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_smallest"
+        android:paddingBottom="@dimen/margin_smallest"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_small"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal"
+            android:fontFamily="@font/trenda_bold"
+            android:textColor="@color/dark_grey"
+            android:text="5 credits"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 15.00"
+            />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_add_credits"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_smallest"
+        android:paddingBottom="@dimen/margin_smallest"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_small"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal"
+            android:fontFamily="@font/trenda_bold"
+            android:textColor="@color/dark_grey"
+            android:text="10 credits"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 25.00"
+            />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_add_credits"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_smallest"
+        android:paddingBottom="@dimen/margin_smallest"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_small"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal"
+            android:fontFamily="@font/trenda_bold"
+            android:textColor="@color/dark_grey"
+            android:text="25 credits"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 50.00"
+            />
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        style="@style/button_style"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:text="@string/buy_credits"
+        android:textColor="@color/white"
+        android:background="@drawable/all_btn_app_color"
+        />
+
+
+
+</LinearLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="radiu_button">5dp</dimen>
+    <dimen name="margin_horizontal_landing">25dp</dimen>
+    <dimen name="margin_normal">15dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_smallest">7dp</dimen>
+    <dimen name="margin_normal_high">40dp</dimen>
+    <dimen name="text_size_header">16sp</dimen>
+    <dimen name="height_bottom_menu">60dp</dimen>
+    <dimen name="padding_bottom_menu">5dp</dimen>
+    <dimen name="icon_size_bottom_menu">25dp</dimen>
+    <dimen name="text_size_bottom_menu">11sp</dimen>
+    <dimen name="size_arrow">15dp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+    <dimen name="pretty_dialog_icon">40dp</dimen>
+    <dimen name="_10sdp">10sp</dimen>
+    <dimen name="_8sdp">8sp</dimen>
+    <dimen name="_8ddp">8dp</dimen>
+    <dimen name="_16ddp">16dp</dimen>
+    <dimen name="_14ssp">14sp</dimen>
+    <dimen name="_12ssp">12sp</dimen>
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+</resources>

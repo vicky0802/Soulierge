@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">Soulierge</string>
+    <string name="landing_screen_create_event">Create Events to make your life special with us.</string>
+    <string name="landing_screen_desc">We can add some information about the app here. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </string>
+    <string name="label_sign_up">Sign up</string>
+    <string name="label_sign_in">Sign in</string>
+    <string name="btn_facebook_text">Sign in with Facebook</string>
+    <string name="ph_or">or</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="facebook_continue">Continue with facebook</string>
+    <string name="facebook_signup_message">If you sign up with Facebook you agree to the Terms of Use and Privacy Policy.
+        If you want to other Soulierge users to see your profile, sign up with your email instead of Facebook. uncheck the box.</string>
+    <string name="ph_first_name">First Name</string>
+    <string name="ph_last_name">Last Name</string>
+    <string name="message_agree_to_all">By signing up you agree to our Terms of Use and Privacy Policy</string>
+    <string name="message_other_profile_checkbox">Let other Soulierge users to see my profile info. It can be managed later from settings.</string>
+    <string name="ph_reset_password">Reset Password</string>
+    <string name="message_reset_password">Enter the email address you used to create your account to reset password</string>
+    <string name="ph_home">home</string>
+    <string name="ph_events">Events</string>
+    <string name="ph_add_credits">Add Credits</string>
+    <string name="ph_upcoming">Upcoming</string>
+    <string name="ph_profile">Profile</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ph_check_event">Check Event</string>
+    <string name="message_join_event">Join event to enjoy or celebrate Join event to enjoy or celebrate</string>
+    <string name="ph_find_event">Find Event</string>
+    <string name="try_soulierge">Try Soulierge</string>
+    <string name="ph_find_organisation">Find Organization</string>
+    <string name="search_events">Find Event or Organisation</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="ph_organisation">Organisation</string>
+    <string name="social_event">Social Event</string>
+    <string name="location">location</string>
+    <string name="add_credits">Add Credits</string>
+    <string name="add_credit_message">you can purchase more credits to enjoy the perks and offerings we have here.</string>
+    <string name="message_days_remained">You have 10 days remaining</string>
+    <string name="use_your_credit">Use your credit</string>
+    <string name="buy_credits">Buy Credits</string>
+    <string name="message_no_event">You don\'t have any upcoming event yet. Time to create one</string>
+    <string name="find_an_event">Find an Event</string>
+    <string name="settings">Settings</string>
+    <string name="refer_to_friends">Refer to Friends</string>
+    <string name="past">Past</string>
+    <string name="favourites">Favourites</string>
+    <string name="setting">Setting</string>
+    <string name="ph_account">Account</string>
+    <string name="preferences">Preferences</string>
+    <string name="ph_privacy">Privacy</string>
+    <string name="ph_support">Support</string>
+    <string name="help_center">Help Center</string>
+    <string name="terms_and_condition">Terms and Condition</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="community_guidelines">Community Guidelines</string>
+    <string name="ph_email_us">Email Us</string>
+    <string name="logout">Logout</string>
+    <string name="hint_enter_first_name">Enter First Name</string>
+    <string name="hint_last_name">Enter Last Name</string>
+    <string name="hint_user_name">Enter User Name</string>
+    <string name="hint_email">Enter Email</string>
+    <string name="hint_gender">Gender</string>
+    <string name="hint_dob">Date of birth</string>
+    <string name="hint_weight">Weight</string>
+    <string name="emergency_contact">Emergency Contact</string>
+    <string name="hint_emergency_contact_name">Emergency contact name</string>
+    <string name="hint_emergency_contact_phone">Emergency contact phone</string>
+    <string name="account_setting">Account Setting</string>
+    <string name="privacy_setting">Privacy Setting</string>
+    <string name="who_can_find_me">Who can find me?</string>
+    <string name="allow_members_to_look_for_me">Allow members to look for me</string>
+    <string name="message_member_lookup">Soulierge members will only be able to see your profile details</string>
+    <string name="quest_approved_friends">What can approved friends see?</string>
+    <string name="upcoming_events">Upcoming events</string>
+    <string name="past_events">Past events</string>
+    <string name="favourites_events">Favourites events</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="select_file">Select File</string>
+
+    <string-array name="select_image_from">
+        <item>@string/lbl_gallery</item>
+        <item>@string/lbl_camera</item>
+    </string-array>
+
+    <string-array name="filefrom">
+        <item>PDF</item>
+        <item>Image</item>
+    </string-array>
+
+    <string name="lbl_camera">Camera</string>
+    <string name="lbl_gallery">Gallery</string>
+    <string name="warnning_enter_email">Please insert email address</string>
+    <string name="warnning_enter_valid_email">Please insert valid email address</string>
+    <string name="warnning_enter_password">Please insert password</string>
+</resources>

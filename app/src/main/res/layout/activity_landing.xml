@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LandingActivity"
+    >
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/iv_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/event_smaple"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_horizontal_landing"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="@dimen/margin_horizontal_landing"
+
+            android:fontFamily="@font/trenda_bold"
+            android:text="@string/landing_screen_create_event"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/dark_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_banner" />
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_horizontal_landing"
+            android:layout_marginEnd="@dimen/margin_horizontal_landing"
+            android:fontFamily="@font/trenda_regular"
+            android:textSize="12sp"
+            android:textColor="@color/light_grey"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/landing_screen_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <Button
+            android:id="@+id/btn_sign_up"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/margin_horizontal_landing"
+            android:layout_marginEnd="@dimen/margin_horizontal_landing"
+            android:text="@string/label_sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_desc" />
+
+        <Button
+            android:id="@+id/btn_sign_in"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/margin_horizontal_landing"
+            android:layout_marginEnd="@dimen/margin_horizontal_landing"
+            android:text="@string/label_sign_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_sign_up" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
