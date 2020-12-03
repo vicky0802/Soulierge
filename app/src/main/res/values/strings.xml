@@ -103,4 +103,6 @@
     <string name="warnning_enter_phone">Please insert phone no</string>
     <string name="warnning_enter_last_name">Please insert last name</string>
     <string name="warnning_enter_first_name">Please insert first name</string>
+    <string name="facebook_app_id">810287399537649</string>
+    <string name="fb_login_protocol_scheme">fb810287399537649</string>
 </resources>

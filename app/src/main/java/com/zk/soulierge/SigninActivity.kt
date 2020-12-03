@@ -1,8 +1,13 @@
 package com.zk.soulierge
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
 import com.google.gson.Gson
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
@@ -16,13 +21,17 @@ import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
 import com.zk.soulierge.utlities.ActivityNavigationUtility
 import kotlinx.android.synthetic.main.activity_signin.*
+import kotlinx.android.synthetic.main.activity_signin.fb_login_button
+import kotlinx.android.synthetic.main.activity_signin.login_button
+import kotlinx.android.synthetic.main.activity_signup.*
 
 class SigninActivity : AppCompatActivity() {
+    private var callbackManager: CallbackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signin)
-
+        callbackManager = CallbackManager.Factory.create();
         tv_forgot_password.setOnClickListener {
             ActivityNavigationUtility.navigateWith(this)
                 .navigateTo(ResetPasswordActivity::class.java)
@@ -35,6 +44,27 @@ class SigninActivity : AppCompatActivity() {
 //            ActivityNavigationUtility.navigateWith(this)
 //                .setClearStack().navigateTo(MainActivity::class.java)
         }
+
+        login_button?.setOnClickListener {
+            fb_login_button?.performClick()
+        }
+
+        // Callback registration
+        // Callback registration
+        fb_login_button?.registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
+            override fun onSuccess(loginResult: LoginResult?) {
+                // App code
+            }
+
+            override fun onCancel() {
+                // App code
+            }
+
+            override fun onError(exception: FacebookException) {
+                // App code
+            }
+        })
+
 
 //        callLoginAPI()
     }
@@ -99,5 +129,10 @@ class SigninActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager?.onActivityResult(requestCode, resultCode, data);
     }
 }

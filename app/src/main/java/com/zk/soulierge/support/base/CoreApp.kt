@@ -2,11 +2,14 @@ package com.zk.soulierge.support.base
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 
-open class CoreApp : Application(), Application.ActivityLifecycleCallbacks {
+open class CoreApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
     var currentActivity: Activity? = null
 
     companion object {
@@ -54,5 +57,9 @@ open class CoreApp : Application(), Application.ActivityLifecycleCallbacks {
 
     override fun onActivityResumed(p0: Activity) {
         currentActivity = p0
+    }
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 }

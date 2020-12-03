@@ -39,11 +39,20 @@
         android:paddingEnd="@dimen/margin_horizontal_landing">
 
         <Button
+            android:id="@+id/login_button"
             style="@style/button_style"
             android:layout_width="match_parent"
             android:background="@drawable/btn_facebook_bg"
             android:text="@string/btn_facebook_text"
             android:textColor="@color/white" />
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/fb_login_button"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
 
         <TextView
             android:layout_width="wrap_content"

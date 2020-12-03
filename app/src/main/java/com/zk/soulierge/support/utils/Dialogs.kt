@@ -15,7 +15,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialog
 import com.zk.soulierge.support.prettyDialog.PrettyDialog
-import com.tap.support.utilExt.string
+import com.zk.soulierge.support.utilExt.string
 import com.zk.soulierge.R
 
 fun Context.simpleAlert(msg: String, positiveButton: (() -> Unit)? = null) {
