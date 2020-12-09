@@ -2,19 +2,20 @@
 
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
+    android:layout_marginBottom="@dimen/_16ddp"
     app:cardElevation="2dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/row_event_image"
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -22,6 +23,7 @@
             android:src="@drawable/event_smaple" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -32,6 +34,7 @@
             android:textSize="@dimen/text_size_normal" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -40,6 +43,7 @@
             android:text="@string/message_join_event" />
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginStart="@dimen/margin_normal"
@@ -49,6 +53,7 @@
             android:background="@color/grey_sec" />
 
         <LinearLayout
+            android:layout_marginTop="@dimen/_16ddp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -71,7 +76,7 @@
                 android:layout_width="@dimen/size_arrow"
                 android:layout_height="@dimen/size_arrow"
                 android:src="@drawable/next"
-                android:tint="@color/dark_grey" />
+                app:tint="@color/dark_grey" />
 
 
         </LinearLayout>

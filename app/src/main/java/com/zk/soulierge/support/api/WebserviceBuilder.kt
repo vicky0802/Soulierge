@@ -1,12 +1,7 @@
 package com.zk.soulierge.support.api
 
-import android.os.Build
-import com.zk.soulierge.support.api.model.ApiResponse
 import com.zk.soulierge.support.api.model.LoginResponse
-import com.zk.soulierge.support.base.CoreApp
 import io.reactivex.Observable
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
@@ -39,5 +34,13 @@ interface WebserviceBuilder {
         @Query("latitude") latitude: Double? = 0.0,
         @Query("longitude") longitude: Double? = 0.0
     ): Observable<LoginResponse>
+
+    @POST("UserService/getAppResources")
+    fun getHomePage(
+    ): Observable<ResponseBody>
+
+    @POST("OrganizationService/getOrganizations")
+    fun getOrganisation(
+    ): Observable<ResponseBody>
 
 }

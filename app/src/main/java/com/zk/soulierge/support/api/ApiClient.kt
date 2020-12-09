@@ -3,6 +3,9 @@ package com.zk.soulierge.support.api
 import com.google.gson.GsonBuilder
 import com.zk.soulierge.BuildConfig
 import com.zk.soulierge.support.api.model.ApiResponse
+import com.zk.soulierge.support.api.model.LoginResponse
+import com.zk.soulierge.support.base.CoreApp
+import com.zk.soulierge.support.utilExt.getUserData
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -35,6 +38,7 @@ object ApiClient {
 
     //Development Server (Development)
     const val BASE_URL = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest/"
+    const val BASE_IMAGE_URL = "https://soulierge-images.s3.amazonaws.com/"
 
 
     //    Live url
@@ -206,9 +210,14 @@ object ApiClient {
                 .addHeader("content-type", "application/json; charset=UTF-8")
                 .addHeader("accept", "application/json")
                 .addHeader("cache-control", "no-cache")
-                .build()
+            try {
+                val userToken = CoreApp.INSTANCE.getUserData<LoginResponse>()?.accessToken
+                request.addHeader("token", userToken)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
-            return chain.proceed(request)
+            return chain.proceed(request.build())
         }
     }
 }

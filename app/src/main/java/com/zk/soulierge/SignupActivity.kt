@@ -243,21 +243,22 @@ class SignupActivity : AppCompatActivity(), LocationListener {
             }
         }
     }
-    override fun onLocationChanged(p0: Location?) {
+    override fun onLocationChanged(p0: Location) {
         if (p0 != null) {
             mCurrentLocation = p0
         }
     }
 
+
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
         TODO("Not yet implemented")
     }
 
-    override fun onProviderEnabled(p0: String?) {
+    override fun onProviderEnabled(provider: String) {
         TODO("Not yet implemented")
     }
 
-    override fun onProviderDisabled(p0: String?) {
+    override fun onProviderDisabled(provider: String) {
         TODO("Not yet implemented")
     }
 }

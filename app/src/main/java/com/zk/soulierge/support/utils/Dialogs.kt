@@ -315,7 +315,7 @@ fun Context.showAppDialog(message: String?, buttonClick: (() -> Unit)? = null) {
 
 var dialog: Dialog? = null
 fun Context.loadingDialog(b: Boolean?) {
-    if (dialog == null) {
+    if (dialog == null|| b ==true) {
         dialog = AppCompatDialog(this/*, R.style.progress_bar_style*/)
         dialog?.setContentView(R.layout.layout_progressbar)
         dialog?.window?.setLayout(

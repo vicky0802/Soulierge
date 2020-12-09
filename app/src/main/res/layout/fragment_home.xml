@@ -22,6 +22,8 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/app_bar_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/organisation_sample"
@@ -49,6 +51,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_normal"
@@ -57,9 +60,12 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/text_size_normal" />
 
-            <include layout="@layout/row_event" />
+            <include
+                android:id="@+id/cv_event"
+                layout="@layout/row_event" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
