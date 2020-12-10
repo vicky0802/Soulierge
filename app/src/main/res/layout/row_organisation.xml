@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/_16ddp"
     app:cardCornerRadius="10dp"
     app:cardElevation="2dp">
 
     <LinearLayout
+        android:paddingBottom="@dimen/_8sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,7 +29,6 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_whishlist"
                 android:layout_width="50dp"
-                android:visibility="gone"
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:background="@color/white"
@@ -37,63 +38,27 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/txtOrganisationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/trenda_bold"
-            android:text="@string/ph_check_event"
             android:textColor="@color/dark_grey"
-            android:textSize="@dimen/text_size_normal"
-            android:visibility="gone" />
+            android:textSize="@dimen/text_size_normal" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtLocation"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:drawablePadding="@dimen/_8sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:text="@string/message_join_event"
-            android:visibility="gone" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:background="@color/grey_sec"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/_16ddp"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/tv_find"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-
-                android:fontFamily="@font/trenda_bold"
-                android:text="@string/ph_find_event"
-                android:textColor="@color/app_blue"
-                android:textSize="@dimen/text_size_normal" />
-
-            <ImageView
-                android:layout_width="@dimen/size_arrow"
-                android:layout_height="@dimen/size_arrow"
-                android:src="@drawable/next"
-                app:tint="@color/dark_grey" />
-
-
-        </LinearLayout>
+            tools:text="@string/message_join_event"
+            app:drawableStartCompat="@drawable/ic_location" />
 
     </LinearLayout>
 

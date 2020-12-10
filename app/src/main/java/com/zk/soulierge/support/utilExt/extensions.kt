@@ -10,6 +10,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.zk.soulierge.R
@@ -45,10 +47,10 @@ fun Int.string(): String = CoreApp.INSTANCE.getResources().getString(this)
 fun Int.string(context: Context): String = context.getResources().getString(this)
 
 @RequiresApi(Build.VERSION_CODES.M)
-fun Activity.isPermissionGranted(permission: String, requestCode: Int) : Boolean {
+fun Activity.isPermissionGranted(permission: String, requestCode: Int): Boolean {
     var isGranted = true
     if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-        if (this.shouldShowRequestPermissionRationale(permission)){
+        if (this.shouldShowRequestPermissionRationale(permission)) {
 
         } else {
             this.requestPermissions(arrayOf(permission), requestCode)
@@ -87,4 +89,22 @@ fun String?.toCamelCase(): String? {
         if (ret.length != this.length) ret.append(" ")
     }
     return ret.toString()
+}
+
+
+fun AppCompatActivity?.initToolbar(
+    toolbar: Toolbar?,
+    isEnable: Boolean? = true,
+    title: String? = ""
+) {
+    if (toolbar != null) {
+        this?.setSupportActionBar(toolbar)
+        isEnable?.let { this?.supportActionBar?.setHomeButtonEnabled(it) }
+        isEnable?.let { this?.supportActionBar?.setDisplayHomeAsUpEnabled(it) }
+        isEnable?.let { this?.supportActionBar?.setDisplayShowHomeEnabled(it)}
+        if (this?.supportActionBar != null && title?.isNotEmpty() == true) {
+            this.supportActionBar?.title = title
+//        this.toolbar?.title = title
+        }
+    }
 }

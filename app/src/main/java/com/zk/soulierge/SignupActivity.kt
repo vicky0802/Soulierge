@@ -24,10 +24,7 @@ import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.isPermissionGranted
-import com.zk.soulierge.support.utilExt.logMsg
-import com.zk.soulierge.support.utilExt.setIsLogin
-import com.zk.soulierge.support.utilExt.setUserData
+import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.*
 import com.zk.soulierge.utlities.ActivityNavigationUtility
 import kotlinx.android.synthetic.main.activity_signup.*
@@ -94,6 +91,8 @@ class SignupActivity : AppCompatActivity(), LocationListener {
                     if (o.failure.isNullOrEmpty()) {
                         setIsLogin(true)
                         setUserData(Gson().toJson(o))
+                        o.userId?.let { setUserId(it) }
+                        o.name?.let { setUserName(it) }
                         ActivityNavigationUtility.navigateWith(this@SignupActivity)
                             .setClearStack().navigateTo(MainActivity::class.java)
                     } else {

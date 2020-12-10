@@ -1,6 +1,7 @@
 package com.zk.soulierge.support.api
 
 import com.zk.soulierge.support.api.model.LoginResponse
+import com.zk.soulierge.support.api.model.OrganisationModalItem
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -41,6 +42,20 @@ interface WebserviceBuilder {
 
     @POST("OrganizationService/getOrganizations")
     fun getOrganisation(
+    ): Observable<ArrayList<OrganisationModalItem?>>
+
+    @POST("OrganizationService/addFavouriteOrganization")
+    fun favouriteOrgAPI(
+        @Query("organization_id") organization_id: String? = null,
+        @Query("user_who_favourited_id") user_who_favourited_id: String? = null,
     ): Observable<ResponseBody>
+
+    @POST("OrganizationService/deleteFavouriteOrganization")
+    fun unFavouriteOrgAPI(
+        @Query("organization_id") organization_id: String? = null,
+        @Query("user_who_favourited_id") user_who_favourited_id: String? = null,
+    ): Observable<ResponseBody>
+
+
 
 }

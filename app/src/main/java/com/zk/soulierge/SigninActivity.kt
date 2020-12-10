@@ -16,6 +16,8 @@ import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.setIsLogin
 import com.zk.soulierge.support.utilExt.setUserData
+import com.zk.soulierge.support.utilExt.setUserId
+import com.zk.soulierge.support.utilExt.setUserName
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
@@ -106,6 +108,8 @@ class SigninActivity : AppCompatActivity() {
                     if (o.failure.isNullOrEmpty()) {
                         setIsLogin(true)
                         setUserData(Gson().toJson(o))
+                        o.userId?.let { setUserId(it) }
+                        o.name?.let { setUserName(it) }
                         ActivityNavigationUtility.navigateWith(this@SigninActivity)
                             .setClearStack().navigateTo(MainActivity::class.java)
                     } else {

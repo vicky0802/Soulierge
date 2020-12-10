@@ -105,4 +105,5 @@
     <string name="warnning_enter_first_name">Please insert first name</string>
     <string name="facebook_app_id">810287399537649</string>
     <string name="fb_login_protocol_scheme">fb810287399537649</string>
+    <string name="no_data_found">No record found</string>
 </resources>

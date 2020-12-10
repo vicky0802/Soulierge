@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".OrganiseListActivity">
+
+    <include layout="@layout/toola_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--            android:id="@+id/swpRefresh"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:saveEnabled="false">-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOrgRec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_16ddp"
+                android:paddingEnd="@dimen/_16ddp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_organisation" />
+<!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
+        <include
+            android:id="@+id/llNoData"
+            layout="@layout/no_data"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
