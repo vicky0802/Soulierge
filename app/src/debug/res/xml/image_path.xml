@@ -1,0 +1,7 @@
+<paths>
+    <files-path
+        name="captured_image"
+        path="Images/" />
+    <external-path name="external_files" path="."/>
+
+</paths>

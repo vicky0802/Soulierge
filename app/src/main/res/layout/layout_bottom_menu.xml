@@ -61,29 +61,29 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/ll_add_credits"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?selectableItemBackground"
-        android:gravity="center"
-        android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_add_credits"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        android:background="?selectableItemBackground"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="vertical">-->
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_bottom_menu"
-            android:scaleType="centerInside"
-            android:tint="@color/dark_grey"
-            app:srcCompat="@drawable/add_icon" />
+<!--        <ImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/icon_size_bottom_menu"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:tint="@color/dark_grey"-->
+<!--            app:srcCompat="@drawable/add_icon" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_bottom_menu"
-            android:textColor="@color/dark_grey"
-            android:text="@string/ph_add_credits" />
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="@dimen/text_size_bottom_menu"-->
+<!--            android:textColor="@color/dark_grey"-->
+<!--            android:text="@string/ph_add_credits" />-->
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/ll_upcoming"

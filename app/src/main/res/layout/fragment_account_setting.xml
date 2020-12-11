@@ -41,6 +41,7 @@
             android:paddingBottom="100dp">
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -53,20 +54,18 @@
                 android:textSize="@dimen/text_size_large" />
 
             <EditText
+                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:background="@drawable/et_white_bg"
                 android:hint="@string/hint_enter_first_name" />
 
-            <EditText
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_small"
-                android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_last_name" />
 
             <EditText
+                android:id="@+id/txtUserName"
+                android:enabled="false"
+                android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
@@ -74,6 +73,9 @@
                 android:hint="@string/hint_user_name" />
 
             <EditText
+                android:id="@+id/txtEmail"
+                android:enabled="false"
+                android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
@@ -81,6 +83,19 @@
                 android:hint="@string/hint_email" />
 
             <EditText
+                android:id="@+id/txtPhone"
+                android:enabled="false"
+                android:gravity="center"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/et_white_bg"
+                android:hint="@string/hint_phone" />
+
+            <EditText
+                android:id="@+id/txtGender"
+                android:enabled="false"
+                android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
@@ -88,6 +103,7 @@
                 android:hint="@string/hint_gender" />
 
             <EditText
+                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
@@ -95,6 +111,7 @@
                 android:hint="@string/hint_dob" />
 
             <EditText
+                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
@@ -102,6 +119,7 @@
                 android:hint="@string/hint_weight" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -114,6 +132,7 @@
                 android:textSize="@dimen/text_size_large" />
 
             <EditText
+                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
@@ -121,6 +140,7 @@
                 android:hint="@string/hint_emergency_contact_name" />
 
             <EditText
+                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
@@ -128,6 +148,7 @@
                 android:hint="@string/hint_emergency_contact_phone" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -140,6 +161,7 @@
                 android:textSize="@dimen/text_size_large" />
 
             <EditText
+                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
@@ -147,6 +169,7 @@
                 android:hint="@string/hint_emergency_contact_name" />
 
             <EditText
+                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"

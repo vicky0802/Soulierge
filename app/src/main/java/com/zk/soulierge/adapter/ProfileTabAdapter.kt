@@ -12,7 +12,7 @@ import com.zk.soulierge.fragments.PastEventFragments
 /**
  * Created by zeerak on 1/19/2020 bt
  */
-class ProfileTabAdapter(context: Context, fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class ProfileTabAdapter(context: Context?, fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private var mFragments: ArrayList<BaseFragment> = ArrayList()
     private var mTitles: ArrayList<String> = ArrayList()
 
@@ -21,8 +21,8 @@ class ProfileTabAdapter(context: Context, fm: FragmentManager) : FragmentStatePa
             add(PastEventFragments())
             add(FavouritesEventFragment())
         }
-        mTitles.add(context.getString(R.string.past))
-        mTitles.add(context.getString(R.string.favourites))
+        context?.getString(R.string.past)?.let { mTitles.add(it) }
+        context?.getString(R.string.favourites)?.let { mTitles.add(it) }
     }
 
     override fun getItem(position: Int): Fragment {

@@ -39,11 +39,11 @@ class MainActivity : AppCompatActivity() {
                 .replaceToFragment(EventsFragment())
         }
 
-        ll_add_credits.setOnClickListener {
-            updateMenu(it)
-            FragmentUtility.withManager(supportFragmentManager)
-                .replaceToFragment(AddCreditFragment())
-        }
+//        ll_add_credits.setOnClickListener {
+//            updateMenu(it)
+//            FragmentUtility.withManager(supportFragmentManager)
+//                .replaceToFragment(AddCreditFragment())
+//        }
 
         ll_upcoming.setOnClickListener {
             updateMenu(it)

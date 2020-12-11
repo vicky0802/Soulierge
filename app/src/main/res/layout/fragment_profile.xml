@@ -38,17 +38,19 @@
                     android:gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/txtUserName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/trenda_bold"
-                        android:text="User Name"
+                        tools:text="User Name"
                         android:textColor="@color/dark_grey"
                         android:textSize="@dimen/text_size_large" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgUserImage"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/add_icon"
                         android:tint="@color/dark_grey" />
 
@@ -134,9 +136,9 @@
             android:id="@+id/tl_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
             app:tabSelectedTextColor="@color/app_blue"
-            app:tabTextColor="@color/dark_grey"
-            android:layout_gravity="top" />
+            app:tabTextColor="@color/dark_grey" />
 
     </androidx.viewpager.widget.ViewPager>
 
