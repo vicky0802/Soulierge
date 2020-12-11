@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_margin="32dp"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey_background">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="@string/add_category"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp" />
+
+       <androidx.appcompat.widget.AppCompatEditText
+           android:id="@+id/edtCategory"
+           android:layout_marginTop="@dimen/_16ddp"
+           android:layout_width="match_parent"
+           android:padding="@dimen/_8sdp"
+           android:background="@drawable/rec_5_white_fill"
+           android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_marginTop="@dimen/_16ddp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCanccel"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:padding="@dimen/_8sdp"
+                android:text="@string/cancel"
+                android:textColor="@color/app_blue"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:text="@string/save"
+                android:layout_weight="1"
+                android:background="@null"
+                android:textColor="@color/app_blue"
+                android:padding="@dimen/_8sdp"
+                android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

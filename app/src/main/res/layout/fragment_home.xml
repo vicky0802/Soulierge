@@ -79,6 +79,10 @@
                 android:id="@+id/cv_organization"
                 layout="@layout/row_event" />
 
+            <include
+                android:id="@+id/cv_categories"
+                layout="@layout/row_event" />
+
 
         </LinearLayout>
 

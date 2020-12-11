@@ -106,4 +106,10 @@
     <string name="facebook_app_id">810287399537649</string>
     <string name="fb_login_protocol_scheme">fb810287399537649</string>
     <string name="no_data_found">No record found</string>
+    <string name="categories">Categories</string>
+    <string name="del_message">Are you sure you want to delete?</string>
+    <string name="add_category">Add Category</string>
+    <string name="save">Save</string>
+    <string name="category_message">Please enter valid category name</string>
+
 </resources>

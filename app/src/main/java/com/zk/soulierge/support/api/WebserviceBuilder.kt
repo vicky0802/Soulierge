@@ -1,8 +1,11 @@
 package com.zk.soulierge.support.api
 
+import com.zk.soulierge.support.api.model.CategoryItem
+import com.zk.soulierge.support.api.model.GeneralResponse
 import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import io.reactivex.Observable
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
@@ -56,6 +59,19 @@ interface WebserviceBuilder {
         @Query("user_who_favourited_id") user_who_favourited_id: String? = null,
     ): Observable<ResponseBody>
 
+    @POST("EventService/getCategories")
+    fun getCategories(
+    ): Observable<ArrayList<CategoryItem?>>
+
+    @POST("EventService/deleteCategory")
+    fun delCategory(
+        @Query("id") categoryId: String? = null,
+    ): Observable<GeneralResponse>
+
+    @POST("EventService/addCategory")
+    fun addCategory(
+        @Body category: RequestBody? = null,
+    ): Observable<GeneralResponse>
 
 
 }

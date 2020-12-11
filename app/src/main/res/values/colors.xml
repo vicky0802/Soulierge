@@ -6,15 +6,18 @@
     <color name="app_blue">#2480c0</color>
     <color name="dark_grey">#5C5858</color>
     <color name="light_grey">#9a9a9a</color>
+    <color name="light_grey_background">#F2F2F2</color>
     <color name="white">#fff</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="color_facebook">#344E8B</color>
     <color name="grey_sec">#EBEBEA</color>
     <color name="app_dark_blue">#3F51B5</color>
+    <color name="app_light_yellow">#FFFAF4D6</color>
     <color name="color_red">#F44336</color>
     <color name="pdlg_color_black">#000000</color>
     <color name="pdlg_title_color">@color/colorAccent</color>
     <color name="pdlg_message_color">@color/colorAccent</color>
     <color name="pdlg_color_white">#fff</color>
     <color name="pdlg_color_blue">@color/colorAccent</color>
+    <color name="black">#000000</color>
 </resources>

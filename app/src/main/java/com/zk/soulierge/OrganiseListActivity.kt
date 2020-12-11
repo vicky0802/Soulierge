@@ -163,4 +163,9 @@ class OrganiseListActivity : AppCompatActivity() {
         )
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 }
