@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.zk.soulierge.R
-import com.zk.soulierge.fragments.BaseFragment
-import com.zk.soulierge.fragments.FavouritesEventFragment
-import com.zk.soulierge.fragments.PastEventFragments
+import com.zk.soulierge.fragments.*
 
 /**
  * Created by zeerak on 1/19/2020 bt
@@ -19,7 +17,7 @@ class ProfileTabAdapter(context: Context?, fm: FragmentManager) : FragmentStateP
     init {
         mFragments.apply {
             add(PastEventFragments())
-            add(FavouritesEventFragment())
+            add(UpcomingFragment())
         }
         context?.getString(R.string.past)?.let { mTitles.add(it) }
         context?.getString(R.string.favourites)?.let { mTitles.add(it) }
