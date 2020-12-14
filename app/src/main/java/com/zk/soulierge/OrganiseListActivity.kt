@@ -79,7 +79,6 @@ class OrganiseListActivity : AppCompatActivity() {
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
                     loadingDialog(false)
-                    llNoData?.visibility = VISIBLE
                     simpleAlert(
                         getString(R.string.app_name).toUpperCase(),
                         throwable.message
@@ -88,7 +87,6 @@ class OrganiseListActivity : AppCompatActivity() {
 
                 override fun onError(message: String?) {
                     loadingDialog(false)
-                    llNoData?.visibility = VISIBLE
                     message?.let {
                         simpleAlert(getString(R.string.app_name).toUpperCase(), it)
                     }
@@ -110,7 +108,6 @@ class OrganiseListActivity : AppCompatActivity() {
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
                     loadingDialog(false)
-                    llNoData?.visibility = VISIBLE
                     simpleAlert(
                         getString(R.string.app_name).toUpperCase(),
                         throwable.message
@@ -119,7 +116,6 @@ class OrganiseListActivity : AppCompatActivity() {
 
                 override fun onError(message: String?) {
                     loadingDialog(false)
-                    llNoData?.visibility = VISIBLE
                     message?.let {
                         simpleAlert(getString(R.string.app_name).toUpperCase(), it)
                     }

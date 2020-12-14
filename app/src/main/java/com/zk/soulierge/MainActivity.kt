@@ -58,6 +58,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun exploreEvent(){
+        ll_upcoming?.performClick()
+    }
     private fun updateMenu(selectedView: View) {
         if (mSelectedMenuItem != null) {
             setMenuItemColor(mSelectedMenuItem, R.color.dark_grey)

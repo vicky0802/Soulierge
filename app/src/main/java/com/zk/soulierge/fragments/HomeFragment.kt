@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.zk.soulierge.CategoriesActivity
+import com.zk.soulierge.MainActivity
 import com.zk.soulierge.OrganiseListActivity
 import com.zk.soulierge.R
 import com.zk.soulierge.support.api.ApiClient
@@ -22,7 +23,9 @@ import com.zk.soulierge.support.utils.ImageChooserUtil
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
+import com.zk.soulierge.utlities.FragmentUtility
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.layout_bottom_menu.*
 import kotlinx.android.synthetic.main.row_event.view.*
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -60,6 +63,10 @@ class HomeFragment : BaseFragment() {
         cv_event.tv_find.text = getString(R.string.ph_find_event)
         cv_organization.tv_find.text = getString(R.string.ph_find_organisation)
         cv_categories.tv_find.text = getString(R.string.categories)
+        cv_event?.setOnClickListener { if (activity is MainActivity){
+            (activity as MainActivity)?.exploreEvent()
+        }
+        }
         cv_organization?.setOnClickListener {
             startActivity(
                 Intent(

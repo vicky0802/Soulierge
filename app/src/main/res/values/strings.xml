@@ -116,5 +116,6 @@
     <string name="camera_title">Camera Permission is necessary</string>
     <string name="lbl_choose_image">Choose Image</string>
     <string name="hint_phone">Enter Phone</string>
+    <string name="delete">Delete</string>
 
 </resources>

@@ -9,7 +9,6 @@
     app:cardElevation="2dp">
 
     <LinearLayout
-        android:paddingBottom="@dimen/_8sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -38,6 +37,7 @@
         </RelativeLayout>
 
         <TextView
+            tools:text="@string/app_name"
             android:id="@+id/txtOrganisationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,6 +59,57 @@
             android:layout_marginEnd="@dimen/margin_normal"
             tools:text="@string/message_join_event"
             app:drawableStartCompat="@drawable/ic_location" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtEventDate"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:drawablePadding="@dimen/_8sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            tools:text="@string/message_join_event"
+            app:drawableStartCompat="@drawable/ic_date_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtEventUpDate"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:drawablePadding="@dimen/_8sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            tools:text="@string/message_join_event"
+            app:drawableStartCompat="@drawable/ic_end_date_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtAddToCalendar"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:drawablePadding="@dimen/_8sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:textColor="@color/txt_green"
+            android:text="Add Event To Calendar"
+            app:drawableStartCompat="@drawable/ic_add_to_calendar" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:padding="@dimen/_8sdp"
+            android:textColor="@color/white"
+            android:background="@color/app_blue"
+            android:text="@string/delete"/>
 
     </LinearLayout>
 

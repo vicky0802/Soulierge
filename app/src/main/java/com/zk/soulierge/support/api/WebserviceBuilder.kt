@@ -1,6 +1,5 @@
 package com.zk.soulierge.support.api
 
-import android.os.Build
 import com.zk.soulierge.support.api.model.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -102,4 +101,18 @@ interface WebserviceBuilder {
         @Query("user_id") user_id: String? = null,
     ): Observable<GeneralResponse>
 
+    @POST("EventService/getEvents")
+    fun getEvents(@Body body: RequestBody): Observable<ArrayList<UpEventResponseItem?>>
+
+    @POST("EventService/addFavouriteEvent")
+    fun favouriteEventAPI(
+        @Query("event_id") event_id: String? = null,
+        @Query("user_who_favourited_id") user_who_favourited_id: String? = null,
+    ): Observable<ResponseBody>
+
+    @POST("EventService/deleteFavouriteEvent")
+    fun unFavouriteEventAPI(
+        @Query("event_id") event_id: String? = null,
+        @Query("user_who_favourited_id") user_who_favourited_id: String? = null,
+    ): Observable<ResponseBody>
 }

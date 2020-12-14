@@ -3,68 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/margin_normal"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/grey_sec"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_normal"
     tools:context=".fragments.UpcomingFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/message_no_event"
-
-        android:textColor="@color/dark_grey" />
-
-    <Button
-        style="@style/button_style"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:background="@drawable/all_btn_app_color"
-        android:text="@string/find_an_event"
-        android:textColor="@color/white" />
+        android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_normal"
-        android:clipToPadding="false"
-        >
+        <!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+        <!--            android:id="@+id/swpRefresh"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:saveEnabled="false">-->
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUpComingEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_upcoming_event" />
+        <!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:fontFamily="@font/trenda_bold"
-                android:text="@string/try_soulierge"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_normal" />
-
-            <include layout="@layout/row_event" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:fontFamily="@font/trenda_bold"
-                android:text="@string/try_soulierge"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_normal" />
-
-            <include
-                android:id="@+id/cv_organization"
-                layout="@layout/row_event" />
-
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        <include
+            android:id="@+id/llNoData"
+            layout="@layout/no_data"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </LinearLayout>
