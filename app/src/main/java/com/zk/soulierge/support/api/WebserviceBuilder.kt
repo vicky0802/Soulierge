@@ -104,6 +104,13 @@ interface WebserviceBuilder {
     @POST("EventService/getEvents")
     fun getEvents(@Body body: RequestBody): Observable<ArrayList<UpEventResponseItem?>>
 
+    @POST("EventService/getEventsForOrganization")
+    fun getEventForOrg(
+        @Query("organization_id")organization_id:String? =null,
+        @Query("filter_days")filter_days:String? =null,
+        @Body body: RequestBody,
+        ): Observable<ArrayList<UpEventResponseItem?>>
+
     @POST("EventService/addFavouriteEvent")
     fun favouriteEventAPI(
         @Query("event_id") event_id: String? = null,
@@ -115,4 +122,46 @@ interface WebserviceBuilder {
         @Query("event_id") event_id: String? = null,
         @Query("user_who_favourited_id") user_who_favourited_id: String? = null,
     ): Observable<ResponseBody>
+
+    @POST("OrganizationService/deleteOrganization")
+    fun deleteOrgAPI(
+        @Query("id") id: String? = null,
+    ): Observable<ResponseBody>
+
+    @POST("OrganizationService/addOrganization")
+    fun addOrganisation(
+        @Query("name") name: String? = null,
+        @Query("description") description: String? = null,
+        @Query("location") location: String? = null,
+        @Query("latitude") latitude: String? = null,
+        @Query("longitude") longitude: String? = null,
+        @Query("country") country: String? = null,
+        @Query("file_name") file_name: String? = null,
+        @Query("email") email: String? = "",
+        @Query("contact_number") contact_number: String? = "",
+    ): Observable<AddOrgResponse>
+
+    @POST("EventService/addEvent")
+    fun addEvent(
+        @Query("organization_id") organization_id: String? = "",
+        @Query("user_id") user_id: String? = "",
+        @Query("name") name: String? = "",
+        @Query("description") description: String? = "",
+        @Query("latitude") latitude: String? = "",
+        @Query("longitude") longitude: String? = "",
+        @Query("date") date: String? = "",
+        @Query("time") time: String? = "",
+        @Query("event_type_id") event_type_id: String? = "1",
+        @Query("file_name") file_name: String? = "",
+        @Query("location") location: String? = "",
+        @Query("capacity") capacity: String? = "",
+        @Query("end_date") end_date: String? = "",
+        @Query("end_time") end_time: String? = "",
+        @Query("age_restriction") age_restriction: String? = "",
+    ): Observable<AddOrgResponse>
+
+    @POST("EventService/deleteEvent")
+    fun delEvent(
+        @Query("id") categoryId: String? = null,
+    ): Observable<GeneralResponse>
 }

@@ -133,5 +133,7 @@
     <string name="organization_details">Organization Details</string>
     <string name="select_organization_location">Select Organization Location</string>
     <string name="enter_country">Enter Country</string>
+    <string name="edit">Edit</string>
+    <string name="lbl_organisation_users">Organisation Users</string>
 
 </resources>

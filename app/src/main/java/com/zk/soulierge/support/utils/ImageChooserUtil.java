@@ -126,7 +126,7 @@ public class ImageChooserUtil {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             if (PermissionUtil.checkPermission(activity, PermissionUtil.Permissions.CAMERA)) {
-                                startCameraIntent(activity, fileName);
+                                startCameraIntent(activity, fileName,requestcode);
                             } else {
                                 PermissionUtil.getPermission(activity,
                                         PermissionUtil.Permissions.CAMERA,
@@ -227,7 +227,7 @@ public class ImageChooserUtil {
         fragment.startActivityForResult(Intent.createChooser(intent, "Select File"), requestCode == 0 ? REQUEST_GALLERY : requestCode);
     }
 
-    public static void startCameraIntent(Activity activity, String fileName) {
+    public static void startCameraIntent(Activity activity, String fileName, int requestCode) {
         File path = new File(StorageUtils.createInternalDirectory(), IMAGE_DIRECTORY);
 
         if (!path.exists()) path.mkdirs();
@@ -259,7 +259,7 @@ public class ImageChooserUtil {
             }
         }
 
-        activity.startActivityForResult(intent, REQUEST_CAMERA);
+        activity.startActivityForResult(intent, requestCode == 0 ? REQUEST_CAMERA : requestCode);
     }
 
     public static void startCameraIntent(Fragment fragment, String fileName, int requestCode) {

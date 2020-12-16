@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".utlities.OrgDetailActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toola_bar" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:fillViewport="true">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgOrganisation"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/black"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/event_smaple" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_16ddp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:id="@+id/txtOrgName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@+id/tv_find"
+                                android:fontFamily="@font/trenda_bold"
+                                android:paddingEnd="@dimen/_8sdp"
+                                android:text="@string/try_soulierge"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="@dimen/text_size_normal"
+                                tools:ignore="RtlSymmetry" />
+
+                            <TextView
+                                android:id="@+id/tv_find"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:fontFamily="@font/trenda_bold"
+                                android:text="@string/edit"
+                                android:textColor="@color/app_blue"
+                                android:textSize="@dimen/text_size_normal" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtOrgDes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginBottom="@dimen/margin_normal"
+                            android:layout_toStartOf="@+id/tv_find"
+                            android:fontFamily="@font/trenda_semibold"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="@dimen/_8sdp"
+                            android:text="@string/try_soulierge"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/text_size_normal"
+                            tools:ignore="RtlSymmetry" />
+
+                        <TextView
+                            android:id="@+id/txtOrgLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginBottom="@dimen/margin_normal"
+                            android:layout_toStartOf="@+id/tv_find"
+                            android:fontFamily="@font/trenda_light"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="@dimen/_8sdp"
+                            android:text="@string/try_soulierge"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/text_size_normal"
+                            app:drawableStartCompat="@drawable/ic_location"
+                            tools:ignore="RtlSymmetry" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16ddp"
+                    android:layout_marginEnd="@dimen/_16ddp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/trenda_bold"
+                        android:padding="@dimen/_16ddp"
+                        android:text="@string/lbl_organisation_users"
+                        android:textColor="@color/app_blue"
+                        android:textSize="@dimen/text_size_normal"
+                        app:drawableEndCompat="@drawable/ic_right_arrow" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16ddp"
+                    android:layout_marginTop="@dimen/_16ddp"
+                    android:layout_marginEnd="@dimen/_16ddp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/trenda_bold"
+                        android:gravity="center"
+                        android:padding="@dimen/_16ddp"
+                        android:text="@string/upcoming_events"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvUpComingEvent"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        android:padding="@dimen/margin_normal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/row_upcoming_event" />
+
+
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:id="@+id/llNoData"
+                        layout="@layout/no_data"
+                        android:visibility="visible" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbAddEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/_16ddp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/_16ddp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_filter" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

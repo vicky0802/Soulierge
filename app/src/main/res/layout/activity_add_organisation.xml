@@ -13,11 +13,14 @@
         android:layout_height="150dp">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgOrganisation"
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -56,10 +59,11 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edtOrganizationDetail"
                 style="@style/edit_text_style"
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="start"
+                android:gravity="center"
                 android:lines="5" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -67,6 +71,7 @@
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
+                android:text="Gift City"
                 android:gravity="center"
                 android:hint="@string/select_organization_location" />
 
@@ -77,14 +82,16 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:gravity="center"
-                android:hint="@string/enter_country"
-                android:inputType="numberDecimal" />
+                android:hint="@string/enter_country" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAddOrganisation"
         android:layout_width="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/rec_5_blue_fill"

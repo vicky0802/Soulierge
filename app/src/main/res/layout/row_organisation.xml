@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/_16ddp"
     app:cardCornerRadius="10dp"
     app:cardElevation="2dp">
 
     <LinearLayout
-        android:paddingBottom="@dimen/_8sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_8sdp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +33,18 @@
                 android:layout_alignParentEnd="true"
                 android:background="@color/white"
                 android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_heart_fill" />
+                android:src="@drawable/ic_heart_fill"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_delete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true"
+                android:background="@color/white"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_delete" />
 
         </RelativeLayout>
 
@@ -49,16 +60,16 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtLocation"
-            android:maxLines="2"
-            android:ellipsize="marquee"
-            android:drawablePadding="@dimen/_8sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_normal"
-            tools:text="@string/message_join_event"
-            app:drawableStartCompat="@drawable/ic_location" />
+            android:drawablePadding="@dimen/_8sdp"
+            android:ellipsize="marquee"
+            android:maxLines="2"
+            app:drawableStartCompat="@drawable/ic_location"
+            tools:text="@string/message_join_event" />
 
     </LinearLayout>
 

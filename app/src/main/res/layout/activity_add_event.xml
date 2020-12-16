@@ -10,138 +10,152 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@drawable/rec_5_blue_fill"
-            android:padding="@dimen/_16ddp"
-            android:text="@string/add_image"
-            android:textColor="@color/white" />
-    </RelativeLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <RelativeLayout
+            android:id="@+id/rrtop"
             android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgEvent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/rec_5_blue_fill"
+                android:padding="@dimen/_16ddp"
+                android:text="@string/add_image"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_below="@+id/rrtop"
+            android:layout_above="@+id/btnCreateEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_16ddp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtEventName"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:gravity="center"
+                    android:hint="@string/enter_event_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16ddp"
+                    android:gravity="center"
+                    android:text="@string/event_details"
+                    android:textSize="@dimen/_18ssp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtEventDetail"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:gravity="start"
+                    android:lines="5" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/edtEventLocation"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:text="Gift City"
+                    android:gravity="center"
+                    android:hint="@string/select_location" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/EventCategory"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:drawableEnd="@drawable/ic_right_arrow"
+                    android:gravity="center"
+                    android:text="@string/event_categories" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtEventCapacity"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:gravity="center"
+                    android:hint="@string/enter_event_capacity"
+                    android:inputType="numberDecimal" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtEventAgeRestriction"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:gravity="center"
+                    android:hint="@string/enter_event_age_restriction"
+                    android:inputType="numberDecimal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16ddp"
+                    android:gravity="center"
+                    android:text="@string/event_start_date"
+                    android:textSize="@dimen/_18ssp" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eventStartDate"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:drawableEnd="@drawable/ic_right_arrow"
+                    android:gravity="center"
+                    android:text="@string/event_categories" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16ddp"
+                    android:gravity="center"
+                    android:text="@string/event_end_date"
+                    android:textSize="@dimen/_18ssp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eventEndDate"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:drawableEnd="@drawable/ic_right_arrow"
+                    android:gravity="center"
+                    android:text="@string/event_categories" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop="@dimen/_8sdp"
+            android:id="@+id/btnCreateEvent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_16ddp">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtEventName"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="center"
-                android:hint="@string/enter_event_name" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16ddp"
-                android:gravity="center"
-                android:text="@string/event_details"
-                android:textSize="@dimen/_18ssp" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtEventDetail"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="start"
-                android:lines="5" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtEventLocation"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="center"
-                android:hint="@string/select_location" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/EventCategory"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:drawableEnd="@drawable/ic_heart"
-                android:gravity="center"
-                android:text="@string/event_categories" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtEventCapacity"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="center"
-                android:hint="@string/enter_event_capacity"
-                android:inputType="numberDecimal" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtEventAgeRestriction"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="center"
-                android:hint="@string/enter_event_age_restriction"
-                android:inputType="numberDecimal" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16ddp"
-                android:gravity="center"
-                android:text="@string/event_start_date"
-                android:textSize="@dimen/_18ssp" />
-
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/eventStartDate"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:drawableEnd="@drawable/ic_heart"
-                android:gravity="center"
-                android:text="@string/event_categories" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16ddp"
-                android:gravity="center"
-                android:text="@string/event_end_date"
-                android:textSize="@dimen/_18ssp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/eventEndDate"
-                style="@style/edit_text_style"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:drawableEnd="@drawable/ic_heart"
-                android:gravity="center"
-                android:text="@string/event_categories" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </ScrollView>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/rec_5_blue_fill"
-        android:padding="@dimen/_16ddp"
-        android:text="@string/create"
-        android:textColor="@color/white" />
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rec_5_blue_fill"
+            android:padding="@dimen/_16ddp"
+            android:text="@string/create"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
