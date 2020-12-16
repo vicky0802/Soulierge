@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddEventActivity">
+
+    <include layout="@layout/toola_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/all_edit_text"
+            android:padding="@dimen/_16ddp"
+            android:text="@string/add_image"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_16ddp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtOrganizationName"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:gravity="center"
+                android:hint="@string/enter_organization_name" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:gravity="center"
+                android:text="@string/organization_details"
+                android:textSize="@dimen/_18ssp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtOrganizationDetail"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:gravity="start"
+                android:lines="5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/edtOrganizationLocation"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:gravity="center"
+                android:hint="@string/select_organization_location" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtOrganizationCountry"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:gravity="center"
+                android:hint="@string/enter_country"
+                android:inputType="numberDecimal" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rec_5_blue_fill"
+        android:padding="@dimen/_16ddp"
+        android:text="@string/add_organization"
+        android:textColor="@color/white" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

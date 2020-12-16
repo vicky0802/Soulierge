@@ -117,5 +117,21 @@
     <string name="lbl_choose_image">Choose Image</string>
     <string name="hint_phone">Enter Phone</string>
     <string name="delete">Delete</string>
+    <string name="add_event">Add Event</string>
+    <string name="add_image">Add Image</string>
+    <string name="enter_event_name">Enter Event Name</string>
+    <string name="event_details">Event Details</string>
+    <string name="select_location">Select Location</string>
+    <string name="event_categories">Event Categories</string>
+    <string name="enter_event_capacity">Enter Event Capacity</string>
+    <string name="enter_event_age_restriction">Enter Event Age Restriction</string>
+    <string name="event_start_date">Event Start Date</string>
+    <string name="event_end_date">Event End Date</string>
+    <string name="create">create</string>
+    <string name="add_organization">Add Organization</string>
+    <string name="enter_organization_name">Enter Organization Name</string>
+    <string name="organization_details">Organization Details</string>
+    <string name="select_organization_location">Select Organization Location</string>
+    <string name="enter_country">Enter Country</string>
 
 </resources>
