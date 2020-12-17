@@ -35,7 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".utlities.OrgDetailActivity"></activity>
+        <activity android:name=".OrgDetailActivity"></activity>
         <activity android:name=".AddOrganisation" />
         <activity android:name=".AddEventActivity" />
         <activity android:name=".CategoriesActivity" />

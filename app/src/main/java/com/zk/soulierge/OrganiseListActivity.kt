@@ -18,7 +18,6 @@ import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.simpleAlert
-import com.zk.soulierge.utlities.OrgDetailActivity
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
 import kotlinx.android.synthetic.main.activity_organise_list.*

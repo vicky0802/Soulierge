@@ -1,6 +1,8 @@
 package com.zk.soulierge
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,9 +15,7 @@ import com.zk.soulierge.support.api.model.AddOrgResponse
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.model.UploadFileResponse
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.getUserId
-import com.zk.soulierge.support.utilExt.initToolbar
-import com.zk.soulierge.support.utilExt.toMultipartBody
+import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.ImageChooserUtil
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
@@ -23,6 +23,7 @@ import com.zk.soulierge.support.utils.simpleAlert
 import kotlinx.android.synthetic.main.activity_add_event.*
 import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.MultipartBody
+import java.util.*
 
 class AddEventActivity : AppCompatActivity() {
     var organisation: OrganisationModalItem? = null
@@ -51,6 +52,45 @@ class AddEventActivity : AppCompatActivity() {
                 addEventAPI()
             }
         }
+
+        eventStartDate?.setOnClickListener { startEventDateTime() }
+        eventEndDate?.setOnClickListener { endEventDateTime() }
+    }
+
+    private fun endEventDateTime() {
+        val currentDateTime = Calendar.getInstance()
+        val startYear = currentDateTime.get(Calendar.YEAR)
+        val startMonth = currentDateTime.get(Calendar.MONTH)
+        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+        val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
+        val startMinute = currentDateTime.get(Calendar.MINUTE)
+
+        DatePickerDialog(this, { _, year, month, day ->
+            TimePickerDialog(this, { _, hour, minute ->
+                val pickedDateTime = Calendar.getInstance()
+                pickedDateTime.set(year, month, day, hour, minute)
+                eventEndDate?.tag = pickedDateTime.time.toAPIDateFormat()
+                eventEndDate?.text = pickedDateTime.time.toDisplayDateFormat("dd MMMM yyyy | hh:mm aa")
+            }, startHour, startMinute, false).show()
+        }, startYear, startMonth, startDay).show()
+    }
+
+    private fun startEventDateTime() {
+        val currentDateTime = Calendar.getInstance()
+        val startYear = currentDateTime.get(Calendar.YEAR)
+        val startMonth = currentDateTime.get(Calendar.MONTH)
+        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+        val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
+        val startMinute = currentDateTime.get(Calendar.MINUTE)
+
+        DatePickerDialog(this, { _, year, month, day ->
+            TimePickerDialog(this, { _, hour, minute ->
+                val pickedDateTime = Calendar.getInstance()
+                pickedDateTime.set(year, month, day, hour, minute)
+                eventStartDate?.tag = pickedDateTime.time.toAPIDateFormat()
+                eventStartDate?.text = pickedDateTime.time.toDisplayDateFormat("dd MMMM yyyy | hh:mm aa")
+            }, startHour, startMinute, false).show()
+        }, startYear, startMonth, startDay).show()
     }
 
     private fun addEventAPI() {
@@ -66,10 +106,10 @@ class AddEventActivity : AppCompatActivity() {
                     file_name = uploadedImgaeFileName,
                     capacity = edtEventCapacity?.text.toString()?.trim(),
                     age_restriction = edtEventAgeRestriction?.text.toString()?.trim(),
-                    date = "01/09/2020",
-                    time = "11:38",
-                    end_date = "01/09/2020",
-                    end_time = "12:00",
+                    date = eventStartDate?.tag.toString().toDate().toAPIDateFormat("dd/mm/yyyy"),
+                    time = eventStartDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
+                    end_date = eventEndDate?.tag.toString().toDate().toAPIDateFormat("dd/mm/yyyy"),
+                    end_time = eventEndDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
                     organization_id = organisation?.id,
                     user_id = getUserId()
                 ),

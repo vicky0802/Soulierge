@@ -1,4 +1,4 @@
-package com.zk.soulierge.utlities
+package com.zk.soulierge
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,23 +9,25 @@ import com.example.parth.worldz_code.utils.RecyckerViewBuilder.RecyclerViewBuild
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.zk.soulierge.AddEventActivity
-import com.zk.soulierge.R
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
-import com.zk.soulierge.support.api.model.GeneralResponse
-import com.zk.soulierge.support.api.model.OrganisationModalItem
-import com.zk.soulierge.support.api.model.UpEventResponseItem
-import com.zk.soulierge.support.api.model.toJson
+import com.zk.soulierge.support.api.model.*
 import com.zk.soulierge.support.api.subscribeToSingle
+import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
 import com.zk.soulierge.support.utilExt.getUserId
 import com.zk.soulierge.support.utilExt.initToolbar
 import com.zk.soulierge.support.utilExt.toDisplayDateFormat
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
+import com.zk.soulierge.utlities.RecyclerViewLayoutManager
+import com.zk.soulierge.utlities.RecyclerViewLinearLayout
+import kotlinx.android.synthetic.main.activity_categories.*
 import kotlinx.android.synthetic.main.activity_org_detail.*
+import kotlinx.android.synthetic.main.activity_org_detail.llNoData
+import kotlinx.android.synthetic.main.dialog_category.view.*
+import kotlinx.android.synthetic.main.row_dialog_category.view.*
 import kotlinx.android.synthetic.main.row_upcoming_event.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.MediaType
@@ -33,8 +35,11 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 
 class OrgDetailActivity : AppCompatActivity() {
+    var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
     var organisation: OrganisationModalItem? = null
     var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
+    var categoryList = ArrayList<CategoryItem?>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_org_detail)
@@ -50,12 +55,80 @@ class OrgDetailActivity : AppCompatActivity() {
         txtOrgLocation?.setText(organisation?.location)
         setupRecycleView(ArrayList());
         callUpEventListAPI();
+        callCategoriesListAPI(false)
 
         fbAddEvent?.setOnClickListener {
-            val intent = Intent(this,AddEventActivity::class.java)
+            val intent = Intent(this, AddEventActivity::class.java)
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
-            startActivityForResult(intent,1004)
+            startActivityForResult(intent, 1004)
         }
+
+        fabFilter?.setOnClickListener {
+            if (categoryList.size > 0) {
+                openBottomSheet()
+            } else {
+                callCategoriesListAPI(true)
+            }
+        }
+    }
+
+    private fun openBottomSheet() {
+        var view = View.inflate(this, R.layout.dialog_category, null)
+        val builder = BottomSheetDialogBuilder(this)
+        builder.customView(view)
+        categoryBuilder = view?.rvCategory?.setUp(
+            R.layout.row_dialog_category,
+            categoryList,
+            RecyclerViewLayoutManager.LINEAR,
+            RecyclerViewLinearLayout.VERTICAL
+        ) {
+            contentBinder { item, view, position ->
+                view?.txtCategoryTitle.text = item.name
+            }
+            isNestedScrollingEnabled = false
+        }
+        builder.show()
+    }
+
+    private fun callCategoriesListAPI(callAgain: Boolean?) {
+//        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .getCategories(),
+            singleCallback = object : SingleCallback<ArrayList<CategoryItem?>> {
+                override fun onSingleSuccess(o: ArrayList<CategoryItem?>, message: String?) {
+//                    loadingDialog(false)
+                    categoryList = o
+                    if (callAgain == true) {
+                        if (o.size > 0) {
+                            showAppDialog("No Category Available")
+                        } else {
+                            openBottomSheet()
+                        }
+                    }
+//                    if (o.size > 0) {
+//                        llNoData?.visibility = View.GONE
+//                    } else {
+//                        llNoData?.visibility = View.VISIBLE
+//                    }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+//                    loadingDialog(false)
+//                    simpleAlert(
+//                        getString(R.string.app_name).toUpperCase(),
+//                        throwable.message
+//                    )
+                }
+
+                override fun onError(message: String?) {
+//                    loadingDialog(false)
+//                    message?.let {
+//                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+//                    }
+                }
+            }
+        )
     }
 
     private fun setupRecycleView(o: ArrayList<UpEventResponseItem?>) {
@@ -95,7 +168,7 @@ class OrgDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteEvent(eventId:String?) {
+    private fun deleteEvent(eventId: String?) {
         loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
@@ -105,7 +178,7 @@ class OrgDetailActivity : AppCompatActivity() {
                     loadingDialog(false)
                     showAppDialog(
                         if (o.success?.isNotEmpty() == true) o.success else o.failure,
-                    ){callUpEventListAPI()}
+                    ) { callUpEventListAPI() }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -135,7 +208,7 @@ class OrgDetailActivity : AppCompatActivity() {
         val body = RequestBody.create(mediaType, json.toJson())
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getEventForOrg(organization_id = organisation?.id,body = body),
+                .getEventForOrg(organization_id = organisation?.id, body = body),
             singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
                 override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
                     loadingDialog(false)
@@ -233,8 +306,8 @@ class OrgDetailActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode ==1004){
-            if (resultCode == RESULT_OK){
+        if (requestCode == 1004) {
+            if (resultCode == RESULT_OK) {
                 callUpEventListAPI()
             }
         }

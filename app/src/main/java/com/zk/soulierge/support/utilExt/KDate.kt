@@ -6,7 +6,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-const val API_DATE_FORMAT = "dd/MM/yyyy"
+const val API_DATE_FORMAT = "dd-MM-yyyy HH:mm"
 
 const val DISPLAY_DATE_FORMAT = "dd MMMM yyyy"
 
@@ -37,7 +37,21 @@ fun String?.toAPIDateFormat(withFormat: String = DISPLAY_DATE_FORMAT): String? {
     val apiateFormat = SimpleDateFormat(API_DATE_FORMAT, Locale.US)
     var date: String = ""
     if (this != null) {
-        val convertedDate = dateFormat.parse(this) as Date
+        try {
+            val convertedDate = dateFormat.parse(this) as Date
+            date = apiateFormat.format(convertedDate)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+    }
+    return date
+}
+
+fun Date?.toAPIDateFormat(withFormat: String = API_DATE_FORMAT): String? {
+    val apiateFormat = SimpleDateFormat(withFormat, Locale.US)
+    var date: String = ""
+    if (this != null) {
+        val convertedDate = this
         try {
             date = apiateFormat.format(convertedDate)
         } catch (e: ParseException) {
@@ -54,6 +68,20 @@ fun String?.toDisplayDateFormat(withFormat: String = API_DATE_FORMAT,locale: Loc
     if (this != null) {
         try {
             val convertedDate = dateFormat.parse(this) as Date
+            date = apiateFormat.format(convertedDate)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+    }
+    return date
+}
+
+fun Date?.toDisplayDateFormat(withFormat: String = DISPLAY_DATE_FORMAT,locale: Locale? = Locale.getDefault()): String? {
+    val apiateFormat = SimpleDateFormat(withFormat,locale)
+    var date: String = ""
+    if (this != null) {
+        try {
+            val convertedDate = this
             date = apiateFormat.format(convertedDate)
         } catch (e: ParseException) {
             e.printStackTrace()
