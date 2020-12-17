@@ -36,9 +36,10 @@ import okhttp3.ResponseBody
 
 class OrgDetailActivity : AppCompatActivity() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
+    var categoryList = ArrayList<CategoryItem?>()
+    var selectedCategory = ArrayList<CategoryItem?>()
     var organisation: OrganisationModalItem? = null
     var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
-    var categoryList = ArrayList<CategoryItem?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +74,10 @@ class OrgDetailActivity : AppCompatActivity() {
     }
 
     private fun openBottomSheet() {
-        var view = View.inflate(this, R.layout.dialog_category, null)
+        val view = View.inflate(this, R.layout.dialog_category, null)
         val builder = BottomSheetDialogBuilder(this)
         builder.customView(view)
+        view?.btnCategoryDone?.setOnClickListener { if (selectedCategory.size > 0) callUpEventListAPI(); builder.dismiss() }
         categoryBuilder = view?.rvCategory?.setUp(
             R.layout.row_dialog_category,
             categoryList,
@@ -83,7 +85,23 @@ class OrgDetailActivity : AppCompatActivity() {
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
+                if (item.isSelected) {
+                    view?.imgSelected.visibility = View.VISIBLE
+                } else {
+                    view?.imgSelected.visibility = View.GONE
+                }
                 view?.txtCategoryTitle.text = item.name
+                view?.setOnClickListener {
+                    if (item.isSelected) {
+                        item.isSelected = !item.isSelected
+                        view?.imgSelected.visibility = View.GONE
+                        selectedCategory.remove(item)
+                    } else {
+                        item.isSelected = !item.isSelected
+                        view?.imgSelected.visibility = View.VISIBLE
+                        selectedCategory.add(item)
+                    }
+                }
             }
             isNestedScrollingEnabled = false
         }
@@ -157,12 +175,16 @@ class OrgDetailActivity : AppCompatActivity() {
                     }
                 }
 
+                view?.setOnClickListener { var eventIntent = Intent(this@OrgDetailActivity, EventDetailActivity::class.java)
+                    eventIntent.putExtra("eventId", item.id)
+                    startActivityForResult(eventIntent, 1004) }
+
                 view?.btnDelete.setOnClickListener { deleteEvent(item.id) }
                 view?.txtOrganisationName.text = item.name
                 view?.txtLocation.text = item.location
-                view?.txtEventDate.text = item.date.toDisplayDateFormat() + " | " + item.time
+                view?.txtEventDate.text = item.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.time
                 view?.txtEventUpDate.text =
-                    item.endDate.toDisplayDateFormat() + " | " + item.endTime
+                    item.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.endTime
             }
             isNestedScrollingEnabled = false
         }
@@ -201,7 +223,8 @@ class OrgDetailActivity : AppCompatActivity() {
 
     private fun callUpEventListAPI() {
         loadingDialog(true)
-        var categories = JsonArray();
+        val categories = JsonArray();
+        selectedCategory.forEach { categories.add(it?.id) }
         val json = JsonObject()
         json.add("category", categories)
         val mediaType: MediaType? = MediaType.parse("application/json")

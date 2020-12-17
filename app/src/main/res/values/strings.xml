@@ -135,5 +135,18 @@
     <string name="enter_country">Enter Country</string>
     <string name="edit">Edit</string>
     <string name="lbl_organisation_users">Organisation Users</string>
+    <string name="done">Done</string>
+    <string name="short_event">Short Event</string>
+    <string name="_1_week">1 Weeks</string>
+    <string name="_2_weeks">2 Weeks</string>
+    <string name="_3_weeks">3 Weeks</string>
+    <string name="near_me">Near Me</string>
+    <string name="category">Category</string>
+    <string name="all">All</string>
+    <string name="show_categories">Show Categories</string>
+    <string name="show_participants">Show Participants</string>
+    <string name="total_capacity">Total Capacity</string>
+    <string name="available">Available</string>
+    <string name="event_age_restriction">Event Age Restriction</string>
 
 </resources>

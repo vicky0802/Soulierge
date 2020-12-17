@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EventDetailActivity">
+
+    <include layout="@layout/toola_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_16ddp"
+            android:layout_marginEnd="@dimen/_16ddp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtEventName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:layout_toStartOf="@+id/tv_find"
+                android:fontFamily="@font/trenda_bold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/txtEventDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_toStartOf="@+id/tv_find"
+                android:fontFamily="@font/trenda_semibold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal" />
+
+            <TextView
+                android:id="@+id/txtAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_toStartOf="@+id/tv_find"
+                android:fontFamily="@font/trenda_semibold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <TextView
+                android:id="@+id/txtEventLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_toStartOf="@+id/tv_find"
+                android:fontFamily="@font/trenda_semibold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal"
+                app:drawableStartCompat="@drawable/ic_location" />
+
+            <TextView
+                android:id="@+id/txtEventStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_toStartOf="@+id/tv_find"
+                android:fontFamily="@font/trenda_semibold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal"
+                app:drawableStartCompat="@drawable/ic_date_time" />
+
+            <TextView
+                android:id="@+id/txtEventEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_toStartOf="@+id/tv_find"
+                android:fontFamily="@font/trenda_semibold"
+                android:text="@string/try_soulierge"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal"
+                app:drawableStartCompat="@drawable/ic_end_date_time" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnShowCategory"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@drawable/rec_5_light_orange_fill"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/show_categories" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtTotalCapacity"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rec_5_green_fill"
+                    android:gravity="center"
+                    android:text="@string/total_capacity"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtAvailable"
+                    style="@style/edit_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_weight="1"
+                    android:background="@drawable/rec_5_orange_fill"
+                    android:gravity="center"
+                    android:text="@string/available"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnShowParticipants"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@drawable/rec_5_light_orange_fill"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/show_participants" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDeleteEvnet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:layout_marginBottom="@dimen/_16ddp"
+                android:background="@drawable/rec_5_blue_fill"
+                android:padding="@dimen/_16ddp"
+                android:text="@string/delete"
+                android:textColor="@color/white" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

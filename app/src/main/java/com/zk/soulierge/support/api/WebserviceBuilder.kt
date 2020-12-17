@@ -102,7 +102,7 @@ interface WebserviceBuilder {
     ): Observable<GeneralResponse>
 
     @POST("EventService/getEvents")
-    fun getEvents(@Body body: RequestBody): Observable<ArrayList<UpEventResponseItem?>>
+    fun getEvents(@Body body: RequestBody,@Query("filter_days")filter_days:String? =null,): Observable<ArrayList<UpEventResponseItem?>>
 
     @POST("EventService/getEventsForOrganization")
     fun getEventForOrg(
@@ -158,10 +158,16 @@ interface WebserviceBuilder {
         @Query("end_date") end_date: String? = "",
         @Query("end_time") end_time: String? = "",
         @Query("age_restriction") age_restriction: String? = "",
+        @Body body: RequestBody,
     ): Observable<AddOrgResponse>
 
     @POST("EventService/deleteEvent")
     fun delEvent(
         @Query("id") categoryId: String? = null,
     ): Observable<GeneralResponse>
+
+    @POST("EventService/getEventDetail")
+    fun eventDetail(
+        @Query("id") eventId: String? = null,
+    ): Observable<UpEventResponseItem>
 }
