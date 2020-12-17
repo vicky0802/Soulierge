@@ -148,5 +148,6 @@
     <string name="total_capacity">Total Capacity</string>
     <string name="available">Available</string>
     <string name="event_age_restriction">Event Age Restriction</string>
+    <string name="update_organisation">Update Organization</string>
 
 </resources>

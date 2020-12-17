@@ -23,11 +23,11 @@ data class OrganisationModalItem(
     @SerializedName("isFavorite")
     var isFavorite: Boolean? = null,
     @SerializedName("latitude")
-    var latitude: Double? = null,
+    var latitude: String? = null,
     @SerializedName("location")
     var location: String? = null,
     @SerializedName("longitude")
-    var longitude: Double? = null,
+    var longitude: String? = null,
     @SerializedName("name")
     var name: String? = null
 ):Parcelable{
@@ -40,9 +40,9 @@ data class OrganisationModalItem(
         parcel.readString(),
         parcel.readString(),
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readString(),
-        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString()
     ) {
     }
@@ -56,9 +56,9 @@ data class OrganisationModalItem(
         parcel.writeString(fileName)
         parcel.writeString(id)
         parcel.writeValue(isFavorite)
-        parcel.writeValue(latitude)
+        parcel.writeString(latitude)
         parcel.writeString(location)
-        parcel.writeValue(longitude)
+        parcel.writeString(longitude)
         parcel.writeString(name)
     }
 

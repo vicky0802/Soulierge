@@ -10,7 +10,7 @@ import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.AddOrgResponse
-import com.zk.soulierge.support.api.model.GeneralResponse
+import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.model.UploadFileResponse
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.initToolbar
@@ -27,12 +27,26 @@ import okhttp3.MultipartBody
 class AddOrganisation : AppCompatActivity() {
     val REQUEST_CODE_PROFILE_IMAGE = 1008
     var fileName = System.currentTimeMillis().toString()
-
+    var organisation: OrganisationModalItem? = null
     var uploadedImgaeFileName: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_organisation)
-        initToolbar(tool_bar, true, getString(R.string.add_organization))
+        if (intent.hasExtra("organisation")) {
+            organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
+            initToolbar(tool_bar, true, getString(R.string.update_organisation))
+            btnAddOrganisation?.text = getString(R.string.update_organisation)
+            Glide.with(this@AddOrganisation).load(ApiClient.BASE_IMAGE_URL + organisation?.fileName)
+                .into(imgOrganisation)
+            uploadedImgaeFileName = organisation?.fileName
+            edtOrganizationName?.setText(organisation?.name)
+            edtOrganizationDetail?.setText(organisation?.description)
+            edtOrganizationLocation?.setText(organisation?.location)
+            edtOrganizationCountry?.setText(organisation?.country)
+        } else {
+            initToolbar(tool_bar, true, getString(R.string.add_organization))
+            btnAddOrganisation?.text = getString(R.string.add_organization)
+        }
 
         btnImage?.setOnClickListener {
             uploadedImgaeFileName = ""
@@ -45,7 +59,11 @@ class AddOrganisation : AppCompatActivity() {
 
         btnAddOrganisation?.setOnClickListener {
             if (isValid()) {
-                addOrganisationAPI()
+                if (organisation != null) {
+                    updateOrganisationAPI()
+                } else {
+                    addOrganisationAPI()
+                }
             }
         }
     }
@@ -92,6 +110,52 @@ class AddOrganisation : AppCompatActivity() {
                     country = edtOrganizationCountry?.text.toString()?.trim(),
                     latitude = "23.156953",
                     longitude = "72.6463473",
+                    file_name = uploadedImgaeFileName
+                ),
+            singleCallback = object : SingleCallback<AddOrgResponse> {
+                override fun onSingleSuccess(o: AddOrgResponse, message: String?) {
+                    loadingDialog(false)
+                    if (o.success.isNullOrEmpty()) {
+                        showAppDialog(o.failure)
+                    } else {
+                        showAppDialog(o.success) {
+                            setResult(RESULT_OK)
+                            onBackPressed()
+                        }
+                    }
+
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
+    private fun updateOrganisationAPI() {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .updateOrganization(
+                    id = organisation?.id,
+                    name = edtOrganizationName?.text?.toString()?.trim(),
+                    description = edtOrganizationDetail.text?.toString()?.trim(),
+                    location = edtOrganizationLocation?.text.toString()?.trim(),
+                    country = edtOrganizationCountry?.text.toString()?.trim(),
+                    latitude = organisation?.latitude,
+                    longitude = organisation?.longitude,
                     file_name = uploadedImgaeFileName
                 ),
             singleCallback = object : SingleCallback<AddOrgResponse> {

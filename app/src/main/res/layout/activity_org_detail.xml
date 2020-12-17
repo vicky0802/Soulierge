@@ -54,7 +54,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
-                                android:layout_toStartOf="@+id/tv_find"
+                                android:layout_toStartOf="@+id/txtEditOrg"
                                 android:fontFamily="@font/trenda_bold"
                                 android:paddingEnd="@dimen/_8sdp"
                                 android:text="@string/try_soulierge"
@@ -63,7 +63,7 @@
                                 tools:ignore="RtlSymmetry" />
 
                             <TextView
-                                android:id="@+id/tv_find"
+                                android:id="@+id/txtEditOrg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -79,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_marginBottom="@dimen/margin_normal"
-                            android:layout_toStartOf="@+id/tv_find"
+                            android:layout_toStartOf="@+id/txtEditOrg"
                             android:fontFamily="@font/trenda_semibold"
                             android:paddingStart="8dp"
                             android:paddingEnd="@dimen/_8sdp"
@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_marginBottom="@dimen/margin_normal"
-                            android:layout_toStartOf="@+id/tv_find"
+                            android:layout_toStartOf="@+id/txtEditOrg"
                             android:fontFamily="@font/trenda_light"
                             android:paddingStart="8dp"
                             android:paddingEnd="@dimen/_8sdp"

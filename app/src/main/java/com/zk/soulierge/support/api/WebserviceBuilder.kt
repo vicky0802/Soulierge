@@ -141,8 +141,43 @@ interface WebserviceBuilder {
         @Query("contact_number") contact_number: String? = "",
     ): Observable<AddOrgResponse>
 
+    @POST("OrganizationService/updateOrganization")
+    fun updateOrganization(
+        @Query("id") id: String? = null,
+        @Query("name") name: String? = null,
+        @Query("description") description: String? = null,
+        @Query("location") location: String? = null,
+        @Query("latitude") latitude: String? = null,
+        @Query("longitude") longitude: String? = null,
+        @Query("country") country: String? = null,
+        @Query("file_name") file_name: String? = null,
+        @Query("email") email: String? = "",
+        @Query("contact_number") contact_number: String? = "",
+    ): Observable<AddOrgResponse>
+
     @POST("EventService/addEvent")
     fun addEvent(
+        @Query("organization_id") organization_id: String? = "",
+        @Query("user_id") user_id: String? = "",
+        @Query("name") name: String? = "",
+        @Query("description") description: String? = "",
+        @Query("latitude") latitude: String? = "",
+        @Query("longitude") longitude: String? = "",
+        @Query("date") date: String? = "",
+        @Query("time") time: String? = "",
+        @Query("event_type_id") event_type_id: String? = "1",
+        @Query("file_name") file_name: String? = "",
+        @Query("location") location: String? = "",
+        @Query("capacity") capacity: String? = "",
+        @Query("end_date") end_date: String? = "",
+        @Query("end_time") end_time: String? = "",
+        @Query("age_restriction") age_restriction: String? = "",
+        @Body body: RequestBody,
+    ): Observable<AddOrgResponse>
+
+    @POST("EventService/updateEvent")
+    fun updateEvent(
+        @Query("id") id: String? = null,
         @Query("organization_id") organization_id: String? = "",
         @Query("user_id") user_id: String? = "",
         @Query("name") name: String? = "",

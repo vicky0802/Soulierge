@@ -11,6 +11,9 @@
         <item name="editTextStyle">@style/edit_text_style</item>
         <item name="android:buttonStyle">@style/button_style</item>
         <item name="buttonStyle">@style/button_style</item>
+
+        <item name="actionMenuTextColor">@color/app_blue</item>
+        <item name="android:actionMenuTextColor">@color/app_blue</item>
     </style>
 
     <!--all button style-->
@@ -64,6 +67,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
+
     <style name="TitleTextAppearence">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/_18ssp</item>

@@ -2,6 +2,8 @@ package com.zk.soulierge
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -18,6 +20,7 @@ import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
 import com.zk.soulierge.support.utilExt.getUserId
 import com.zk.soulierge.support.utilExt.initToolbar
 import com.zk.soulierge.support.utilExt.toDisplayDateFormat
+import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
@@ -33,6 +36,7 @@ import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+
 
 class OrgDetailActivity : AppCompatActivity() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
@@ -71,6 +75,16 @@ class OrgDetailActivity : AppCompatActivity() {
                 callCategoriesListAPI(true)
             }
         }
+        txtEditOrg?.setOnClickListener {
+            val intent = Intent(this, AddOrganisation::class.java)
+            this.intent.extras?.let { it1 -> intent.putExtras(it1) }
+            startActivity(intent)
+        }
+    }
+
+    override fun onBackPressed() {
+        setResult(RESULT_OK)
+        super.onBackPressed()
     }
 
     private fun openBottomSheet() {
@@ -175,14 +189,20 @@ class OrgDetailActivity : AppCompatActivity() {
                     }
                 }
 
-                view?.setOnClickListener { var eventIntent = Intent(this@OrgDetailActivity, EventDetailActivity::class.java)
+                view?.setOnClickListener {
+                    var eventIntent = Intent(
+                        this@OrgDetailActivity,
+                        EventDetailActivity::class.java
+                    )
                     eventIntent.putExtra("eventId", item.id)
-                    startActivityForResult(eventIntent, 1004) }
+                    startActivityForResult(eventIntent, 1004)
+                }
 
                 view?.btnDelete.setOnClickListener { deleteEvent(item.id) }
                 view?.txtOrganisationName.text = item.name
                 view?.txtLocation.text = item.location
-                view?.txtEventDate.text = item.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.time
+                view?.txtEventDate.text =
+                    item.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.time
                 view?.txtEventUpDate.text =
                     item.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.endTime
             }
@@ -325,6 +345,52 @@ class OrgDetailActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun callDeleteOrginationAPI(item: OrganisationModalItem) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .deleteOrgAPI(id = item.id),
+            singleCallback = object : SingleCallback<ResponseBody> {
+                override fun onSingleSuccess(o: ResponseBody, message: String?) {
+                    loadingDialog(false)
+                    setResult(RESULT_OK)
+                    onBackPressed()
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_delete) {
+            confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                getString(R.string.del_message),
+                { organisation?.let { callDeleteOrginationAPI(it) } })
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_organisation, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

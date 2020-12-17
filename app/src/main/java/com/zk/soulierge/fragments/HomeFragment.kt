@@ -58,9 +58,9 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cv_event.tv_find.text = getString(R.string.ph_find_event)
-        cv_organization.tv_find.text = getString(R.string.ph_find_organisation)
-        cv_categories.tv_find.text = getString(R.string.categories)
+        cv_event.txtEditOrg.text = getString(R.string.ph_find_event)
+        cv_organization.txtEditOrg.text = getString(R.string.ph_find_organisation)
+        cv_categories.txtEditOrg.text = getString(R.string.categories)
         cv_event?.setOnClickListener {
             if (activity is MainActivity) {
                 (activity as MainActivity)?.exploreEvent()

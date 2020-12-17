@@ -1,6 +1,9 @@
 package com.zk.soulierge
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
@@ -18,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.toola_bar.*
 
 class EventDetailActivity : AppCompatActivity() {
+    var event:UpEventResponseItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_detail)
@@ -79,6 +83,7 @@ class EventDetailActivity : AppCompatActivity() {
                 override fun onSingleSuccess(o: UpEventResponseItem, message: String?) {
                     loadingDialog(false)
                     setEventData(o)
+                    event = o
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -109,5 +114,32 @@ class EventDetailActivity : AppCompatActivity() {
         txtTotalCapacity?.text = getString(R.string.total_capacity) + ": " + o.capacity
         txtAvailable?.text = getString(R.string.available) + ": " + o.availableCapacity
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_edit) {
+            val intent = Intent(this, AddEventActivity::class.java)
+            if (event != null)
+            intent.putExtra("event",event)
+            startActivityForResult(intent, 1004)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_event, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1004) {
+            if (resultCode == RESULT_OK) {
+                if (intent.hasExtra("eventId")) {
+                    callEventDetailAPI(intent.getStringExtra("eventId"))
+                }
+            }
+        }
     }
 }
