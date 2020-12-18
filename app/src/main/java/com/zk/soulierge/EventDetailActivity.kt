@@ -5,6 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
@@ -20,8 +25,9 @@ import com.zk.soulierge.support.utils.simpleAlert
 import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.toola_bar.*
 
+
 class EventDetailActivity : AppCompatActivity() {
-    var event:UpEventResponseItem? = null
+    var event: UpEventResponseItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_detail)
@@ -74,6 +80,35 @@ class EventDetailActivity : AppCompatActivity() {
         )
     }
 
+    fun setupMap(){
+        (map_view as SupportMapFragment)?.getMapAsync {
+            val latLng = event?.longitude?.toDouble()?.let { it1 ->
+                event?.latitude?.toDouble()?.let { it2 ->
+                    LatLng(
+                        it2,
+                        it1
+                    )
+                }
+            }
+            if (it != null && latLng != null) {
+                it?.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        latLng, 18F
+                    )
+                )
+
+                it?.addMarker(
+                    latLng?.let { it1 ->
+                        MarkerOptions()
+                            .position(it1).title(event?.name)
+                            .icon(BitmapDescriptorFactory.defaultMarker())
+                            .visible(true)
+                    }
+                )
+            }
+        }
+    }
+
     private fun callEventDetailAPI(id: String?) {
         loadingDialog(true)
         subscribeToSingle(
@@ -84,6 +119,7 @@ class EventDetailActivity : AppCompatActivity() {
                     loadingDialog(false)
                     setEventData(o)
                     event = o
+                    setupMap()
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -120,7 +156,7 @@ class EventDetailActivity : AppCompatActivity() {
         if (item.itemId == R.id.action_edit) {
             val intent = Intent(this, AddEventActivity::class.java)
             if (event != null)
-            intent.putExtra("event",event)
+                intent.putExtra("event", event)
             startActivityForResult(intent, 1004)
         }
         return super.onOptionsItemSelected(item)

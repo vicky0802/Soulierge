@@ -149,5 +149,7 @@
     <string name="available">Available</string>
     <string name="event_age_restriction">Event Age Restriction</string>
     <string name="update_organisation">Update Organization</string>
+    <string name="update">Update</string>
+    <string name="update_event">Update Event</string>
 
 </resources>

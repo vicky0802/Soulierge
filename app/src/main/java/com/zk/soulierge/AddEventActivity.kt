@@ -26,8 +26,6 @@ import com.zk.soulierge.support.utils.simpleAlert
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
 import kotlinx.android.synthetic.main.activity_add_event.*
-import kotlinx.android.synthetic.main.activity_add_event.btnImage
-import kotlinx.android.synthetic.main.activity_add_organisation.*
 import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.row_dialog_category.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
@@ -45,7 +43,7 @@ class AddEventActivity : AppCompatActivity() {
     var categoryList = ArrayList<CategoryItem?>()
     var selectedCategory = ArrayList<CategoryItem?>()
 
-    var event:UpEventResponseItem? = null
+    var event: UpEventResponseItem? = null
 
     var uploadedImgaeFileName: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,17 +51,23 @@ class AddEventActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_event)
         if (intent.hasExtra("event")) {
             event = intent.getParcelableExtra<UpEventResponseItem>("event")
-            initToolbar(tool_bar, true, getString(R.string.update_organisation))
-            btnAddOrganisation?.text = getString(R.string.update_organisation)
+            initToolbar(tool_bar, true, getString(R.string.update_event))
+            btnCreateEvent?.text = getString(R.string.update)
             Glide.with(this).load(ApiClient.BASE_IMAGE_URL + event?.fileName)
-                .into(imgOrganisation)
+                .into(imgEvent)
             uploadedImgaeFileName = event?.fileName
+            edtEventName?.setText(event?.name)
+            edtEventDetail?.setText(event?.description)
+            edtEventLocation?.setText(event?.location)
+            edtEventCapacity?.setText(event?.capacity?.toString())
+            edtEventAgeRestriction?.setText(event?.ageRestriction?.toString())
+            eventStartDate?.setText( event?.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.time)
+            eventEndDate?.setText( event?.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.endTime)
 
         } else {
-            initToolbar(tool_bar, true, getString(R.string.add_organization))
-            btnAddOrganisation?.text = getString(R.string.add_organization)
+            initToolbar(tool_bar, true, getString(R.string.add_event))
+            btnCreateEvent?.text = getString(R.string.create)
         }
-        initToolbar(tool_bar, true, getString(R.string.add_event))
         if (intent.hasExtra("organisation")) {
             organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
         }
