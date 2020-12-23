@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/ll_main"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
@@ -11,70 +11,64 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:background="@drawable/bg_search"
         android:drawableStart="@drawable/search"
         android:drawablePadding="10dp"
-        android:background="@drawable/bg_search"
-        android:textSize="@dimen/text_size_small"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/search_events" />
+        android:hint="@string/search_events"
+        android:textSize="@dimen/text_size_small" />
 
-    <ImageView
-        android:id="@+id/iv_arrow"
-        android:layout_width="@dimen/size_arrow"
-        android:layout_height="@dimen/size_arrow"
+    <RadioGroup
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:layout_marginBottom="@dimen/margin_normal"
-        android:rotation="90"
-        android:src="@drawable/next"
-        android:tint="@color/dark_grey" />
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_event"
+            android:background="@drawable/selc_event_org"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/trenda_bold"
+            android:gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:text="@string/ph_events"
+            android:textColor="@drawable/selc_event_org_text"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/rb_org"
+            android:background="@drawable/selc_event_org"
+            android:button="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@drawable/selc_event_org_text"
+            android:layout_weight="1"
+            android:fontFamily="@font/trenda_bold"
+            android:gravity="center"
+            android:text="@string/ph_organisation"
+            android:textSize="18sp" />
+
+    </RadioGroup>
 
     <FrameLayout
         android:id="@+id/fl_map"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             tools:context=".fragments.EventsFragment" />
     </FrameLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:fontFamily="@font/trenda_bold"
-            android:gravity="center"
-            android:text="@string/ph_events"
-            android:textColor="@color/dark_grey"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:fontFamily="@font/trenda_bold"
-            android:gravity="center"
-            android:text="@string/ph_organisation"
-            android:textColor="@color/dark_grey"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <include layout="@layout/row_event_list"/>
-    <include layout="@layout/row_event_list"/>
 
 </LinearLayout>
