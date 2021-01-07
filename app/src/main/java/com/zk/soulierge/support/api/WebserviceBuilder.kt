@@ -110,7 +110,7 @@ interface WebserviceBuilder {
     fun getEvents(@Body body: RequestBody,@Query("filter_days")filter_days:String? =null,): Observable<ArrayList<UpEventResponseItem?>>
 
     @POST("EventService/getFavouriteEventsForUser")
-    fun getFavEvent(@Query("filter_days")filter_days:String? =null,@Query("user_id")user_id:String? =null): Observable<ArrayList<UpEventResponseItem?>>
+    fun getFavEvent(@Query("filter_days")filter_days:String? =null,@Query("user_id")user_id:String? =null): Observable<ArrayList<FavEventResponseItem?>>
 
     @POST("EventService/getEventsForOrganization")
     fun getEventForOrg(

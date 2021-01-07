@@ -46,7 +46,6 @@ import okhttp3.ResponseBody
 class UpcomingFragment : BaseFragment() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
     var categoryList = ArrayList<CategoryItem?>()
-    var isFrom=""
 
     //    var selectedCategory = ArrayList<CategoryItem?>()
     var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
@@ -69,12 +68,7 @@ class UpcomingFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupRecycleView(ArrayList());
-//        if (arguments != null) {
-//            if (arguments?.containsKey("isFrom") == true) {
-//                isFrom = arguments?.getString("isFrom").toString()
-//            }
-//        }
-        callUpEventListAPI(isFrom = isFrom)
+        callUpEventListAPI()
         fabFilter?.setOnClickListener { openBottomSheetDialog() }
         callCategoriesListAPI(false)
     }
@@ -83,9 +77,9 @@ class UpcomingFragment : BaseFragment() {
         val view = View.inflate(context, R.layout.dialog_filter, null)
         val builder = context?.let { BottomSheetDialogBuilder(it) }
         builder?.customView(view)
-        view?.btn_1_week?.setOnClickListener { callUpEventListAPI(filtersDay = "7",isFrom = isFrom);builder?.dismiss(); }
-        view?.btn_2_week?.setOnClickListener { callUpEventListAPI(filtersDay = "14",isFrom = isFrom);builder?.dismiss(); }
-        view?.btn_3_week?.setOnClickListener { callUpEventListAPI(filtersDay = "21",isFrom = isFrom);builder?.dismiss(); }
+        view?.btn_1_week?.setOnClickListener { callUpEventListAPI(filtersDay = "7",);builder?.dismiss(); }
+        view?.btn_2_week?.setOnClickListener { callUpEventListAPI(filtersDay = "14",);builder?.dismiss(); }
+        view?.btn_3_week?.setOnClickListener { callUpEventListAPI(filtersDay = "21",);builder?.dismiss(); }
         view?.btn_near_me?.setOnClickListener { }
         view?.btn_category?.setOnClickListener {
             builder?.dismiss();
@@ -95,7 +89,7 @@ class UpcomingFragment : BaseFragment() {
                 callCategoriesListAPI(true)
             }
         }
-        view?.btn_all?.setOnClickListener { callUpEventListAPI(isFrom = isFrom); builder?.dismiss(); }
+        view?.btn_all?.setOnClickListener { callUpEventListAPI(); builder?.dismiss(); }
         view?.btnCancel?.setOnClickListener { builder?.dismiss(); }
         builder?.show()
     }
@@ -191,7 +185,7 @@ class UpcomingFragment : BaseFragment() {
                     context?.loadingDialog(false)
                     context?.showAppDialog(
                         if (o.success?.isNotEmpty() == true) o.success else o.failure,
-                    ) { callUpEventListAPI(isFrom = isFrom) }
+                    ) { callUpEventListAPI() }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -220,9 +214,6 @@ class UpcomingFragment : BaseFragment() {
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
-                if (isFrom.equals("favourite")){
-                    item.isFavorite = true
-                }
                 context?.let {
                     Glide.with(it).load(ApiClient.BASE_IMAGE_URL + item.fileName)
                         .placeholder(R.drawable.event_smaple)
@@ -328,7 +319,6 @@ class UpcomingFragment : BaseFragment() {
     private fun callUpEventListAPI(
         filtersDay: String? = null,
         selectedCategory: ArrayList<CategoryItem?> = ArrayList<CategoryItem?>(),
-        isFrom: String = ""
     ) {
         context?.loadingDialog(true)
         val categories = JsonArray();
@@ -337,14 +327,9 @@ class UpcomingFragment : BaseFragment() {
         json.add("category", categories)
         val mediaType: MediaType? = MediaType.parse("application/json")
         val body = RequestBody.create(mediaType, json.toJson())
-        var observable =ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                    .getEvents(body, filter_days = filtersDay)
-        if (isFrom =="favourite") {
-             observable =ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getFavEvent(user_id = context?.getUserId())
-        }
         subscribeToSingle(
-            observable = observable,
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .getEvents(body, filter_days = filtersDay),
             singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
                 override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
                     context?.loadingDialog(false)
@@ -380,7 +365,7 @@ class UpcomingFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1005) {
             if (resultCode == RESULT_OK) {
-                callUpEventListAPI(isFrom = isFrom)
+                callUpEventListAPI()
             }
         }
     }

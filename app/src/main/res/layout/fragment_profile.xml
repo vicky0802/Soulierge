@@ -1,9 +1,10 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_sec"
+    android:orientation="vertical"
     tools:ignore="MergeRootFrame">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -25,9 +26,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_normal"
                 android:background="@color/grey_sec"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="@dimen/margin_normal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,9 +44,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/trenda_bold"
-                        tools:text="User Name"
                         android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/text_size_large" />
+                        android:textSize="@dimen/text_size_large"
+                        tools:text="User Name" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgUserImage"
@@ -62,16 +63,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
                     android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/dark_grey"
                         android:text="@string/settings"
+                        android:textColor="@color/dark_grey"
                         android:textSize="@dimen/text_size_normal" />
 
                     <ImageView
@@ -101,8 +102,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/dark_grey"
                         android:text="@string/refer_to_friends"
+                        android:textColor="@color/dark_grey"
                         android:textSize="@dimen/text_size_normal" />
 
                     <ImageView
@@ -113,6 +114,7 @@
 
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
@@ -143,5 +145,5 @@
     </androidx.viewpager.widget.ViewPager>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
 

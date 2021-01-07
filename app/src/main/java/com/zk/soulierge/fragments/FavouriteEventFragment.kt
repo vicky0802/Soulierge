@@ -11,17 +11,15 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.RecyclerViewBuilder
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.zk.soulierge.EventDetailActivity
 import com.zk.soulierge.R
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.CategoryItem
+import com.zk.soulierge.support.api.model.FavEventResponseItem
 import com.zk.soulierge.support.api.model.GeneralResponse
 import com.zk.soulierge.support.api.model.UpEventResponseItem
-import com.zk.soulierge.support.api.model.toJson
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
 import com.zk.soulierge.support.utilExt.getUserId
@@ -33,11 +31,9 @@ import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
 import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.dialog_filter.view.*
-import kotlinx.android.synthetic.main.fragment_upcoming.*
+import kotlinx.android.synthetic.main.fragment_favourites_event.*
 import kotlinx.android.synthetic.main.row_dialog_category.view.*
 import kotlinx.android.synthetic.main.row_upcoming_event.view.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 
 /**
@@ -46,10 +42,9 @@ import okhttp3.ResponseBody
 class FavouriteEventFragment : BaseFragment() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
     var categoryList = ArrayList<CategoryItem?>()
-    var isFrom=""
 
     //    var selectedCategory = ArrayList<CategoryItem?>()
-    var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
+    var upEventBuilder: RecyclerViewBuilder<FavEventResponseItem>? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,7 +54,7 @@ class FavouriteEventFragment : BaseFragment() {
     }
 
     override fun getTagFragment(): String {
-        return "upcoming_fragment"
+        return "favourit_event_fragment"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,13 +64,9 @@ class FavouriteEventFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupRecycleView(ArrayList());
-        if (arguments != null) {
-            if (arguments?.containsKey("isFrom") == true) {
-                isFrom = arguments?.getString("isFrom").toString()
-            }
-        }
-        callUpEventListAPI(isFrom = isFrom)
-        fabFilter?.setOnClickListener { openBottomSheetDialog() }
+        callUpEventListAPI()
+        fabFilter?.setOnClickListener {
+            openBottomSheetDialog() }
         callCategoriesListAPI(false)
     }
 
@@ -83,9 +74,9 @@ class FavouriteEventFragment : BaseFragment() {
         val view = View.inflate(context, R.layout.dialog_filter, null)
         val builder = context?.let { BottomSheetDialogBuilder(it) }
         builder?.customView(view)
-        view?.btn_1_week?.setOnClickListener { callUpEventListAPI(filtersDay = "7",isFrom = isFrom);builder?.dismiss(); }
-        view?.btn_2_week?.setOnClickListener { callUpEventListAPI(filtersDay = "14",isFrom = isFrom);builder?.dismiss(); }
-        view?.btn_3_week?.setOnClickListener { callUpEventListAPI(filtersDay = "21",isFrom = isFrom);builder?.dismiss(); }
+        view?.btn_1_week?.setOnClickListener { callUpEventListAPI(filtersDay = "7",);builder?.dismiss(); }
+        view?.btn_2_week?.setOnClickListener { callUpEventListAPI(filtersDay = "14",);builder?.dismiss(); }
+        view?.btn_3_week?.setOnClickListener { callUpEventListAPI(filtersDay = "21",);builder?.dismiss(); }
         view?.btn_near_me?.setOnClickListener { }
         view?.btn_category?.setOnClickListener {
             builder?.dismiss();
@@ -95,9 +86,9 @@ class FavouriteEventFragment : BaseFragment() {
                 callCategoriesListAPI(true)
             }
         }
-        view?.btn_all?.setOnClickListener { callUpEventListAPI(isFrom = isFrom); builder?.dismiss(); }
+        view?.btn_all?.setOnClickListener { callUpEventListAPI(); builder?.dismiss(); }
         view?.btnCancel?.setOnClickListener { builder?.dismiss(); }
-        builder?.show()
+        builder?.dialog?.show()
     }
 
     private fun openCategoryBottomSheet() {
@@ -107,7 +98,7 @@ class FavouriteEventFragment : BaseFragment() {
         builder?.customView(view)
         view?.btnCategoryDone?.setOnClickListener {
             if (selectedCategory.size > 0) callUpEventListAPI(
-                selectedCategory = selectedCategory
+//                selectedCategory = selectedCategory
             ); builder?.dismiss()
         }
         categoryBuilder = view?.rvCategory?.setUp(
@@ -191,7 +182,7 @@ class FavouriteEventFragment : BaseFragment() {
                     context?.loadingDialog(false)
                     context?.showAppDialog(
                         if (o.success?.isNotEmpty() == true) o.success else o.failure,
-                    ) { callUpEventListAPI(isFrom = isFrom) }
+                    ) { callUpEventListAPI() }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -212,7 +203,7 @@ class FavouriteEventFragment : BaseFragment() {
         )
     }
 
-    private fun setupRecycleView(o: ArrayList<UpEventResponseItem?>) {
+    private fun setupRecycleView(o: ArrayList<FavEventResponseItem?>) {
         upEventBuilder = rvUpComingEvent?.setUp(
             R.layout.row_upcoming_event,
             o,
@@ -220,40 +211,37 @@ class FavouriteEventFragment : BaseFragment() {
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
-                if (isFrom.equals("favourite")){
-                    item.isFavorite = true
-                }
                 context?.let {
-                    Glide.with(it).load(ApiClient.BASE_IMAGE_URL + item.fileName)
+                    Glide.with(it).load(ApiClient.BASE_IMAGE_URL + item.event.fileName)
                         .placeholder(R.drawable.event_smaple)
                         .into(view.row_event_image)
                 }
-                if (item.isFavorite == true) {
-                    view?.img_whishlist?.setImageResource(R.drawable.ic_heart_fill)
-                } else {
-                    view?.img_whishlist?.setImageResource(R.drawable.ic_heart)
-                }
+//                if (item.isFavorite == true) {
+                view?.img_whishlist?.setImageResource(R.drawable.ic_heart_fill)
+//                } else {
+//                    view?.img_whishlist?.setImageResource(R.drawable.ic_heart)
+//                }
                 view?.img_whishlist?.setOnClickListener {
-                    if (item.isFavorite == true) {
-                        callUnFavAPI(item, position)
-                    } else {
-                        callFavAPI(item, position)
-                    }
+//                    if (item.isFavorite == true) {
+                    callUnFavAPI(item, position)
+//                    } else {
+//                        callFavAPI(item, position)
+//                    }
                 }
                 view?.setOnClickListener {
                     var eventIntent = Intent(context, EventDetailActivity::class.java)
                     eventIntent.putExtra("eventId", item.id)
                     startActivityForResult(eventIntent, 1005)
                 }
-                view?.txtOrganisationName.text = item.name
-                view?.txtLocation.text = item.location
-                view?.txtEventDesc?.text = item.description
+                view?.txtOrganisationName.text = item.event.name
+                view?.txtLocation.text = item.event.location
+                view?.txtEventDesc?.text = item.event.description
                 view?.txtEventDate.text =
-                    item.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.time
+                    item.event.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.event.time
                 view?.txtEventUpDate.text =
-                    item.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.endTime
+                    item.event.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.event.endTime
 
-                view?.btnDelete?.setOnClickListener { deleteEvent(item.id) }
+                view?.btnDelete?.setOnClickListener { deleteEvent(item.eventId.toString()) }
             }
             isNestedScrollingEnabled = false
         }
@@ -292,19 +280,20 @@ class FavouriteEventFragment : BaseFragment() {
         )
     }
 
-    private fun callUnFavAPI(item: UpEventResponseItem, position: Int) {
+    private fun callUnFavAPI(item: FavEventResponseItem, position: Int) {
         context?.loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
                 .unFavouriteEventAPI(
-                    event_id = item.id,
+                    event_id = item.eventId.toString(),
                     user_who_favourited_id = context?.getUserId()
                 ),
             singleCallback = object : SingleCallback<ResponseBody> {
                 override fun onSingleSuccess(o: ResponseBody, message: String?) {
                     context?.loadingDialog(false)
-                    item.isFavorite = false
-                    upEventBuilder?.notifyItemChanged(position)
+//                    item.isFavorite = false
+//                    upEventBuilder?.notifyItemChanged(position)
+                    callUpEventListAPI()
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -327,26 +316,16 @@ class FavouriteEventFragment : BaseFragment() {
 
     private fun callUpEventListAPI(
         filtersDay: String? = null,
-        selectedCategory: ArrayList<CategoryItem?> = ArrayList<CategoryItem?>(),
-        isFrom: String = ""
     ) {
         context?.loadingDialog(true)
-        val categories = JsonArray();
-        selectedCategory?.forEach { categories.add(it?.id) }
-        val json = JsonObject()
-        json.add("category", categories)
-        val mediaType: MediaType? = MediaType.parse("application/json")
-        val body = RequestBody.create(mediaType, json.toJson())
-        var observable =ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                    .getEvents(body, filter_days = filtersDay)
-        if (isFrom =="favourite") {
-             observable =ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getFavEvent(user_id = context?.getUserId())
-        }
         subscribeToSingle(
-            observable = observable,
-            singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
-                override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .getFavEvent(user_id = context?.getUserId(), filter_days = filtersDay),
+            singleCallback = object : SingleCallback<ArrayList<FavEventResponseItem?>> {
+                override fun onSingleSuccess(
+                    o: ArrayList<FavEventResponseItem?>,
+                    message: String?
+                ) {
                     context?.loadingDialog(false)
                     if (o.size > 0) {
                         llNoData?.visibility = View.GONE
@@ -380,7 +359,7 @@ class FavouriteEventFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1005) {
             if (resultCode == RESULT_OK) {
-                callUpEventListAPI(isFrom = isFrom)
+                callUpEventListAPI()
             }
         }
     }
