@@ -16,19 +16,14 @@ import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.*
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
-import com.zk.soulierge.support.utilExt.getUserId
-import com.zk.soulierge.support.utilExt.initToolbar
-import com.zk.soulierge.support.utilExt.toDisplayDateFormat
+import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
-import kotlinx.android.synthetic.main.activity_categories.*
 import kotlinx.android.synthetic.main.activity_org_detail.*
-import kotlinx.android.synthetic.main.activity_org_detail.llNoData
 import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.row_dialog_category.view.*
 import kotlinx.android.synthetic.main.row_upcoming_event.view.*
@@ -58,6 +53,7 @@ class OrgDetailActivity : AppCompatActivity() {
         txtOrgName?.setText(organisation?.name)
         txtOrgDes?.setText(organisation?.description)
         txtOrgLocation?.setText(organisation?.location)
+        callOrgDetailAPI(organisation?.id)
         setupRecycleView(ArrayList());
         callUpEventListAPI();
         callCategoriesListAPI(false)
@@ -78,13 +74,18 @@ class OrgDetailActivity : AppCompatActivity() {
         txtEditOrg?.setOnClickListener {
             val intent = Intent(this, AddOrganisation::class.java)
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
-            startActivity(intent)
+            startActivityForResult(intent, 1006)
         }
     }
 
     override fun onBackPressed() {
         setResult(RESULT_OK)
         super.onBackPressed()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun openBottomSheet() {
@@ -123,13 +124,13 @@ class OrgDetailActivity : AppCompatActivity() {
     }
 
     private fun callCategoriesListAPI(callAgain: Boolean?) {
-//        loadingDialog(true)
+        loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
                 .getCategories(),
             singleCallback = object : SingleCallback<ArrayList<CategoryItem?>> {
                 override fun onSingleSuccess(o: ArrayList<CategoryItem?>, message: String?) {
-//                    loadingDialog(false)
+                    loadingDialog(false)
                     categoryList = o
                     if (callAgain == true) {
                         if (o.size > 0) {
@@ -146,7 +147,7 @@ class OrgDetailActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
-//                    loadingDialog(false)
+                    loadingDialog(false)
 //                    simpleAlert(
 //                        getString(R.string.app_name).toUpperCase(),
 //                        throwable.message
@@ -154,7 +155,7 @@ class OrgDetailActivity : AppCompatActivity() {
                 }
 
                 override fun onError(message: String?) {
-//                    loadingDialog(false)
+                    loadingDialog(false)
 //                    message?.let {
 //                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
 //                    }
@@ -201,6 +202,7 @@ class OrgDetailActivity : AppCompatActivity() {
                 view?.btnDelete.setOnClickListener { deleteEvent(item.id) }
                 view?.txtOrganisationName.text = item.name
                 view?.txtLocation.text = item.location
+                view?.txtEventDesc?.text = item.description
                 view?.txtEventDate.text =
                     item.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.time
                 view?.txtEventUpDate.text =
@@ -378,6 +380,43 @@ class OrgDetailActivity : AppCompatActivity() {
 
     }
 
+    private fun callOrgDetailAPI(id: String?) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .orgDetail(orgId = id),
+            singleCallback = object : SingleCallback<OrganisationModalItem> {
+                override fun onSingleSuccess(o: OrganisationModalItem, message: String?) {
+                    loadingDialog(false)
+                    organisation = o
+                    changeTitle(organisation?.name)
+                    Glide.with(this@OrgDetailActivity)
+                        .load(ApiClient.BASE_IMAGE_URL + organisation?.fileName)
+                        .placeholder(R.drawable.event_smaple)
+                        .into(imgOrganisation)
+                    txtOrgName?.setText(organisation?.name)
+                    txtOrgDes?.setText(organisation?.description)
+                    txtOrgLocation?.setText(organisation?.location)
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
             confirmationDialog(getString(R.string.app_name).toUpperCase(),
@@ -398,6 +437,14 @@ class OrgDetailActivity : AppCompatActivity() {
         if (requestCode == 1004) {
             if (resultCode == RESULT_OK) {
                 callUpEventListAPI()
+            }
+        }
+        if (requestCode == 1006) {
+            if (resultCode == RESULT_OK) {
+                if (intent.hasExtra("organisation")) {
+                    organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
+                    callOrgDetailAPI(organisation?.id)
+                }
             }
         }
     }

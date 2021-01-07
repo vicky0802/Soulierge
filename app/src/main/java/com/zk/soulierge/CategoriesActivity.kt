@@ -59,10 +59,13 @@ class CategoriesActivity : AppCompatActivity() {
                     confirmationDialog(getString(R.string.app_name).toUpperCase(),
                         getString(R.string.del_message), { callCategoryDelAPI(item, position) })
                 }
+                view?.setOnClickListener { showDialog(item.id, item.name) }
             }
             isNestedScrollingEnabled = false
         }
     }
+
+
 
     private fun callCategoriesListAPI() {
         loadingDialog(true)
@@ -110,7 +113,7 @@ class CategoriesActivity : AppCompatActivity() {
                     loadingDialog(false)
                     showAppDialog(
                         if (o.success?.isNotEmpty() == true) o.success else o.failure,
-                        { categoryBuilder?.removeItem(item) }
+                        { callCategoriesListAPI() }
                     )
                 }
 
@@ -132,7 +135,7 @@ class CategoriesActivity : AppCompatActivity() {
         )
     }
 
-    fun showDialog() {
+    fun showDialog(categoryId: String? = null, category: String? = null) {
         val dialog = AppCompatDialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setFlags(
@@ -142,11 +145,17 @@ class CategoriesActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.custom_dialog)
         dialog?.btnCanccel?.setOnClickListener { dialog.dismiss() }
+        if (categoryId != null) {
+            dialog?.edtCategory?.setText(category)
+        }
         dialog?.btnSave?.setOnClickListener {
-            if (dialog?.edtCategory?.text?.toString()?.trim()?.isEmpty()==true){
+            if (dialog?.edtCategory?.text?.toString()?.trim()?.isEmpty() == true) {
                 showAppDialog(getString(R.string.category_message))
-            }else{
-                callAddCategoryAPI(dialog?.edtCategory?.text?.toString()?.trim())
+            } else {
+                if (categoryId != null){
+                    callUpdateCategoryAPI(categoryId,dialog?.edtCategory?.text?.toString()?.trim())
+                }else{
+                callAddCategoryAPI(dialog?.edtCategory?.text?.toString()?.trim())}
                 dialog?.dismiss()
             }
         }
@@ -167,6 +176,41 @@ class CategoriesActivity : AppCompatActivity() {
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
                 .addCategory(body),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    loadingDialog(false)
+                    callCategoriesListAPI()
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+
+    }
+
+    private fun callUpdateCategoryAPI(categoryId: String?, category: String?) {
+        val json = JsonObject()
+        json.addProperty("id", categoryId)
+        json.addProperty("name", category)
+        val mediaType: MediaType? = MediaType.parse("application/json")
+        val body = RequestBody.create(mediaType, json.toJson())
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .updateCategroy(body),
             singleCallback = object : SingleCallback<GeneralResponse> {
                 override fun onSingleSuccess(o: GeneralResponse, message: String?) {
                     loadingDialog(false)

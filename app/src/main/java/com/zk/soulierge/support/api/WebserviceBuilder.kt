@@ -71,6 +71,11 @@ interface WebserviceBuilder {
         @Body category: RequestBody? = null,
     ): Observable<GeneralResponse>
 
+    @POST("EventService/updateCategroy")
+    fun updateCategroy(
+        @Body category: RequestBody? = null,
+    ): Observable<GeneralResponse>
+
     @Multipart
     @POST("UserService/fileupload")
     fun uploadFile(
@@ -103,6 +108,9 @@ interface WebserviceBuilder {
 
     @POST("EventService/getEvents")
     fun getEvents(@Body body: RequestBody,@Query("filter_days")filter_days:String? =null,): Observable<ArrayList<UpEventResponseItem?>>
+
+    @POST("EventService/getFavouriteEventsForUser")
+    fun getFavEvent(@Query("filter_days")filter_days:String? =null,@Query("user_id")user_id:String? =null): Observable<ArrayList<UpEventResponseItem?>>
 
     @POST("EventService/getEventsForOrganization")
     fun getEventForOrg(
@@ -205,4 +213,9 @@ interface WebserviceBuilder {
     fun eventDetail(
         @Query("id") eventId: String? = null,
     ): Observable<UpEventResponseItem>
+
+    @POST("OrganizationService/getOrganization")
+    fun orgDetail(
+        @Query("id") orgId: String? = null,
+    ): Observable<OrganisationModalItem>
 }

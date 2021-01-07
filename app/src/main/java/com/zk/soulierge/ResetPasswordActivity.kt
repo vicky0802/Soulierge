@@ -69,6 +69,10 @@ class ResetPasswordActivity : AppCompatActivity() {
         )
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
     private fun isValid(): Boolean {
         return when {
             edt_email_forgot.text.toString().trim().isEmpty() -> {

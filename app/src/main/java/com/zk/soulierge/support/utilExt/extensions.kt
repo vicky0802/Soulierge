@@ -105,11 +105,18 @@ fun AppCompatActivity?.initToolbar(
         this?.setSupportActionBar(toolbar)
         isEnable?.let { this?.supportActionBar?.setHomeButtonEnabled(it) }
         isEnable?.let { this?.supportActionBar?.setDisplayHomeAsUpEnabled(it) }
-        isEnable?.let { this?.supportActionBar?.setDisplayShowHomeEnabled(it)}
+        isEnable?.let { this?.supportActionBar?.setDisplayShowHomeEnabled(it) }
         if (this?.supportActionBar != null && title?.isNotEmpty() == true) {
             this.supportActionBar?.title = title
 //        this.toolbar?.title = title
         }
+    }
+}
+
+fun AppCompatActivity?.changeTitle(title: String?) {
+    if (this?.supportActionBar != null && title?.isNotEmpty() == true) {
+        this.supportActionBar?.title = title
+//        this.toolbar?.title = title
     }
 }
 

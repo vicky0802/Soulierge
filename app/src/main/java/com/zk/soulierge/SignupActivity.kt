@@ -71,6 +71,11 @@ class SignupActivity : AppCompatActivity(), LocationListener {
         })
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 
     private fun callSignUpAPI() {
         loadingDialog(true)

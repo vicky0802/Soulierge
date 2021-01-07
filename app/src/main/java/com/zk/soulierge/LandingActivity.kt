@@ -21,4 +21,9 @@ class LandingActivity : AppCompatActivity() {
                 .navigateTo(SignupActivity::class.java)
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 }

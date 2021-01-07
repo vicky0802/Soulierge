@@ -71,6 +71,11 @@ class SigninActivity : AppCompatActivity() {
 //        callLoginAPI()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     private fun isValid(): Boolean {
         return when {
             edt_email.text.toString().trim().isEmpty() -> {

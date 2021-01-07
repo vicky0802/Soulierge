@@ -45,6 +45,9 @@ class AddEventActivity : AppCompatActivity() {
 
     var event: UpEventResponseItem? = null
 
+    var selectedStartTime: Date? = null
+    var selectedEndime: Date? = null
+
     var uploadedImgaeFileName: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,8 +64,8 @@ class AddEventActivity : AppCompatActivity() {
             edtEventLocation?.setText(event?.location)
             edtEventCapacity?.setText(event?.capacity?.toString())
             edtEventAgeRestriction?.setText(event?.ageRestriction?.toString())
-            eventStartDate?.setText( event?.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.time)
-            eventEndDate?.setText( event?.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.endTime)
+            eventStartDate?.setText(event?.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.time)
+            eventEndDate?.setText(event?.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.endTime)
 
         } else {
             initToolbar(tool_bar, true, getString(R.string.add_event))
@@ -99,6 +102,7 @@ class AddEventActivity : AppCompatActivity() {
         eventEndDate?.setOnClickListener { endEventDateTime() }
     }
 
+
     private fun openBottomSheet() {
         val view = View.inflate(this, R.layout.dialog_category, null)
         val builder = BottomSheetDialogBuilder(this)
@@ -132,6 +136,11 @@ class AddEventActivity : AppCompatActivity() {
             isNestedScrollingEnabled = false
         }
         builder.show()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun callCategoriesListAPI(callAgain: Boolean?) {
@@ -183,15 +192,21 @@ class AddEventActivity : AppCompatActivity() {
         val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
         val startMinute = currentDateTime.get(Calendar.MINUTE)
 
-        DatePickerDialog(this, { _, year, month, day ->
-            TimePickerDialog(this, { _, hour, minute ->
+        val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
+            val timePickerDialog = TimePickerDialog(this, { _, hour, minute ->
                 val pickedDateTime = Calendar.getInstance()
                 pickedDateTime.set(year, month, day, hour, minute)
                 eventEndDate?.tag = pickedDateTime.time.toAPIDateFormat()
                 eventEndDate?.text =
                     pickedDateTime.time.toDisplayDateFormat("dd MMMM yyyy | hh:mm aa")
-            }, startHour, startMinute, false).show()
-        }, startYear, startMonth, startDay).show()
+                selectedEndime = pickedDateTime.time
+            }, startHour, startMinute, false)
+            timePickerDialog.show()
+        }, startYear, startMonth, startDay)
+        if (selectedStartTime != null) {
+            selectedStartTime?.time?.let { datePickerDialog.datePicker.minDate = it }
+        }
+        datePickerDialog.show()
     }
 
     private fun startEventDateTime() {
@@ -202,15 +217,20 @@ class AddEventActivity : AppCompatActivity() {
         val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
         val startMinute = currentDateTime.get(Calendar.MINUTE)
 
-        DatePickerDialog(this, { _, year, month, day ->
+        val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
             TimePickerDialog(this, { _, hour, minute ->
                 val pickedDateTime = Calendar.getInstance()
                 pickedDateTime.set(year, month, day, hour, minute)
                 eventStartDate?.tag = pickedDateTime.time.toAPIDateFormat()
                 eventStartDate?.text =
                     pickedDateTime.time.toDisplayDateFormat("dd MMMM yyyy | hh:mm aa")
+                selectedStartTime = pickedDateTime.time
             }, startHour, startMinute, false).show()
-        }, startYear, startMonth, startDay).show()
+        }, startYear, startMonth, startDay)
+        if (selectedEndime != null) {
+            selectedEndime?.time?.let { datePickerDialog.datePicker.maxDate = it }
+        }
+        datePickerDialog.show()
     }
 
     private fun addEventAPI() {

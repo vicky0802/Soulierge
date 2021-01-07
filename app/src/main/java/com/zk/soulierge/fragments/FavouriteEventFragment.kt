@@ -43,7 +43,7 @@ import okhttp3.ResponseBody
 /**
  * A simple [Fragment] subclass.
  */
-class UpcomingFragment : BaseFragment() {
+class FavouriteEventFragment : BaseFragment() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
     var categoryList = ArrayList<CategoryItem?>()
     var isFrom=""
@@ -55,7 +55,7 @@ class UpcomingFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_upcoming, container, false)
+        return inflater.inflate(R.layout.fragment_favourites_event, container, false)
     }
 
     override fun getTagFragment(): String {
@@ -69,11 +69,11 @@ class UpcomingFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupRecycleView(ArrayList());
-//        if (arguments != null) {
-//            if (arguments?.containsKey("isFrom") == true) {
-//                isFrom = arguments?.getString("isFrom").toString()
-//            }
-//        }
+        if (arguments != null) {
+            if (arguments?.containsKey("isFrom") == true) {
+                isFrom = arguments?.getString("isFrom").toString()
+            }
+        }
         callUpEventListAPI(isFrom = isFrom)
         fabFilter?.setOnClickListener { openBottomSheetDialog() }
         callCategoriesListAPI(false)

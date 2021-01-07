@@ -14,9 +14,9 @@ import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialog
+import com.zk.soulierge.R
 import com.zk.soulierge.support.prettyDialog.PrettyDialog
 import com.zk.soulierge.support.utilExt.string
-import com.zk.soulierge.R
 
 fun Context.simpleAlert(msg: String, positiveButton: (() -> Unit)? = null) {
     simpleAlert(null, msg, positiveButton)
@@ -315,7 +315,10 @@ fun Context.showAppDialog(message: String?, buttonClick: (() -> Unit)? = null) {
 
 var dialog: Dialog? = null
 fun Context.loadingDialog(b: Boolean?) {
-    if (dialog == null|| b ==true) {
+    if (dialog == null || b == true) {
+        if (dialog != null)
+            if (dialog?.isShowing == true)
+                dialog?.dismiss()
         dialog = AppCompatDialog(this/*, R.style.progress_bar_style*/)
         dialog?.setContentView(R.layout.layout_progressbar)
         dialog?.window?.setLayout(

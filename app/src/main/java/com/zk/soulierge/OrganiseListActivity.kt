@@ -85,6 +85,8 @@ class OrganiseListActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun callDeleteOrginationAPI(item: OrganisationModalItem) {
         loadingDialog(true)
         subscribeToSingle(

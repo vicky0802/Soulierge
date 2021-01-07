@@ -1,11 +1,14 @@
 package com.zk.soulierge.adapter
 
 import android.content.Context
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.zk.soulierge.R
-import com.zk.soulierge.fragments.*
+import com.zk.soulierge.fragments.BaseFragment
+import com.zk.soulierge.fragments.PastEventFragments
+import com.zk.soulierge.fragments.UpcomingFragment
 
 /**
  * Created by zeerak on 1/19/2020 bt
@@ -17,7 +20,11 @@ class ProfileTabAdapter(context: Context?, fm: FragmentManager) : FragmentStateP
     init {
         mFragments.apply {
             add(PastEventFragments())
-            add(UpcomingFragment())
+            add(UpcomingFragment().apply {
+                val bundle = Bundle()
+                bundle.putString("isFrom", "favourite")
+                arguments = bundle
+            })
         }
         context?.getString(R.string.past)?.let { mTitles.add(it) }
         context?.getString(R.string.favourites)?.let { mTitles.add(it) }

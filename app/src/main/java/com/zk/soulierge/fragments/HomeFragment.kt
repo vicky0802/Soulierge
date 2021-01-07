@@ -45,7 +45,6 @@ class HomeFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        callHomeAPI()
     }
 
     override fun onCreateView(
@@ -58,6 +57,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        callHomeAPI()
         cv_event.txtEditOrg.text = getString(R.string.ph_find_event)
         cv_organization.txtEditOrg.text = getString(R.string.ph_find_organisation)
         cv_categories.txtEditOrg.text = getString(R.string.categories)

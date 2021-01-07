@@ -125,6 +125,7 @@ class ProfileFragment : BaseFragment() {
                         user?.userTypeId = o.userTypeId
                         o.name?.let { context?.setUserName(it) }
                         context?.setUserData(Gson().toJson(user).toString())
+                        user?.userId?.let { context?.setUserId(it) }
                         Glide.with(requireActivity())
                             .load(ApiClient.BASE_IMAGE_URL + fileName)
                             .placeholder(R.drawable.event_smaple)

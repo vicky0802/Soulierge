@@ -8,24 +8,50 @@
     android:orientation="vertical"
     tools:context=".fragments.SettingFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/grey_sec"
-        android:elevation="2dp"
-        android:gravity="center">
+        android:elevation="2dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_back"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_8ddp"
+            android:layout_marginEnd="@dimen/_8ddp"
+            android:src="@drawable/ic_back_arrow"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/btn_update"
+            android:layout_toEndOf="@+id/btn_back"
             android:fontFamily="@font/trenda_bold"
+            android:gravity="center"
             android:text="@string/account_setting"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/text_size_header"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/btn_update"
+            android:layout_marginStart="@dimen/_8ddp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_8ddp"
+            android:fontFamily="@font/trenda_bold"
+            android:text="@string/update"
+            android:textColor="@color/app_blue"
+            android:textSize="@dimen/text_size_header"
+            android:textStyle="bold" />
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,7 +67,6 @@
             android:paddingBottom="100dp">
 
             <TextView
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -51,72 +76,72 @@
                 android:fontFamily="@font/trenda_semibold"
                 android:text="@string/ph_account"
                 android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone" />
 
             <EditText
-                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_enter_first_name" />
+                android:hint="@string/hint_enter_first_name"
+                android:visibility="gone" />
 
 
             <EditText
                 android:id="@+id/txtUserName"
-                android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
+                android:gravity="center"
                 android:hint="@string/hint_user_name" />
 
             <EditText
                 android:id="@+id/txtEmail"
-                android:enabled="false"
-                android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
+                android:enabled="false"
+                android:gravity="center"
                 android:hint="@string/hint_email" />
 
             <EditText
                 android:id="@+id/txtPhone"
-                android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
+                android:gravity="center"
                 android:hint="@string/hint_phone" />
 
             <EditText
                 android:id="@+id/txtGender"
-                android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
+                android:gravity="center"
                 android:hint="@string/hint_gender" />
 
             <EditText
-                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_dob" />
+                android:hint="@string/hint_dob"
+                android:visibility="gone" />
 
             <EditText
-                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_weight" />
+                android:hint="@string/hint_weight"
+                android:visibility="gone" />
 
             <TextView
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -126,26 +151,26 @@
                 android:fontFamily="@font/trenda_semibold"
                 android:text="@string/emergency_contact"
                 android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone" />
 
             <EditText
-                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_emergency_contact_name" />
+                android:hint="@string/hint_emergency_contact_name"
+                android:visibility="gone" />
 
             <EditText
-                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_emergency_contact_phone" />
+                android:hint="@string/hint_emergency_contact_phone"
+                android:visibility="gone" />
 
             <TextView
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -155,23 +180,24 @@
                 android:fontFamily="@font/trenda_semibold"
                 android:text="@string/emergency_contact"
                 android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone" />
 
             <EditText
-                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_emergency_contact_name" />
+                android:hint="@string/hint_emergency_contact_name"
+                android:visibility="gone" />
 
             <EditText
-                android:visibility="gone"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/et_white_bg"
-                android:hint="@string/hint_emergency_contact_phone" />
+                android:hint="@string/hint_emergency_contact_phone"
+                android:visibility="gone" />
 
 
         </LinearLayout>

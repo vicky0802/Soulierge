@@ -67,6 +67,10 @@ class AddOrganisation : AppCompatActivity() {
             }
         }
     }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     private fun uploadFileAPI(toMultipartBody: MultipartBody.Part?, requestCode: Int) {
         loadingDialog(true)

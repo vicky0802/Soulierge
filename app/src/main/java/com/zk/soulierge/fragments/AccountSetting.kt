@@ -2,23 +2,20 @@ package com.zk.soulierge.fragments
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.zk.soulierge.R
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
+import com.zk.soulierge.support.api.model.GeneralResponse
 import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.model.UserResponse
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.getUserData
-import com.zk.soulierge.support.utilExt.getUserId
-import com.zk.soulierge.support.utilExt.setUserData
-import com.zk.soulierge.support.utilExt.setUserName
+import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.loadingDialog
+import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
 import kotlinx.android.synthetic.main.fragment_account_setting.*
 
@@ -26,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_account_setting.*
  * A simple [Fragment] subclass.
  */
 class AccountSetting : BaseFragment() {
+    var userResponse: UserResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +36,7 @@ class AccountSetting : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getUseAPI()
-
+        btn_back?.setOnClickListener { activity?.onBackPressed() }
     }
 
     override fun getTagFragment(): String {
@@ -53,6 +51,7 @@ class AccountSetting : BaseFragment() {
             singleCallback = object : SingleCallback<UserResponse> {
                 override fun onSingleSuccess(o: UserResponse, message: String?) {
                     context?.loadingDialog(false)
+                    userResponse = o
                     txtUserName?.setText(o?.name)
                     txtEmail?.setText(o?.email)
                     txtPhone?.setText(o?.phoneNumber)
@@ -63,6 +62,47 @@ class AccountSetting : BaseFragment() {
                     user?.userTypeId = o.userTypeId
                     o.name?.let { context?.setUserName(it) }
                     context?.setUserData(Gson().toJson(user).toString())
+                    user?.userId?.let { context?.setUserId(it) }
+                    btn_update?.setOnClickListener{ val user = context?.getUserData<LoginResponse>()
+                        updateUserAPI(userResponse, user?.fileName)}
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    context?.loadingDialog(false)
+                    context?.simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    context?.loadingDialog(false)
+                    message?.let {
+                        context?.simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
+    private fun updateUserAPI(user: UserResponse?, fileName: String?) {
+        context?.loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .updateUser(
+                    address = user?.address,
+                    file_name = fileName,
+                    gender = txtGender?.text.toString().trim(),
+                    latitude = user?.latitude,
+                    longitude = user?.longitude,
+                    name = txtUserName?.text.toString().trim(),
+                    phone_number = txtPhone?.text.toString().trim(),
+                    user_id = user?.id
+                ),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    context?.loadingDialog(false)
+                    context?.showAppDialog(o.success) { getUseAPI() }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
