@@ -64,7 +64,6 @@
 
             <EditText
                 android:id="@+id/txtUserName"
-                android:enabled="false"
                 android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
@@ -84,7 +83,6 @@
 
             <EditText
                 android:id="@+id/txtPhone"
-                android:enabled="false"
                 android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
@@ -94,7 +92,6 @@
 
             <EditText
                 android:id="@+id/txtGender"
-                android:enabled="false"
                 android:gravity="center"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"

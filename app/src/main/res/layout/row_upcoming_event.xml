@@ -48,6 +48,18 @@
             android:textSize="@dimen/text_size_normal" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtEventDesc"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:drawablePadding="@dimen/_8sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            tools:text="@string/message_join_event" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtLocation"
             android:maxLines="2"
             android:ellipsize="marquee"

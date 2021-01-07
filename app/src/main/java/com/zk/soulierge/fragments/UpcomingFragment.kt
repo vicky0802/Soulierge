@@ -234,6 +234,7 @@ class UpcomingFragment : BaseFragment() {
                 }
                 view?.txtOrganisationName.text = item.name
                 view?.txtLocation.text = item.location
+                view?.txtEventDesc?.text = item.description
                 view?.txtEventDate.text =
                     item.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.time
                 view?.txtEventUpDate.text =

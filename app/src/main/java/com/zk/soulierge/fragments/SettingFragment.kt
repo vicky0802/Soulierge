@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.facebook.appevents.AppEventsLogger.clearUserData
 import com.zk.soulierge.LandingActivity
 
 import com.zk.soulierge.R
@@ -34,43 +35,44 @@ class SettingFragment : BaseFragment() {
                 .replaceToFragment(AccountSetting())
         }
 
-        ll_privacy.setOnClickListener {
-            FragmentUtility.withManager(activity?.supportFragmentManager)
-                .addToBackStack("")
-                .replaceToFragment(PrivacySettingFragment())
-        }
-
-        ll_terms.setOnClickListener {
-            FragmentUtility.withManager(activity?.supportFragmentManager)
-                .addToBackStack("")
-                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.terms_and_condition),""))
-        }
-
-        ll_help_center.setOnClickListener {
-            FragmentUtility.withManager(activity?.supportFragmentManager)
-                .addToBackStack("")
-                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.help_center),""))
-        }
-
-        ll_privacy_policy.setOnClickListener {
-            FragmentUtility.withManager(activity?.supportFragmentManager)
-                .addToBackStack("")
-                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.privacy_policy),""))
-        }
-
-        ll_community.setOnClickListener {
-            FragmentUtility.withManager(activity?.supportFragmentManager)
-                .addToBackStack("")
-                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.community_guidelines),""))
-        }
-
-        ll_email_us.setOnClickListener {
-            FragmentUtility.withManager(activity?.supportFragmentManager)
-                .addToBackStack("")
-                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.ph_email_us),""))
-        }
+//        ll_privacy.setOnClickListener {
+//            FragmentUtility.withManager(activity?.supportFragmentManager)
+//                .addToBackStack("")
+//                .replaceToFragment(PrivacySettingFragment())
+//        }
+//
+//        ll_terms.setOnClickListener {
+//            FragmentUtility.withManager(activity?.supportFragmentManager)
+//                .addToBackStack("")
+//                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.terms_and_condition),""))
+//        }
+//
+//        ll_help_center.setOnClickListener {
+//            FragmentUtility.withManager(activity?.supportFragmentManager)
+//                .addToBackStack("")
+//                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.help_center),""))
+//        }
+//
+//        ll_privacy_policy.setOnClickListener {
+//            FragmentUtility.withManager(activity?.supportFragmentManager)
+//                .addToBackStack("")
+//                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.privacy_policy),""))
+//        }
+//
+//        ll_community.setOnClickListener {
+//            FragmentUtility.withManager(activity?.supportFragmentManager)
+//                .addToBackStack("")
+//                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.community_guidelines),""))
+//        }
+//
+//        ll_email_us.setOnClickListener {
+//            FragmentUtility.withManager(activity?.supportFragmentManager)
+//                .addToBackStack("")
+//                .replaceToFragment(WebviewFragment.newInstance(getString(R.string.ph_email_us),""))
+//        }
 
         ll_logout.setOnClickListener {
+            clearUserData();
             ActivityNavigationUtility.navigateWith(activity)
                 .setClearStack()
                 .navigateTo(LandingActivity::class.java)

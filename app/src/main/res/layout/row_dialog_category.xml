@@ -36,7 +36,7 @@
             android:padding="5dp"
             android:visibility="gone"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_heart"
+            android:src="@drawable/ic_check"
             app:layout_constraintEnd_toEndOf="parent" />
     </RelativeLayout>
 

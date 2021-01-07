@@ -86,7 +86,7 @@ class HomeFragment : BaseFragment() {
             selectedCode = REQUEST_CODE_ORG
             ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_ORG)
         }
-        cv_categories?.row_event_image?.setOnClickListener {
+        cv_event?.row_event_image?.setOnClickListener {
             selectedCode = REQUEST_CODE_CAT
             ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_CAT)
         }

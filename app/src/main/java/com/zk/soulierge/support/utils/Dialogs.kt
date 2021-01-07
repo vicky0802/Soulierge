@@ -45,7 +45,7 @@ fun Context.simpleAlert(
     mDialog.setIcon(icon)
     mDialog.setTitle(title)
     msg?.let { mDialog.setMessage(it) }
-    mDialog.addButton(btnTitle, R.color.white, R.color.app_dark_blue) {
+    mDialog.addButton(btnTitle, R.color.white, R.color.app_blue) {
         positiveButton?.invoke()
         mDialog.dismiss()
     }.show()
@@ -64,7 +64,7 @@ fun Context.appForceUpdate(
     mDialog.setIcon(R.mipmap.ic_launcher_round)
         .setTitle(title)
         .setMessage(msg)
-        .addButton(btnTitle, R.color.white, R.color.app_dark_blue) {
+        .addButton(btnTitle, R.color.white, R.color.app_blue) {
             positiveButton?.invoke()
         }.show()
 }
@@ -81,7 +81,7 @@ fun Context.confirmationDialog(
     mDialog.setIcon(R.mipmap.ic_launcher_round)
         //.setTitle(getString(R.string.application_name))
         .setMessage(msg)
-        .addButton(getString(R.string.cancel), R.color.white, R.color.app_dark_blue) {
+        .addButton(getString(R.string.cancel), R.color.white, R.color.app_blue) {
             btnNegativeClick?.invoke()
             mDialog.dismiss()
         }
@@ -104,7 +104,7 @@ fun Context.confirmationDialog(
     mDialog.setIcon(R.mipmap.ic_launcher_round)
         .setTitle(title)
         .setMessage(msg)
-        .addButton(getString(R.string.no), R.color.white, R.color.app_dark_blue) {
+        .addButton(getString(R.string.no), R.color.white, R.color.app_blue) {
             btnNegativeClick?.invoke()
             mDialog.dismiss()
         }.addButton(getString(R.string.yes), R.color.white, R.color.color_red) {
@@ -129,10 +129,10 @@ fun Context.confirmationDialog(
     mDialog.setIcon(icon)
         .setTitle(title)
         .setMessage(msg)
-        .addButton(btnPositive, R.color.white, R.color.app_dark_blue) {
+        .addButton(btnPositive, R.color.white, R.color.app_blue) {
             btnPositiveClick?.invoke()
             mDialog.dismiss()
-        }.addButton(btnNegative, R.color.white, R.color.app_dark_blue) {
+        }.addButton(btnNegative, R.color.white, R.color.app_blue) {
             btnNegativeClick?.invoke()
             mDialog.dismiss()
         }.show()
@@ -152,7 +152,7 @@ fun Context.confirmationDialog(
     mDialog.setIcon(icon)
         .setTitle(title)
         .setMessage(msg)
-        .addButton(btnPositive, R.color.white, R.color.app_dark_blue) {
+        .addButton(btnPositive, R.color.white, R.color.app_blue) {
             btnPositiveClick?.invoke()
             mDialog.dismiss()
         }.show()
