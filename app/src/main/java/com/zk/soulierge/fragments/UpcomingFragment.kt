@@ -26,6 +26,7 @@ import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
 import com.zk.soulierge.support.utilExt.getUserId
 import com.zk.soulierge.support.utilExt.toDisplayDateFormat
+import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
@@ -63,14 +64,14 @@ class UpcomingFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setupRecycleView(ArrayList());
         callUpEventListAPI()
         fabFilter?.setOnClickListener { openBottomSheetDialog() }
         callCategoriesListAPI(false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     private fun openBottomSheetDialog() {
@@ -244,7 +245,11 @@ class UpcomingFragment : BaseFragment() {
                 view?.txtEventUpDate.text =
                     item.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.endTime
 
-                view?.btnDelete?.setOnClickListener { deleteEvent(item.id) }
+                view?.btnDelete?.setOnClickListener {
+                    context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                        getString(R.string.del_message), {
+                            deleteEvent(item.id)
+                        })}
             }
             isNestedScrollingEnabled = false
         }
