@@ -76,6 +76,12 @@ class OrgDetailActivity : AppCompatActivity() {
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
             startActivityForResult(intent, 1006)
         }
+
+        cvOrgUsers?.setOnClickListener {
+            val intent = Intent(this, OrgUsersActivity::class.java)
+            this.intent.extras?.let { it1 -> intent.putExtras(it1) }
+            startActivity(intent)
+        }
     }
 
     override fun onBackPressed() {

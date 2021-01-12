@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_16ddp"
+    android:layout_marginEnd="@dimen/_16ddp"
+    android:layout_marginBottom="@dimen/_16ddp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rec_5_white_fill">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgCategoryDelete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtUseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16ddp"
+                android:layout_marginTop="@dimen/_16ddp"
+                android:layout_marginEnd="@dimen/_16ddp"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_18ssp"
+                android:text="@string/account_setting"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtMail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:drawablePadding="@dimen/_8sdp"
+                android:maxLines="1"
+                app:drawableStartCompat="@drawable/ic_email"
+                tools:ignore="MissingConstraints"
+                tools:text="@string/message_join_event" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:drawablePadding="@dimen/_8sdp"
+                android:maxLines="1"
+                app:drawableStartCompat="@drawable/ic_phone"
+                tools:ignore="MissingConstraints"
+                tools:text="@string/message_join_event" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:drawablePadding="@dimen/_8sdp"
+                android:maxLines="1"
+                app:drawableStartCompat="@drawable/ic_gender"
+                tools:ignore="MissingConstraints"
+                tools:text="@string/message_join_event"
+                android:layout_marginBottom="@dimen/_16ddp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgCategoryDelete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/app_light_yellow"
+            android:padding="5dp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>
+

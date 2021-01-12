@@ -45,6 +45,11 @@ interface WebserviceBuilder {
     fun getOrganisation(
     ): Observable<ArrayList<OrganisationModalItem?>>
 
+    @POST("UserService/getOrganizationUsers")
+    fun getOrganisationUser(
+        @Query("organization_id") organizationId: String? = null
+    ): Observable<ArrayList<OrgUserModel?>>
+
     @POST("OrganizationService/addFavouriteOrganization")
     fun favouriteOrgAPI(
         @Query("organization_id") organization_id: String? = null,
@@ -107,17 +112,23 @@ interface WebserviceBuilder {
     ): Observable<GeneralResponse>
 
     @POST("EventService/getEvents")
-    fun getEvents(@Body body: RequestBody,@Query("filter_days")filter_days:String? =null,): Observable<ArrayList<UpEventResponseItem?>>
+    fun getEvents(
+        @Body body: RequestBody,
+        @Query("filter_days") filter_days: String? = null,
+    ): Observable<ArrayList<UpEventResponseItem?>>
 
     @POST("EventService/getFavouriteEventsForUser")
-    fun getFavEvent(@Query("filter_days")filter_days:String? =null,@Query("user_id")user_id:String? =null): Observable<ArrayList<FavEventResponseItem?>>
+    fun getFavEvent(
+        @Query("filter_days") filter_days: String? = null,
+        @Query("user_id") user_id: String? = null
+    ): Observable<ArrayList<FavEventResponseItem?>>
 
     @POST("EventService/getEventsForOrganization")
     fun getEventForOrg(
-        @Query("organization_id")organization_id:String? =null,
-        @Query("filter_days")filter_days:String? =null,
+        @Query("organization_id") organization_id: String? = null,
+        @Query("filter_days") filter_days: String? = null,
         @Body body: RequestBody,
-        ): Observable<ArrayList<UpEventResponseItem?>>
+    ): Observable<ArrayList<UpEventResponseItem?>>
 
     @POST("EventService/addFavouriteEvent")
     fun favouriteEventAPI(

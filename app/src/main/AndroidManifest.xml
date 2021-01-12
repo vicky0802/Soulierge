@@ -35,13 +35,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EventDetailActivity" android:screenOrientation="portrait" />
-        <activity android:name=".OrgDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".AddOrganisation" android:screenOrientation="portrait"/>
-        <activity android:name=".AddEventActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".CategoriesActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".OrganiseListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".SplashActivity" android:screenOrientation="portrait">
+        <activity android:name=".OrgUsersActivity"></activity>
+        <activity
+            android:name=".EventDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrgDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddOrganisation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddEventActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CategoriesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrganiseListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,14 +68,25 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:screenOrientation="portrait"
+        <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity  android:screenOrientation="portrait" android:name=".ResetPasswordActivity" />
-        <activity android:screenOrientation="portrait" android:name=".SigninActivity" />
-        <activity android:screenOrientation="portrait" android:name=".SignupActivity" />
-        <activity android:screenOrientation="portrait" android:name=".LandingActivity" />
-        <activity android:screenOrientation="portrait" android:name=".MainActivity" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SigninActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LandingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

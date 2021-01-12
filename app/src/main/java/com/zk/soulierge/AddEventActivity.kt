@@ -252,9 +252,9 @@ class AddEventActivity : AppCompatActivity() {
                     file_name = uploadedImgaeFileName,
                     capacity = edtEventCapacity?.text.toString()?.trim(),
                     age_restriction = edtEventAgeRestriction?.text.toString()?.trim(),
-                    date = eventStartDate?.tag.toString().toDate().toAPIDateFormat("dd/mm/yyyy"),
+                    date = eventStartDate?.tag.toString().toDate().toAPIDateFormat("dd/MM/yyyy"),
                     time = eventStartDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
-                    end_date = eventEndDate?.tag.toString().toDate().toAPIDateFormat("dd/mm/yyyy"),
+                    end_date = eventEndDate?.tag.toString().toDate().toAPIDateFormat("dd/MM/yyyy"),
                     end_time = eventEndDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
                     organization_id = organisation?.id,
                     user_id = getUserId(), body = body
