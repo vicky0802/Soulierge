@@ -98,7 +98,7 @@ class OrgDetailActivity : AppCompatActivity() {
         val view = View.inflate(this, R.layout.dialog_category, null)
         val builder = BottomSheetDialogBuilder(this)
         builder.customView(view)
-        view?.btnCategoryDone?.setOnClickListener { if (selectedCategory.size > 0) callUpEventListAPI(); builder.dismiss() }
+        view?.btnCategoryDone?.setOnClickListener { /*if (selectedCategory.size > 0)*/ callUpEventListAPI(); builder.dismiss() }
         categoryBuilder = view?.rvCategory?.setUp(
             R.layout.row_dialog_category,
             categoryList,

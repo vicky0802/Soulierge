@@ -12,7 +12,6 @@ import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.OrgUserModel
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.getUserId
 import com.zk.soulierge.support.utilExt.initToolbar
 import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
@@ -24,17 +23,18 @@ import kotlinx.android.synthetic.main.row_org_user.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.ResponseBody
 
-class OrgUsersActivity : AppCompatActivity() {
+class EventPartiActivity : AppCompatActivity() {
     var organisationBuilder: RecyclerViewBuilder<OrgUserModel>? = null
     var organisation: OrganisationModalItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_org_users)
+        setContentView(R.layout.activity_event_parti)
+
         initToolbar(tool_bar, true, getString(R.string.lbl_organisation_users))
 
-        if (intent.hasExtra("organisation")) {
-            organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
+        if (intent.hasExtra("event")) {
+            organisation = intent.getParcelableExtra<OrganisationModalItem>("event")
             callOrganisationListAPI(organisation?.id)
         } else {
             llNoData?.visibility = View.VISIBLE
@@ -66,8 +66,8 @@ class OrgUsersActivity : AppCompatActivity() {
                         })
                 }
                 view?.setOnClickListener {
-                    val intent = Intent(this@OrgUsersActivity, UpdateOrgUserActivity::class.java)
-                    intent.putExtra("user",item)
+                    val intent = Intent(this@EventPartiActivity, UpdateOrgUserActivity::class.java)
+                    intent.putExtra("user", item)
                     intent.extras?.let { it1 -> intent.putExtras(it1) }
                     startActivityForResult(intent, 1002)
                 }
@@ -158,5 +158,4 @@ class OrgUsersActivity : AppCompatActivity() {
             }
         }
     }
-
 }

@@ -17,7 +17,14 @@ import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
+import kotlinx.android.synthetic.main.activity_update_org_user.*
+import kotlinx.android.synthetic.main.dialog_filter.view.*
+import kotlinx.android.synthetic.main.dialog_gender.view.*
+import kotlinx.android.synthetic.main.dialog_gender.view.btnCancel
 import kotlinx.android.synthetic.main.fragment_account_setting.*
+import kotlinx.android.synthetic.main.fragment_account_setting.txtEmail
+import kotlinx.android.synthetic.main.fragment_account_setting.txtGender
+import kotlinx.android.synthetic.main.fragment_account_setting.txtPhone
 
 /**
  * A simple [Fragment] subclass.
@@ -37,10 +44,21 @@ class AccountSetting : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         getUseAPI()
         btn_back?.setOnClickListener { activity?.onBackPressed() }
+        txtGender?.setOnClickListener { openBottomSheetDialog() }
     }
 
     override fun getTagFragment(): String {
         return "account_setting_frag"
+    }
+
+    private fun openBottomSheetDialog() {
+        val view = View.inflate(context, R.layout.dialog_gender, null)
+        val builder = context?.let { BottomSheetDialogBuilder(it) }
+        builder?.customView(view)
+        view?.btnMale?.setOnClickListener { txtGender.setText(view?.btnMale.text.toString());builder?.dismiss(); }
+        view?.btnFeMale?.setOnClickListener { txtGender.setText(view?.btnFeMale?.text.toString());builder?.dismiss(); }
+        view?.btnCancel?.setOnClickListener { builder?.dismiss(); }
+        builder?.show()
     }
 
     private fun getUseAPI() {

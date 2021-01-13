@@ -35,7 +35,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OrgUsersActivity"></activity>
+        <activity android:name=".EventPartiActivity"></activity>
+        <activity android:name=".UpdateOrgUserActivity" />
+        <activity android:name=".AddOrgUserActivity" />
+        <activity android:name=".OrgUsersActivity" />
         <activity
             android:name=".EventDetailActivity"
             android:screenOrientation="portrait" />

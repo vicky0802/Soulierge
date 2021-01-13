@@ -57,6 +57,10 @@ class EventDetailActivity : AppCompatActivity() {
                     }
                 })
         }
+        btnShowParticipants?.setOnClickListener {
+            val intent = Intent(this, OrgUsersActivity::class.java)
+            this.intent.extras?.let { it1 -> intent.putExtras(it1) }
+            startActivity(intent) }
     }
 
     private fun deleteEvent(eventId: String?) {

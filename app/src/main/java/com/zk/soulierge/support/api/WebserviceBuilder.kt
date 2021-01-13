@@ -37,6 +37,19 @@ interface WebserviceBuilder {
         @Query("longitude") longitude: Double? = 0.0
     ): Observable<LoginResponse>
 
+    @POST("UserService/registerOrganizationUser")
+    fun onOrgUserCreate(
+        @Query("email") email: String? = null,
+        @Query("password") password: String? = null,
+        @Query("name") name: String? = null,
+        @Query("phone_number") phone_number: String? = null,
+        @Query("gender") gender: String? = "Male",
+        @Query("address") address: String? = "",
+        @Query("latitude") latitude: Double? = 0.0,
+        @Query("longitude") longitude: Double? = 0.0,
+        @Query("organization_id") organization_id: String? = ""
+    ): Observable<GeneralResponse>
+
     @POST("UserService/getAppResources")
     fun getHomePage(
     ): Observable<ResponseBody>
@@ -101,7 +114,7 @@ interface WebserviceBuilder {
 
     @POST("UserService/updateUser")
     fun updateUser(
-        @Query("address") address: String? = null,
+        @Query("address") address: String? = "",
         @Query("file_name") file_name: String? = null,
         @Query("gender") gender: String? = null,
         @Query("latitude") latitude: String? = null,
@@ -145,6 +158,11 @@ interface WebserviceBuilder {
     @POST("OrganizationService/deleteOrganization")
     fun deleteOrgAPI(
         @Query("id") id: String? = null,
+    ): Observable<ResponseBody>
+
+    @POST("UserService/deleteOrganizationUser")
+    fun deleteOrgUserAPI(
+            @Query("user_id") id: String? = null,
     ): Observable<ResponseBody>
 
     @POST("OrganizationService/addOrganization")

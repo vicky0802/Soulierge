@@ -135,6 +135,7 @@
     <string name="enter_country">Enter Country</string>
     <string name="edit">Edit</string>
     <string name="lbl_organisation_users">Organisation Users</string>
+    <string name="lbl_organisation_user">Organisation User</string>
     <string name="done">Done</string>
     <string name="short_event">Short Event</string>
     <string name="_1_week">1 Weeks</string>
@@ -151,5 +152,8 @@
     <string name="update_organisation">Update Organization</string>
     <string name="update">Update</string>
     <string name="update_event">Update Event</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
 
 </resources>

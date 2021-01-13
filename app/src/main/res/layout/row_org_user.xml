@@ -81,7 +81,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgCategoryDelete"
+            android:id="@+id/imgUserDelete"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@color/app_light_yellow"
