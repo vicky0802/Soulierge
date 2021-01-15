@@ -155,5 +155,8 @@
     <string name="select_gender">Select Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="lbl_participants">Participants</string>
+    <string name="warning_time">Please select valid time</string>
+    <string name="warning_select_start_time">Please select start time first</string>
 
 </resources>

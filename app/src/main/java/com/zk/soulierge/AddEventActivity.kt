@@ -191,22 +191,35 @@ class AddEventActivity : AppCompatActivity() {
         val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
         val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
         val startMinute = currentDateTime.get(Calendar.MINUTE)
-
+        var timePickerDialog: TimePickerDialog? = null
         val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
-            val timePickerDialog = TimePickerDialog(this, { _, hour, minute ->
-                val pickedDateTime = Calendar.getInstance()
-                pickedDateTime.set(year, month, day, hour, minute)
-                eventEndDate?.tag = pickedDateTime.time.toAPIDateFormat()
-                eventEndDate?.text =
-                    pickedDateTime.time.toDisplayDateFormat("dd MMMM yyyy | hh:mm aa")
-                selectedEndime = pickedDateTime.time
+            timePickerDialog = TimePickerDialog(this, { _, hour, minute ->
+                if (selectedStartTime != null) {
+                    val pickedDateTime = Calendar.getInstance()
+                    pickedDateTime.set(year, month, day, hour, minute)
+                    if (pickedDateTime.time?.compareTo(selectedStartTime) == 1) {
+                        eventEndDate?.tag = pickedDateTime.time.toAPIDateFormat()
+                        eventEndDate?.text =
+                            pickedDateTime.time.toDisplayDateFormat("dd MMMM yyyy | hh:mm aa")
+                        selectedEndime = pickedDateTime.time
+                    } else {
+                        showAppDialog(getString(R.string.warning_time)) { timePickerDialog?.show() }
+                    }
+                } else {
+                    showAppDialog(getString(R.string.warning_select_start_time)) { timePickerDialog?.show() }
+                }
             }, startHour, startMinute, false)
-            timePickerDialog.show()
+            timePickerDialog?.show()
+            timePickerDialog?.setCancelable(false)
         }, startYear, startMonth, startDay)
         if (selectedStartTime != null) {
             selectedStartTime?.time?.let { datePickerDialog.datePicker.minDate = it }
         }
-        datePickerDialog.show()
+        if (selectedStartTime != null)
+            datePickerDialog.show()
+        else {
+            showAppDialog(getString(R.string.warning_select_start_time)) { timePickerDialog?.show() }
+        }
     }
 
     private fun startEventDateTime() {

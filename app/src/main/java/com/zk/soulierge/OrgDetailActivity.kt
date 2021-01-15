@@ -2,6 +2,7 @@ package com.zk.soulierge
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -31,6 +32,8 @@ import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class OrgDetailActivity : AppCompatActivity() {
@@ -205,7 +208,11 @@ class OrgDetailActivity : AppCompatActivity() {
                     startActivityForResult(eventIntent, 1004)
                 }
 
-                view?.btnDelete.setOnClickListener { deleteEvent(item.id) }
+                view?.btnDelete?.setOnClickListener {
+                    confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                        getString(R.string.del_message), {
+                            deleteEvent(item.id)
+                        })}
                 view?.txtOrganisationName.text = item.name
                 view?.txtLocation.text = item.location
                 view?.txtEventDesc?.text = item.description
@@ -213,6 +220,24 @@ class OrgDetailActivity : AppCompatActivity() {
                     item.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.time
                 view?.txtEventUpDate.text =
                     item.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.endTime
+                view?.txtAddToCalendar?.setOnClickListener {
+                    val beginTime: Calendar = Calendar.getInstance()
+                    beginTime.time = (item.date+" "+item.time).toDate("dd/MM/yyyy HH:mm")
+                    val endTime: Calendar = Calendar.getInstance()
+                    endTime.time = (item.endDate+" "+item.endTime).toDate("dd/MM/yyyy HH:mm")
+                    val intent: Intent = Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(
+                            CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                            beginTime.getTimeInMillis()
+                        )
+                        .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                        .putExtra(CalendarContract.Events.TITLE, item.name)
+                        .putExtra(CalendarContract.Events.DESCRIPTION, item.description)
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, item.location)
+                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
+//                        .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com")
+                    startActivity(intent) }
             }
             isNestedScrollingEnabled = false
         }

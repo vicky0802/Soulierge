@@ -63,6 +63,11 @@ interface WebserviceBuilder {
         @Query("organization_id") organizationId: String? = null
     ): Observable<ArrayList<OrgUserModel?>>
 
+    @POST("EventService/getEventParticipants")
+    fun getEventParti(
+        @Query("event_id") event_id: String? = null
+    ): Observable<ArrayList<EventPartiResponseItem?>>
+
     @POST("OrganizationService/addFavouriteOrganization")
     fun favouriteOrgAPI(
         @Query("organization_id") organization_id: String? = null,
@@ -163,6 +168,12 @@ interface WebserviceBuilder {
     @POST("UserService/deleteOrganizationUser")
     fun deleteOrgUserAPI(
             @Query("user_id") id: String? = null,
+    ): Observable<ResponseBody>
+
+    @POST("EventService/cancelEventParticipant")
+    fun deletePartiUserAPI(
+            @Query("user_id") user_id: String? = null,
+            @Query("event_id") event_id: String? = null,
     ): Observable<ResponseBody>
 
     @POST("OrganizationService/addOrganization")

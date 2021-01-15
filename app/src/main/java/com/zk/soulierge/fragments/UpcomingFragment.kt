@@ -4,6 +4,8 @@ package com.zk.soulierge.fragments
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
+import android.provider.CalendarContract.Events
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +27,7 @@ import com.zk.soulierge.support.api.model.toJson
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
 import com.zk.soulierge.support.utilExt.getUserId
+import com.zk.soulierge.support.utilExt.toDate
 import com.zk.soulierge.support.utilExt.toDisplayDateFormat
 import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
@@ -40,6 +43,9 @@ import kotlinx.android.synthetic.main.row_upcoming_event.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 /**
  * A simple [Fragment] subclass.
@@ -78,9 +84,9 @@ class UpcomingFragment : BaseFragment() {
         val view = View.inflate(context, R.layout.dialog_filter, null)
         val builder = context?.let { BottomSheetDialogBuilder(it) }
         builder?.customView(view)
-        view?.btn_1_week?.setOnClickListener { callUpEventListAPI(filtersDay = "7",);builder?.dismiss(); }
-        view?.btn_2_week?.setOnClickListener { callUpEventListAPI(filtersDay = "14",);builder?.dismiss(); }
-        view?.btn_3_week?.setOnClickListener { callUpEventListAPI(filtersDay = "21",);builder?.dismiss(); }
+        view?.btn_1_week?.setOnClickListener { callUpEventListAPI(filtersDay = "7");builder?.dismiss(); }
+        view?.btn_2_week?.setOnClickListener { callUpEventListAPI(filtersDay = "14");builder?.dismiss(); }
+        view?.btn_3_week?.setOnClickListener { callUpEventListAPI(filtersDay = "21");builder?.dismiss(); }
         view?.btn_near_me?.setOnClickListener { }
         view?.btn_category?.setOnClickListener {
             builder?.dismiss();
@@ -250,6 +256,24 @@ class UpcomingFragment : BaseFragment() {
                         getString(R.string.del_message), {
                             deleteEvent(item.id)
                         })}
+                view?.txtAddToCalendar?.setOnClickListener {
+                    val beginTime: Calendar = Calendar.getInstance()
+                    beginTime.time = (item.date+" "+item.time).toDate("dd/MM/yyyy HH:mm")
+                    val endTime: Calendar = Calendar.getInstance()
+                    endTime.time = (item.endDate+" "+item.endTime).toDate("dd/MM/yyyy HH:mm")
+                    val intent: Intent = Intent(Intent.ACTION_INSERT)
+                        .setData(Events.CONTENT_URI)
+                        .putExtra(
+                            CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                            beginTime.getTimeInMillis()
+                        )
+                        .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                        .putExtra(Events.TITLE, item.name)
+                        .putExtra(Events.DESCRIPTION, item.description)
+                        .putExtra(Events.EVENT_LOCATION, item.location)
+                        .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY)
+//                        .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com")
+                    startActivity(intent) }
             }
             isNestedScrollingEnabled = false
         }

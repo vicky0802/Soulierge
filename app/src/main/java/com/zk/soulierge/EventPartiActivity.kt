@@ -9,6 +9,7 @@ import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
+import com.zk.soulierge.support.api.model.EventPartiResponseItem
 import com.zk.soulierge.support.api.model.OrgUserModel
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.subscribeToSingle
@@ -24,22 +25,22 @@ import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.ResponseBody
 
 class EventPartiActivity : AppCompatActivity() {
-    var organisationBuilder: RecyclerViewBuilder<OrgUserModel>? = null
-    var organisation: OrganisationModalItem? = null
+    var organisationBuilder: RecyclerViewBuilder<EventPartiResponseItem>? = null
+    var evenetId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_parti)
 
-        initToolbar(tool_bar, true, getString(R.string.lbl_organisation_users))
+        initToolbar(tool_bar, true, getString(R.string.lbl_participants))
 
-        if (intent.hasExtra("event")) {
-            organisation = intent.getParcelableExtra<OrganisationModalItem>("event")
-            callOrganisationListAPI(organisation?.id)
+        if (intent.hasExtra("eventId")) {
+            evenetId = intent.getStringExtra("eventId")
+            callOrganisationListAPI(evenetId)
         } else {
             llNoData?.visibility = View.VISIBLE
         }
-        setupRecycleView(ArrayList<OrgUserModel?>())
+        setupRecycleView(ArrayList<EventPartiResponseItem?>())
         addOrg?.setOnClickListener {
             val intent = Intent(this, AddOrgUserActivity::class.java)
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
@@ -47,7 +48,7 @@ class EventPartiActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecycleView(o: ArrayList<OrgUserModel?>) {
+    private fun setupRecycleView(o: ArrayList<EventPartiResponseItem?>) {
         organisationBuilder = rvOrgRec?.setUp(
             R.layout.row_org_user,
             o,
@@ -55,36 +56,37 @@ class EventPartiActivity : AppCompatActivity() {
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
-                view?.txtUseName?.text = item.name
-                view?.txtMail?.text = item.email
-                view?.txtPhone?.text = item.phoneNumber
-                view?.txtGender?.text = item.gender
+                view?.txtUseName?.text = item.user?.name
+                view?.txtMail?.text = item.user?.email
+                view?.txtPhone?.text = item.user?.phoneNumber
+                view?.txtGender?.text = item.user?.gender
                 view?.imgUserDelete?.setOnClickListener {
                     confirmationDialog(getString(R.string.app_name).toUpperCase(),
                         getString(R.string.del_message), {
                             callDeleteOrginationUserAPI(item)
                         })
-                }
-                view?.setOnClickListener {
-                    val intent = Intent(this@EventPartiActivity, UpdateOrgUserActivity::class.java)
-                    intent.putExtra("user", item)
-                    intent.extras?.let { it1 -> intent.putExtras(it1) }
-                    startActivityForResult(intent, 1002)
+//                    view?.setOnClickListener {
+//                    val intent = Intent(this@EventPartiActivity, UpdateOrgUserActivity::class.java)
+//                    intent.putExtra("user", item.user)
+//                    intent.extras?.let { it1 -> intent.putExtras(it1) }
+//
+//                }
+//                startActivityForResult(intent, 1002)
                 }
             }
             isNestedScrollingEnabled = false
         }
     }
 
-    private fun callDeleteOrginationUserAPI(item: OrgUserModel) {
+    private fun callDeleteOrginationUserAPI(item: EventPartiResponseItem) {
         loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .deleteOrgUserAPI(id = item.id.toString()),
+                .deletePartiUserAPI(user_id = item.user?.id.toString(),event_id = evenetId),
             singleCallback = object : SingleCallback<ResponseBody> {
                 override fun onSingleSuccess(o: ResponseBody, message: String?) {
                     loadingDialog(false)
-                    callOrganisationListAPI(organizationId = organisation?.id)
+                    callOrganisationListAPI(organizationId = evenetId)
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -110,10 +112,10 @@ class EventPartiActivity : AppCompatActivity() {
         loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getOrganisationUser(organizationId),
-            singleCallback = object : SingleCallback<ArrayList<OrgUserModel?>> {
+                .getEventParti(organizationId),
+            singleCallback = object : SingleCallback<ArrayList<EventPartiResponseItem?>> {
                 override fun onSingleSuccess(
-                    o: ArrayList<OrgUserModel?>,
+                    o: ArrayList<EventPartiResponseItem?>,
                     message: String?
                 ) {
                     loadingDialog(false)
@@ -154,7 +156,7 @@ class EventPartiActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1002) {
             if (resultCode == RESULT_OK) {
-                callOrganisationListAPI(organisation?.id)
+                callOrganisationListAPI(evenetId)
             }
         }
     }
