@@ -23,4 +23,5 @@
     <color name="black">#000000</color>
     <color name="color_bg_green">#B1CB3B</color>
     <color name="color_bg_orange">#F1901D</color>
+    <color name="btn_get_direction_color">#27AABA</color>
 </resources>

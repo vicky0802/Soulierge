@@ -86,9 +86,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".LandingActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
 
         <meta-data

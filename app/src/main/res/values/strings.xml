@@ -158,5 +158,8 @@
     <string name="lbl_participants">Participants</string>
     <string name="warning_time">Please select valid time</string>
     <string name="warning_select_start_time">Please select start time first</string>
+    <string name="warning_search">Please insert Event or Organisation name</string>
+    <string name="view_details">View Details</string>
+    <string name="get_direction">Get Direction</string>
 
 </resources>

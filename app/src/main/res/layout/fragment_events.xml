@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_main"
     android:layout_width="match_parent"
@@ -8,67 +9,111 @@
     android:orientation="vertical"
     tools:context=".fragments.EventsFragment">
 
-    <EditText
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/serch_event"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
+        android:focusableInTouchMode="true"
         android:layout_marginEnd="@dimen/margin_small"
         android:background="@drawable/bg_search"
         android:drawableStart="@drawable/search"
         android:drawablePadding="10dp"
         android:hint="@string/search_events"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_small"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/search_events" />
 
-    <RadioGroup
-        android:layout_marginTop="@dimen/_8sdp"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_reciclerView"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/rb_event"
-            android:background="@drawable/selc_event_org"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/trenda_bold"
-            android:gravity="center"
-            android:button="@null"
-            android:checked="true"
-            android:text="@string/ph_events"
-            android:textColor="@drawable/selc_event_org_text"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16ddp"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_16ddp"
+            android:layout_marginEnd="@dimen/_16ddp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_search" />
 
-        <RadioButton
-            android:id="@+id/rb_org"
-            android:background="@drawable/selc_event_org"
-            android:button="@null"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@drawable/selc_event_org_text"
-            android:layout_weight="1"
-            android:fontFamily="@font/trenda_bold"
-            android:gravity="center"
-            android:text="@string/ph_organisation"
-            android:textSize="18sp" />
+        <include
+            android:id="@+id/ll_NoData"
+            layout="@layout/no_data"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </RadioGroup>
-
-    <FrameLayout
-        android:id="@+id/fl_map"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:visibility="visible">
 
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_event"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selc_event_org"
+                android:button="@null"
+                android:checked="true"
+                android:fontFamily="@font/trenda_bold"
+                android:gravity="center"
+                android:text="@string/ph_events"
+                android:textColor="@drawable/selc_event_org_text"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/rb_org"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selc_event_org"
+                android:button="@null"
+                android:fontFamily="@font/trenda_bold"
+                android:gravity="center"
+                android:text="@string/ph_organisation"
+                android:textColor="@drawable/selc_event_org_text"
+                android:textSize="18sp" />
+
+        </RadioGroup>
+
+        <FrameLayout
+            android:id="@+id/fl_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".fragments.EventsFragment" />
-    </FrameLayout>
+            android:visibility="visible">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".fragments.EventsFragment" />
+
+            <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--            android:id="@+id/fb_curren_location"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:visibility="gone"-->
+            <!--            android:layout_gravity="bottom|end"-->
+            <!--            android:layout_margin="@dimen/_16ddp"-->
+            <!--            android:src="@drawable/ic_my_location"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:contentDescription="@string/app_name" />-->
+        </FrameLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </LinearLayout>

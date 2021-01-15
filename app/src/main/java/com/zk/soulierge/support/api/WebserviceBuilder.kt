@@ -58,6 +58,11 @@ interface WebserviceBuilder {
     fun getOrganisation(
     ): Observable<ArrayList<OrganisationModalItem?>>
 
+    @POST("OrganizationService/searchOrganizations")
+    fun searchOrganisation(
+        @Query("search_query") search_query: String? = "",
+    ): Observable<ArrayList<OrganisationModalItem?>>
+
     @POST("UserService/getOrganizationUsers")
     fun getOrganisationUser(
         @Query("organization_id") organizationId: String? = null
@@ -135,11 +140,18 @@ interface WebserviceBuilder {
         @Query("filter_days") filter_days: String? = null,
     ): Observable<ArrayList<UpEventResponseItem?>>
 
+    @POST("EventService/searchEvents")
+    fun searchEvents(
+        @Body body: RequestBody,
+        @Query("search_query") search_query: String? = null,
+    ): Observable<ArrayList<UpEventResponseItem?>>
+
     @POST("EventService/getFavouriteEventsForUser")
     fun getFavEvent(
         @Query("filter_days") filter_days: String? = null,
         @Query("user_id") user_id: String? = null
     ): Observable<ArrayList<FavEventResponseItem?>>
+
 
     @POST("EventService/getEventsForOrganization")
     fun getEventForOrg(

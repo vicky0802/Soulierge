@@ -113,6 +113,28 @@ fun Context.confirmationDialog(
         }.show()
 }
 
+fun Context.markerDialog(
+    title: String = getString(R.string.app_name).toUpperCase(),
+    msg: String,
+    btnPositiveClick: (() -> Unit)? = null,
+    btnNegativeClick: (() -> Unit)? = null
+) {
+    val mDialog = PrettyDialog(this)
+//    mDialog.setTypeface(this.font(R.font.montserrat_regular))
+    mDialog.setCanceledOnTouchOutside(false)
+    mDialog.setCancelable(false)
+    mDialog.setIcon(R.mipmap.ic_launcher_round)
+        .setTitle(title)
+        .setMessage(msg)
+        .addButton(getString(R.string.view_details), R.color.white, R.color.app_blue) {
+            btnNegativeClick?.invoke()
+            mDialog.dismiss()
+        }.addButton(getString(R.string.get_direction), R.color.white, R.color.btn_get_direction_color) {
+            btnPositiveClick?.invoke()
+            mDialog.dismiss()
+        }.show()
+}
+
 fun Context.confirmationDialog(
     title: String,
     msg: String,

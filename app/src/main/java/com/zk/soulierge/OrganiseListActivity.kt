@@ -76,7 +76,7 @@ class OrganiseListActivity : AppCompatActivity() {
                 view?.txtLocation.text = item.location
                 view?.setOnClickListener {
                     val intent = Intent(this@OrganiseListActivity, OrgDetailActivity::class.java)
-                    intent.putExtra("organisation", item)
+                    intent.putExtra("organisationId", item.id)
                     startActivityForResult(intent, 1002) }
             }
             isNestedScrollingEnabled = false

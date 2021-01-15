@@ -40,23 +40,17 @@ class OrgDetailActivity : AppCompatActivity() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
     var categoryList = ArrayList<CategoryItem?>()
     var selectedCategory = ArrayList<CategoryItem?>()
-    var organisation: OrganisationModalItem? = null
+    var organisationId: String? = null
     var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_org_detail)
-        if (intent.hasExtra("organisation")) {
-            organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
+        if (intent.hasExtra("organisationId")) {
+            organisationId = intent.getStringExtra("organisationId")
         }
-        initToolbar(tool_bar, true, organisation?.name)
-        Glide.with(this).load(ApiClient.BASE_IMAGE_URL + organisation?.fileName)
-            .placeholder(R.drawable.event_smaple)
-            .into(imgOrganisation)
-        txtOrgName?.setText(organisation?.name)
-        txtOrgDes?.setText(organisation?.description)
-        txtOrgLocation?.setText(organisation?.location)
-        callOrgDetailAPI(organisation?.id)
+        initToolbar(tool_bar, true, getString(R.string.organization_details))
+        callOrgDetailAPI(organisationId)
         setupRecycleView(ArrayList());
         callUpEventListAPI();
         callCategoriesListAPI(false)
@@ -212,7 +206,8 @@ class OrgDetailActivity : AppCompatActivity() {
                     confirmationDialog(getString(R.string.app_name).toUpperCase(),
                         getString(R.string.del_message), {
                             deleteEvent(item.id)
-                        })}
+                        })
+                }
                 view?.txtOrganisationName.text = item.name
                 view?.txtLocation.text = item.location
                 view?.txtEventDesc?.text = item.description
@@ -222,9 +217,9 @@ class OrgDetailActivity : AppCompatActivity() {
                     item.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.endTime
                 view?.txtAddToCalendar?.setOnClickListener {
                     val beginTime: Calendar = Calendar.getInstance()
-                    beginTime.time = (item.date+" "+item.time).toDate("dd/MM/yyyy HH:mm")
+                    beginTime.time = (item.date + " " + item.time).toDate("dd/MM/yyyy HH:mm")
                     val endTime: Calendar = Calendar.getInstance()
-                    endTime.time = (item.endDate+" "+item.endTime).toDate("dd/MM/yyyy HH:mm")
+                    endTime.time = (item.endDate + " " + item.endTime).toDate("dd/MM/yyyy HH:mm")
                     val intent: Intent = Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
                         .putExtra(
@@ -235,9 +230,13 @@ class OrgDetailActivity : AppCompatActivity() {
                         .putExtra(CalendarContract.Events.TITLE, item.name)
                         .putExtra(CalendarContract.Events.DESCRIPTION, item.description)
                         .putExtra(CalendarContract.Events.EVENT_LOCATION, item.location)
-                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
+                        .putExtra(
+                            CalendarContract.Events.AVAILABILITY,
+                            CalendarContract.Events.AVAILABILITY_BUSY
+                        )
 //                        .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com")
-                    startActivity(intent) }
+                    startActivity(intent)
+                }
             }
             isNestedScrollingEnabled = false
         }
@@ -284,7 +283,7 @@ class OrgDetailActivity : AppCompatActivity() {
         val body = RequestBody.create(mediaType, json.toJson())
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getEventForOrg(organization_id = organisation?.id, body = body),
+                .getEventForOrg(organization_id = organisationId, body = body),
             singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
                 override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
                     loadingDialog(false)
@@ -380,11 +379,11 @@ class OrgDetailActivity : AppCompatActivity() {
         )
     }
 
-    private fun callDeleteOrginationAPI(item: OrganisationModalItem) {
+    private fun callDeleteOrginationAPI(item: String?) {
         loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .deleteOrgAPI(id = item.id),
+                .deleteOrgAPI(id = item),
             singleCallback = object : SingleCallback<ResponseBody> {
                 override fun onSingleSuccess(o: ResponseBody, message: String?) {
                     loadingDialog(false)
@@ -419,15 +418,14 @@ class OrgDetailActivity : AppCompatActivity() {
             singleCallback = object : SingleCallback<OrganisationModalItem> {
                 override fun onSingleSuccess(o: OrganisationModalItem, message: String?) {
                     loadingDialog(false)
-                    organisation = o
-                    changeTitle(organisation?.name)
+                    changeTitle(o?.name)
                     Glide.with(this@OrgDetailActivity)
-                        .load(ApiClient.BASE_IMAGE_URL + organisation?.fileName)
+                        .load(ApiClient.BASE_IMAGE_URL + o?.fileName)
                         .placeholder(R.drawable.event_smaple)
                         .into(imgOrganisation)
-                    txtOrgName?.setText(organisation?.name)
-                    txtOrgDes?.setText(organisation?.description)
-                    txtOrgLocation?.setText(organisation?.location)
+                    txtOrgName?.setText(o?.name)
+                    txtOrgDes?.setText(o?.description)
+                    txtOrgLocation?.setText(o?.location)
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -452,7 +450,7 @@ class OrgDetailActivity : AppCompatActivity() {
         if (item.itemId == R.id.action_delete) {
             confirmationDialog(getString(R.string.app_name).toUpperCase(),
                 getString(R.string.del_message),
-                { organisation?.let { callDeleteOrginationAPI(it) } })
+                { organisationId?.let { callDeleteOrginationAPI(it) } })
         }
         return super.onOptionsItemSelected(item)
     }
@@ -472,9 +470,9 @@ class OrgDetailActivity : AppCompatActivity() {
         }
         if (requestCode == 1006) {
             if (resultCode == RESULT_OK) {
-                if (intent.hasExtra("organisation")) {
-                    organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
-                    callOrgDetailAPI(organisation?.id)
+                if (intent.hasExtra("organisationId")) {
+                    organisationId = intent.getStringExtra("organisationId")
+                    callOrgDetailAPI(organisationId)
                 }
             }
         }

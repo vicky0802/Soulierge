@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.zk.soulierge.R
 import com.zk.soulierge.support.base.CoreApp
@@ -54,6 +55,20 @@ fun Int.string(context: Context): String = context.getResources().getString(this
 fun Activity.isPermissionGranted(permission: String, requestCode: Int): Boolean {
     var isGranted = true
     if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+        if (this.shouldShowRequestPermissionRationale(permission)) {
+
+        } else {
+            this.requestPermissions(arrayOf(permission), requestCode)
+        }
+        isGranted = false
+    }
+    return isGranted
+}
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun Fragment.isPermissionGranted(permission: String, requestCode: Int): Boolean {
+    var isGranted = true
+    if (context?.let { ContextCompat.checkSelfPermission(it, permission) } != PackageManager.PERMISSION_GRANTED) {
         if (this.shouldShowRequestPermissionRationale(permission)) {
 
         } else {
