@@ -35,7 +35,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EventPartiActivity"></activity>
+        <activity android:name=".LocationSearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".EventPartiActivity" />
         <activity android:name=".UpdateOrgUserActivity" />
         <activity android:name=".AddOrgUserActivity" />
         <activity android:name=".OrgUsersActivity" />
@@ -86,12 +89,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".LandingActivity"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

@@ -12,7 +12,6 @@ import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.OrgUserModel
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.getUserId
 import com.zk.soulierge.support.utilExt.initToolbar
 import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog

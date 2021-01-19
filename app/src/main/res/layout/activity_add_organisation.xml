@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="center"
+                android:gravity="top|center"
                 android:lines="5" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -71,7 +71,7 @@
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:text="Gift City"
+                tools:text="Gift City"
                 android:gravity="center"
                 android:hint="@string/select_organization_location" />
 

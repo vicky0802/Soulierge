@@ -3,6 +3,7 @@ package com.zk.soulierge
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -19,7 +20,9 @@ import com.zk.soulierge.support.utils.ImageChooserUtil
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
+import kotlinx.android.synthetic.main.activity_add_event.*
 import kotlinx.android.synthetic.main.activity_add_organisation.*
+import kotlinx.android.synthetic.main.activity_add_organisation.btnImage
 import kotlinx.android.synthetic.main.row_organisation.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.MultipartBody
@@ -29,6 +32,7 @@ class AddOrganisation : AppCompatActivity() {
     var fileName = System.currentTimeMillis().toString()
     var organisation: OrganisationModalItem? = null
     var uploadedImgaeFileName: String? = ""
+    var selectedLocation: Address? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_organisation)
@@ -66,7 +70,14 @@ class AddOrganisation : AppCompatActivity() {
                 }
             }
         }
+
+        edtOrganizationLocation?.setOnClickListener {
+            val intent = Intent(this, LocationSearchActivity::class.java)
+            this.intent.extras?.let { it1 -> intent.putExtras(it1) }
+            startActivityForResult(intent, 1004)
+        }
     }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -112,8 +123,8 @@ class AddOrganisation : AppCompatActivity() {
                     description = edtOrganizationDetail.text?.toString()?.trim(),
                     location = edtOrganizationLocation?.text.toString()?.trim(),
                     country = edtOrganizationCountry?.text.toString()?.trim(),
-                    latitude = "23.156953",
-                    longitude = "72.6463473",
+                    latitude = selectedLocation?.latitude.toString(),
+                    longitude = selectedLocation?.longitude.toString(),
                     file_name = uploadedImgaeFileName
                 ),
             singleCallback = object : SingleCallback<AddOrgResponse> {
@@ -158,8 +169,8 @@ class AddOrganisation : AppCompatActivity() {
                     description = edtOrganizationDetail.text?.toString()?.trim(),
                     location = edtOrganizationLocation?.text.toString()?.trim(),
                     country = edtOrganizationCountry?.text.toString()?.trim(),
-                    latitude = organisation?.latitude,
-                    longitude = organisation?.longitude,
+                    latitude = (if (selectedLocation == null) organisation?.latitude else selectedLocation?.latitude.toString()),
+                    longitude = (if (selectedLocation == null) organisation?.longitude else selectedLocation?.longitude.toString()),
                     file_name = uploadedImgaeFileName
                 ),
             singleCallback = object : SingleCallback<AddOrgResponse> {
@@ -203,7 +214,9 @@ class AddOrganisation : AppCompatActivity() {
             showAppDialog("Please insert Organisation description")
             return false
         }
-        if (edtOrganizationLocation?.text?.toString()?.trim()?.isEmpty() == true) {
+        if (edtOrganizationLocation?.text?.toString()?.trim()
+                ?.isEmpty() == true or (selectedLocation == null)
+        ) {
             showAppDialog("Please select Organisation location")
             return false
         }
@@ -226,6 +239,15 @@ class AddOrganisation : AppCompatActivity() {
                         ImageChooserUtil.SaveImageTask.FileSaveListener { file ->
                             uploadFileAPI(file?.toMultipartBody("file"), requestCode)
                         }).execute()
+                }
+            }
+            1004 -> {
+                selectedLocation = null
+                if (resultCode == RESULT_OK) {
+                    if (data?.hasExtra("address") == true) run {
+                        selectedLocation = data?.getParcelableExtra("address")
+                        edtOrganizationLocation?.setText(selectedLocation?.featureName)
+                    }
                 }
             }
         }

@@ -13,9 +13,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.RecyclerViewBuilder
@@ -48,12 +52,22 @@ import com.zk.soulierge.support.utilExt.logMsg
 import com.zk.soulierge.support.utils.*
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
+import kotlinx.android.synthetic.main.activity_location_search.*
 import kotlinx.android.synthetic.main.fragment_events.*
+import kotlinx.android.synthetic.main.fragment_events.img_clear
+import kotlinx.android.synthetic.main.fragment_events.ll_NoData
+import kotlinx.android.synthetic.main.fragment_events.ll_map
+import kotlinx.android.synthetic.main.fragment_events.ll_reciclerView
+import kotlinx.android.synthetic.main.fragment_events.rb_event
+import kotlinx.android.synthetic.main.fragment_events.rb_org
+import kotlinx.android.synthetic.main.fragment_events.rv_search
+import kotlinx.android.synthetic.main.fragment_events.serch_event
 import kotlinx.android.synthetic.main.row_search.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
     var map: GoogleMap? = null
@@ -87,28 +101,57 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
             callAPI()
         }
         getUserLocation()
-        serch_event?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query?.isEmpty() == true) {
-                    context?.showAppDialog(getString(R.string.warning_search))
-                } else {
-                    callSearchAPI(query)
-                    serch_event?.clearFocus()
-                    activity?.hideSoftKeyboard()
-                }
-                return false
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText?.isEmpty() == true) {
-                    ll_reciclerView.visibility = View.GONE
-                    ll_map?.visibility = View.VISIBLE
-                    serch_event?.clearFocus()
-                    activity?.hideSoftKeyboard()
-                }
-                return false
-            }
+        serch_event?.setOnEditorActionListener(object : OnEditorActionListener {
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                return if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (serch_event?.text?.toString()?.trim()?.isEmpty() == true) {
+                        context?.showAppDialog(getString(R.string.warning_search))
+                    } else {
+                        img_clear?.visibility = View.VISIBLE
+                        callSearchAPI(serch_event?.text?.toString())
+                        serch_event?.clearFocus()
+                        activity?.hideSoftKeyboard()
+                    }
+                    true
+                } else false            }
         })
+
+        img_clear?.setOnClickListener {
+            clearSearch()
+        }
+//        serch_event?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                if (query?.isEmpty() == true) {
+//                    context?.showAppDialog(getString(R.string.warning_search))
+//                } else {
+//                    callSearchAPI(query)
+//                    serch_event?.clearFocus()
+//                    activity?.hideSoftKeyboard()
+//                }
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                if (newText?.isEmpty() == true) {
+//                    ll_reciclerView.visibility = View.GONE
+//                    ll_map?.visibility = View.VISIBLE
+//                    serch_event?.clearFocus()
+//                    activity?.hideSoftKeyboard()
+//                }
+//                return false
+//            }
+//        })
+    }
+
+    private fun clearSearch() {
+        serch_event.setText("")
+        ll_reciclerView.visibility = View.GONE
+        img_clear?.visibility = View.INVISIBLE
+        ll_map?.visibility = View.VISIBLE
+        serch_event?.clearFocus()
+        ll_map?.requestFocus()
+        activity?.hideSoftKeyboard()
     }
 
     fun hideKeyboard() {
@@ -178,9 +221,7 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
                                 }, 18F
                             )
                         )
-                        serch_event?.setQuery("", false);
-                        serch_event?.clearFocus()
-                        ll_map.requestFocus()
+                        clearSearch()
                     }
                 } else if (item is OrganisationModalItem) {
                     context?.let {
@@ -204,9 +245,7 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
                                 }, 18F
                             )
                         )
-                        serch_event?.setQuery("", false);
-                        serch_event?.clearFocus()
-                        ll_map.requestFocus()
+                       clearSearch()
                     }
                 }
             }

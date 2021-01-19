@@ -16,8 +16,10 @@ import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.ApiClient.BASE_IMAGE_URL
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
+import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.model.UploadFileResponse
 import com.zk.soulierge.support.api.subscribeToSingle
+import com.zk.soulierge.support.utilExt.getUserData
 import com.zk.soulierge.support.utilExt.toMultipartBody
 import com.zk.soulierge.support.utils.ImageChooserUtil
 import com.zk.soulierge.support.utils.loadingDialog
@@ -57,6 +59,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val user = context?.getUserData<LoginResponse>()
         callHomeAPI()
         cv_event.txtEditOrg.text = getString(R.string.ph_find_event)
         cv_organization.txtEditOrg.text = getString(R.string.ph_find_organisation)
@@ -82,17 +85,22 @@ class HomeFragment : BaseFragment() {
                 )
             )
         }
-        cv_organization?.row_event_image?.setOnClickListener {
-            selectedCode = REQUEST_CODE_ORG
-            ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_ORG)
-        }
-        cv_event?.row_event_image?.setOnClickListener {
-            selectedCode = REQUEST_CODE_CAT
-            ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_CAT)
-        }
-        app_bar_image?.setOnClickListener {
-            selectedCode = REQUEST_CODE_MAIN
-            ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_MAIN)
+        if (user?.userTypeId.equals("4")) {
+            cv_categories?.visibility = View.VISIBLE
+            cv_organization?.row_event_image?.setOnClickListener {
+                selectedCode = REQUEST_CODE_ORG
+                ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_ORG)
+            }
+            cv_event?.row_event_image?.setOnClickListener {
+                selectedCode = REQUEST_CODE_CAT
+                ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_CAT)
+            }
+            app_bar_image?.setOnClickListener {
+                selectedCode = REQUEST_CODE_MAIN
+                ImageChooserUtil.openChooserDialog(this, fileName, REQUEST_CODE_MAIN)
+            }
+        } else {
+            cv_categories?.visibility = View.GONE
         }
     }
 

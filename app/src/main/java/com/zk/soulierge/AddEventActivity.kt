@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +50,8 @@ class AddEventActivity : AppCompatActivity() {
     var selectedEndime: Date? = null
 
     var uploadedImgaeFileName: String? = ""
+
+    var selectedLocation: Address? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_event)
@@ -66,6 +69,9 @@ class AddEventActivity : AppCompatActivity() {
             edtEventAgeRestriction?.setText(event?.ageRestriction?.toString())
             eventStartDate?.setText(event?.date.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.time)
             eventEndDate?.setText(event?.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + event?.endTime)
+            selectedLocation = Address(Locale.getDefault())
+            selectedLocation?.latitude = event?.latitude?.toDouble() ?: 0.0
+            selectedLocation?.longitude = event?.longitude?.toDouble() ?: 0.0
 
         } else {
             initToolbar(tool_bar, true, getString(R.string.add_event))
@@ -100,6 +106,12 @@ class AddEventActivity : AppCompatActivity() {
 
         eventStartDate?.setOnClickListener { startEventDateTime() }
         eventEndDate?.setOnClickListener { endEventDateTime() }
+
+        edtEventLocation?.setOnClickListener {
+            val intent = Intent(this, LocationSearchActivity::class.java)
+            this.intent.extras?.let { it1 -> intent.putExtras(it1) }
+            startActivityForResult(intent, 1004)
+        }
     }
 
 
@@ -260,8 +272,8 @@ class AddEventActivity : AppCompatActivity() {
                     name = edtEventName?.text?.toString()?.trim(),
                     description = edtEventDetail.text?.toString()?.trim(),
                     location = edtEventLocation?.text.toString()?.trim(),
-                    latitude = "23.156953",
-                    longitude = "72.6463473",
+                    latitude = selectedLocation?.latitude.toString(),
+                    longitude = selectedLocation?.longitude?.toString(),
                     file_name = uploadedImgaeFileName,
                     capacity = edtEventCapacity?.text.toString()?.trim(),
                     age_restriction = edtEventAgeRestriction?.text.toString()?.trim(),
@@ -313,7 +325,9 @@ class AddEventActivity : AppCompatActivity() {
             showAppDialog("Please insert Event description")
             return false
         }
-        if (edtEventLocation?.text?.toString()?.trim()?.isEmpty() == true) {
+        if (edtEventLocation?.text?.toString()?.trim()
+                ?.isEmpty() == true or (selectedLocation == null)
+        ) {
             showAppDialog("Please select Event location")
             return false
         }
@@ -375,6 +389,15 @@ class AddEventActivity : AppCompatActivity() {
                         ImageChooserUtil.SaveImageTask.FileSaveListener { file ->
                             uploadFileAPI(file?.toMultipartBody("file"), requestCode)
                         }).execute()
+                }
+            }
+            1004 -> {
+                selectedLocation = null
+                if (resultCode == RESULT_OK) {
+                    if (data?.hasExtra("address") == true) run {
+                        selectedLocation = data?.getParcelableExtra("address")
+                        edtEventLocation?.setText(selectedLocation?.featureName)
+                    }
                 }
             }
         }

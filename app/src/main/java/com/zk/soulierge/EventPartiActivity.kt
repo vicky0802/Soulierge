@@ -10,7 +10,6 @@ import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.EventPartiResponseItem
-import com.zk.soulierge.support.api.model.OrgUserModel
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.initToolbar
