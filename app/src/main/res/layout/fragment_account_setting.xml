@@ -199,6 +199,33 @@
                 android:hint="@string/hint_emergency_contact_phone"
                 android:visibility="gone" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnShowFriends"
+                style="@style/edit_text_style"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@drawable/rec_5_light_orange_fill"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/show_friends" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnShowPendingFriends"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@drawable/rec_5_light_orange_fill"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/show_pending_friends" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnPendingFriendsRequest"
+                style="@style/edit_text_style"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@drawable/rec_5_light_orange_fill"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/show_pending_request" />
 
         </LinearLayout>
     </ScrollView>

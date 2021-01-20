@@ -161,5 +161,15 @@
     <string name="warning_search">Please insert Event or Organisation name</string>
     <string name="view_details">View Details</string>
     <string name="get_direction">Get Direction</string>
+    <string name="save_location">Save Location</string>
+    <string name="participate">Participate</string>
+    <string name="cancel_participate">Cancel Participation</string>
+    <string name="warning_cancel_participate">Are you want to cancel participation?</string>
+    <string name="show_friends">Show Friends</string>
+    <string name="show_pending_friends">Show Pending Friends</string>
+    <string name="show_pending_request">Pending Friend Requests</string>
+    <string name="users_friends">Users Friends</string>
+    <string name="pending_friends">Pending Friends</string>
+    <string name="pending_request">Pending Request</string>
 
 </resources>

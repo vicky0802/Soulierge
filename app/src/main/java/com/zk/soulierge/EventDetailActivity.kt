@@ -18,9 +18,11 @@ import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.CategoryItem
 import com.zk.soulierge.support.api.model.GeneralResponse
+import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.model.UpEventResponseItem
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
+import com.zk.soulierge.support.utilExt.getUserData
 import com.zk.soulierge.support.utilExt.initToolbar
 import com.zk.soulierge.support.utilExt.toDisplayDateFormat
 import com.zk.soulierge.support.utils.confirmationDialog
@@ -33,7 +35,7 @@ import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.row_dialog_category.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
-import java.util.ArrayList
+import java.util.*
 
 
 class EventDetailActivity : AppCompatActivity() {
@@ -42,6 +44,9 @@ class EventDetailActivity : AppCompatActivity() {
     var categoryList = ArrayList<CategoryItem?>()
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
 
+    var user: LoginResponse? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_detail)
@@ -49,18 +54,23 @@ class EventDetailActivity : AppCompatActivity() {
         if (intent.hasExtra("eventId")) {
             callEventDetailAPI(intent.getStringExtra("eventId"))
         }
-        btnDeleteEvnet?.setOnClickListener {
-            confirmationDialog(getString(R.string.app_name).toUpperCase(),
-                getString(R.string.del_message), {
-                    if (intent.hasExtra("eventId")) {
-                        deleteEvent(intent.getStringExtra("eventId"))
-                    }
-                })
+        user = getUserData<LoginResponse>()
+        if (user?.userTypeId.equals("4")) {
+            txtTotalCapacity?.visibility = View.VISIBLE
+            txtAvailable?.visibility = View.VISIBLE
+            ll_total?.visibility = View.VISIBLE
+            btnShowParticipants?.visibility = View.VISIBLE
+        } else {
+            txtTotalCapacity?.visibility = View.GONE
+            txtAvailable?.visibility = View.GONE
+            ll_total?.visibility = View.GONE
+            btnShowParticipants?.visibility = View.GONE
         }
         btnShowParticipants?.setOnClickListener {
             val intent = Intent(this, EventPartiActivity::class.java)
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
-            startActivity(intent) }
+            startActivity(intent)
+        }
     }
 
     private fun deleteEvent(eventId: String?) {
@@ -171,15 +181,120 @@ class EventDetailActivity : AppCompatActivity() {
             if (o.category != null)
                 if (o.category!!.size > 0)
                     if (categoryList.size > 0) {
-                        openBottomSheet(categoryList.filter { it?.id?.let { it1 ->
-                            o.category?.joinToString()?.contains(
-                                it1
-                            )
-                        } ==true } as ArrayList<CategoryItem?>)
+                        openBottomSheet(categoryList.filter {
+                            it?.id?.let { it1 ->
+                                o.category?.joinToString()?.contains(
+                                    it1
+                                )
+                            } == true
+                        } as ArrayList<CategoryItem?>)
                     } else {
-                        callCategoriesListAPI(true,o.category)
+                        callCategoriesListAPI(true, o.category)
                     }
         }
+        if (user?.userTypeId.equals("4")) {
+            btnDeleteEvnet?.text = getString(R.string.delete)
+            btnDeleteEvnet?.setOnClickListener {
+                confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                    getString(R.string.del_message), {
+                        if (intent.hasExtra("eventId")) {
+                            deleteEvent(intent.getStringExtra("eventId"))
+                        }
+                    })
+            }
+        } else {
+            if (o?.isParticipated == true) {
+                btnDeleteEvnet?.text = getString(R.string.cancel_participate)
+                btnDeleteEvnet?.setOnClickListener {
+                    confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                        getString(R.string.warning_cancel_participate), {
+                            cancelParticipateEvent(o.id)
+                        })
+                }
+            } else {
+                btnDeleteEvnet?.text = getString(R.string.participate)
+                btnDeleteEvnet?.setOnClickListener {
+                    if (o.ageRestriction != null) {
+                        confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                            "Are you ${o.ageRestriction} years old or above?", {
+                                participateEvent(o.id)
+                            })
+                    } else {
+                        participateEvent(o.id)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun participateEvent(eventId: String?) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .partEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    loadingDialog(false)
+                    showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) {
+                        if (intent.hasExtra("eventId")) {
+                            callEventDetailAPI(intent.getStringExtra("eventId"))
+                        }
+                    }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
+    private fun cancelParticipateEvent(eventId: String?) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .cancelPartEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    loadingDialog(false)
+                    showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) {
+                        if (intent.hasExtra("eventId")) {
+                            callEventDetailAPI(intent.getStringExtra("eventId"))
+                        }
+                    }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -223,11 +338,13 @@ class EventDetailActivity : AppCompatActivity() {
                         if (o.size <= 0) {
                             showAppDialog("No Category Available")
                         } else {
-                            openBottomSheet(categoryList.filter { it?.id?.let { it1 ->
-                                selectedCategory?.joinToString()?.contains(
-                                    it1
-                                )
-                            } ==true } as ArrayList<CategoryItem?>)
+                            openBottomSheet(categoryList.filter {
+                                it?.id?.let { it1 ->
+                                    selectedCategory?.joinToString()?.contains(
+                                        it1
+                                    )
+                                } == true
+                            } as ArrayList<CategoryItem?>)
                         }
                     }
 //                    if (o.size > 0) {
@@ -266,8 +383,10 @@ class EventDetailActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_event, menu)
+        if (user?.userTypeId.equals("4")) {
+            val inflater = menuInflater
+            inflater.inflate(R.menu.menu_event, menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 

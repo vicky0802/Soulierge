@@ -24,6 +24,7 @@ import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
+import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.activity_org_detail.*
 import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.row_dialog_category.view.*
@@ -43,6 +44,9 @@ class OrgDetailActivity : AppCompatActivity() {
     var organisationId: String? = null
     var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
 
+    var user:LoginResponse? =null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_org_detail)
@@ -50,6 +54,14 @@ class OrgDetailActivity : AppCompatActivity() {
             organisationId = intent.getStringExtra("organisationId")
         }
         initToolbar(tool_bar, true, getString(R.string.organization_details))
+        user = getUserData<LoginResponse>()
+        if (user?.userTypeId.equals("4")) {
+            txtEditOrg?.visibility = View.VISIBLE
+            fbAddEvent?.visibility = View.VISIBLE
+        } else {
+            txtEditOrg?.visibility = View.GONE
+            fbAddEvent?.visibility = View.GONE
+        }
         callOrgDetailAPI(organisationId)
         setupRecycleView(ArrayList());
         callUpEventListAPI();
@@ -202,11 +214,36 @@ class OrgDetailActivity : AppCompatActivity() {
                     startActivityForResult(eventIntent, 1004)
                 }
 
-                view?.btnDelete?.setOnClickListener {
-                    confirmationDialog(getString(R.string.app_name).toUpperCase(),
-                        getString(R.string.del_message), {
-                            deleteEvent(item.id)
-                        })
+                if (user?.userTypeId.equals("4")) {
+                    view?.btnDelete?.text = getString(R.string.delete)
+                    view?.btnDelete?.setOnClickListener {
+                        confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                            getString(R.string.del_message), {
+                                deleteEvent(item.id)
+                            })
+                    }
+                } else {
+                    if (item?.isParticipated == true) {
+                        view?.btnDelete?.text = getString(R.string.cancel_participate)
+                        view?.btnDelete?.setOnClickListener {
+                            confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                                getString(R.string.warning_cancel_participate), {
+                                    cancelParticipateEvent(item.id)
+                                })
+                        }
+                    } else {
+                        view?.btnDelete?.text = getString(R.string.participate)
+                        view?.btnDelete?.setOnClickListener {
+                            if (item.ageRestriction != null) {
+                               confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                                    "Are you ${item.ageRestriction} years old or above?", {
+                                        participateEvent(item.id)
+                                    })
+                            } else {
+                                participateEvent(item.id)
+                            }
+                        }
+                    }
                 }
                 view?.txtOrganisationName.text = item.name
                 view?.txtLocation.text = item.location
@@ -241,6 +278,69 @@ class OrgDetailActivity : AppCompatActivity() {
             isNestedScrollingEnabled = false
         }
     }
+
+    private fun participateEvent(eventId: String?) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .partEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    loadingDialog(false)
+                    showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) { callUpEventListAPI() }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
+    private fun cancelParticipateEvent(eventId: String?) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .cancelPartEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    loadingDialog(false)
+                    showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) { callUpEventListAPI() }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
 
     private fun deleteEvent(eventId: String?) {
         loadingDialog(true)
@@ -456,8 +556,10 @@ class OrgDetailActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_organisation, menu)
+        if (user?.userTypeId.equals("4")) {
+            val inflater = menuInflater
+            inflater.inflate(R.menu.menu_organisation, menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 

@@ -9,16 +9,20 @@ import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
+import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.model.OrgUserModel
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.subscribeToSingle
+import com.zk.soulierge.support.utilExt.getUserData
 import com.zk.soulierge.support.utilExt.initToolbar
 import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.simpleAlert
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
+import kotlinx.android.synthetic.main.activity_org_detail.*
 import kotlinx.android.synthetic.main.activity_org_users.*
+import kotlinx.android.synthetic.main.activity_org_users.llNoData
 import kotlinx.android.synthetic.main.row_org_user.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.ResponseBody
@@ -27,17 +31,26 @@ class OrgUsersActivity : AppCompatActivity() {
     var organisationBuilder: RecyclerViewBuilder<OrgUserModel>? = null
     var organisation: OrganisationModalItem? = null
 
+    var user: LoginResponse? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_org_users)
         initToolbar(tool_bar, true, getString(R.string.lbl_organisation_users))
-
         if (intent.hasExtra("organisation")) {
             organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
             callOrganisationListAPI(organisation?.id)
         } else {
             llNoData?.visibility = View.VISIBLE
         }
+
+        user = getUserData<LoginResponse>()
+        if (user?.userTypeId.equals("4")) {
+            addOrg?.visibility = View.VISIBLE
+        } else {
+            addOrg?.visibility = View.GONE
+        }
+
         setupRecycleView(ArrayList<OrgUserModel?>())
         addOrg?.setOnClickListener {
             val intent = Intent(this, AddOrgUserActivity::class.java)
@@ -66,7 +79,7 @@ class OrgUsersActivity : AppCompatActivity() {
                 }
                 view?.setOnClickListener {
                     val intent = Intent(this@OrgUsersActivity, UpdateOrgUserActivity::class.java)
-                    intent.putExtra("user",item)
+                    intent.putExtra("user", item)
                     intent.extras?.let { it1 -> intent.putExtras(it1) }
                     startActivityForResult(intent, 1002)
                 }

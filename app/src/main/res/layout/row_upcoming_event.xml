@@ -121,7 +121,7 @@
             android:padding="@dimen/_8sdp"
             android:textColor="@color/white"
             android:background="@color/app_blue"
-            android:text="@string/delete"/>
+            android:text="@string/participate"/>
 
     </LinearLayout>
 

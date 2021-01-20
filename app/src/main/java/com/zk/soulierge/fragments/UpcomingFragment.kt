@@ -20,15 +20,9 @@ import com.zk.soulierge.R
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
-import com.zk.soulierge.support.api.model.CategoryItem
-import com.zk.soulierge.support.api.model.GeneralResponse
-import com.zk.soulierge.support.api.model.UpEventResponseItem
-import com.zk.soulierge.support.api.model.toJson
+import com.zk.soulierge.support.api.model.*
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
-import com.zk.soulierge.support.utilExt.getUserId
-import com.zk.soulierge.support.utilExt.toDate
-import com.zk.soulierge.support.utilExt.toDisplayDateFormat
+import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
@@ -53,6 +47,7 @@ import kotlin.collections.ArrayList
 class UpcomingFragment : BaseFragment() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
     var categoryList = ArrayList<CategoryItem?>()
+    var user = context?.getUserData<LoginResponse>()
 
     //    var selectedCategory = ArrayList<CategoryItem?>()
     var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
@@ -78,6 +73,7 @@ class UpcomingFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        user = context?.getUserData<LoginResponse>()
     }
 
     private fun openBottomSheetDialog() {
@@ -213,6 +209,68 @@ class UpcomingFragment : BaseFragment() {
         )
     }
 
+    private fun participateEvent(eventId: String?) {
+        context?.loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .partEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    context?.loadingDialog(false)
+                    context?.showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) { callUpEventListAPI() }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    context?.loadingDialog(false)
+                    context?.simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    context?.loadingDialog(false)
+                    message?.let {
+                        context?.simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
+    private fun cancelParticipateEvent(eventId: String?) {
+        context?.loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .cancelPartEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    context?.loadingDialog(false)
+                    context?.showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) { callUpEventListAPI() }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    context?.loadingDialog(false)
+                    context?.simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    context?.loadingDialog(false)
+                    message?.let {
+                        context?.simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
     private fun setupRecycleView(o: ArrayList<UpEventResponseItem?>) {
         upEventBuilder = rvUpComingEvent?.setUp(
             R.layout.row_upcoming_event,
@@ -221,6 +279,37 @@ class UpcomingFragment : BaseFragment() {
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
+                if (user?.userTypeId.equals("4")) {
+                    view?.btnDelete?.text = getString(R.string.delete)
+                    view?.btnDelete?.setOnClickListener {
+                        context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                            getString(R.string.del_message), {
+                                deleteEvent(item.id)
+                            })
+                    }
+                } else {
+                    if (item?.isParticipated == true) {
+                        view?.btnDelete?.text = getString(R.string.cancel_participate)
+                        view?.btnDelete?.setOnClickListener {
+                            context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                                getString(R.string.warning_cancel_participate), {
+                                    cancelParticipateEvent(item.id)
+                                })
+                        }
+                    } else {
+                        view?.btnDelete?.text = getString(R.string.participate)
+                        view?.btnDelete?.setOnClickListener {
+                            if (item.ageRestriction != null) {
+                                context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                                    "Are you ${item.ageRestriction} years old or above?", {
+                                        participateEvent(item.id)
+                                    })
+                            } else {
+                                participateEvent(item.id)
+                            }
+                        }
+                    }
+                }
                 context?.let {
                     Glide.with(it).load(ApiClient.BASE_IMAGE_URL + item.fileName)
                         .placeholder(R.drawable.event_smaple)
@@ -251,16 +340,12 @@ class UpcomingFragment : BaseFragment() {
                 view?.txtEventUpDate.text =
                     item.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.endTime
 
-                view?.btnDelete?.setOnClickListener {
-                    context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
-                        getString(R.string.del_message), {
-                            deleteEvent(item.id)
-                        })}
+
                 view?.txtAddToCalendar?.setOnClickListener {
                     val beginTime: Calendar = Calendar.getInstance()
-                    beginTime.time = (item.date+" "+item.time).toDate("dd/MM/yyyy HH:mm")
+                    beginTime.time = (item.date + " " + item.time).toDate("dd/MM/yyyy HH:mm")
                     val endTime: Calendar = Calendar.getInstance()
-                    endTime.time = (item.endDate+" "+item.endTime).toDate("dd/MM/yyyy HH:mm")
+                    endTime.time = (item.endDate + " " + item.endTime).toDate("dd/MM/yyyy HH:mm")
                     val intent: Intent = Intent(Intent.ACTION_INSERT)
                         .setData(Events.CONTENT_URI)
                         .putExtra(
@@ -273,7 +358,8 @@ class UpcomingFragment : BaseFragment() {
                         .putExtra(Events.EVENT_LOCATION, item.location)
                         .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY)
 //                        .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com")
-                    startActivity(intent) }
+                    startActivity(intent)
+                }
             }
             isNestedScrollingEnabled = false
         }

@@ -12,6 +12,7 @@ import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
+import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.model.OrganisationModalItem
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.*
@@ -20,18 +21,29 @@ import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.simpleAlert
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
+import kotlinx.android.synthetic.main.activity_org_users.*
 import kotlinx.android.synthetic.main.activity_organise_list.*
+import kotlinx.android.synthetic.main.activity_organise_list.addOrg
+import kotlinx.android.synthetic.main.activity_organise_list.llNoData
+import kotlinx.android.synthetic.main.activity_organise_list.rvOrgRec
 import kotlinx.android.synthetic.main.row_organisation.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
 import okhttp3.ResponseBody
 
 class OrganiseListActivity : AppCompatActivity() {
     var organisationBuilder: RecyclerViewBuilder<OrganisationModalItem>? = null
+    var user: LoginResponse? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organise_list)
         initToolbar(tool_bar, true, getString(R.string.ph_organisation))
-
+        user = getUserData<LoginResponse>()
+        if (user?.userTypeId.equals("4")) {
+            addOrg?.visibility = View.VISIBLE
+        } else {
+            addOrg?.visibility = View.GONE
+        }
         callOrganisationListAPI()
         setupRecycleView(ArrayList<OrganisationModalItem?>())
         addOrg?.setOnClickListener {
@@ -52,7 +64,11 @@ class OrganiseListActivity : AppCompatActivity() {
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
-                view?.img_delete?.visibility = View.VISIBLE
+                if (user?.userTypeId.equals("4")) {
+                    view?.img_delete?.visibility = View.VISIBLE
+                } else {
+                    view?.img_delete?.visibility = View.GONE
+                }
                 Glide.with(this@OrganiseListActivity).load(ApiClient.BASE_IMAGE_URL + item.fileName)
                     .placeholder(R.drawable.event_smaple)
                     .into(view.row_event_image)
@@ -77,12 +93,12 @@ class OrganiseListActivity : AppCompatActivity() {
                 view?.setOnClickListener {
                     val intent = Intent(this@OrganiseListActivity, OrgDetailActivity::class.java)
                     intent.putExtra("organisationId", item.id)
-                    startActivityForResult(intent, 1002) }
+                    startActivityForResult(intent, 1002)
+                }
             }
             isNestedScrollingEnabled = false
         }
     }
-
 
 
     private fun callDeleteOrginationAPI(item: OrganisationModalItem) {

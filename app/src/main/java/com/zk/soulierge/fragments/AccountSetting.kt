@@ -1,11 +1,14 @@
 package com.zk.soulierge.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
+import com.zk.soulierge.FriendRequestActivity
 import com.zk.soulierge.R
+import com.zk.soulierge.UserFriendActivity
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
@@ -17,8 +20,7 @@ import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
-import kotlinx.android.synthetic.main.activity_update_org_user.*
-import kotlinx.android.synthetic.main.dialog_filter.view.*
+import com.zk.soulierge.PendingFriendsActivity
 import kotlinx.android.synthetic.main.dialog_gender.view.*
 import kotlinx.android.synthetic.main.dialog_gender.view.btnCancel
 import kotlinx.android.synthetic.main.fragment_account_setting.*
@@ -45,6 +47,9 @@ class AccountSetting : BaseFragment() {
         getUseAPI()
         btn_back?.setOnClickListener { activity?.onBackPressed() }
         txtGender?.setOnClickListener { openBottomSheetDialog() }
+        btnShowFriends?.setOnClickListener { startActivity(Intent(context, UserFriendActivity::class.java)) }
+        btnShowPendingFriends?.setOnClickListener { startActivity(Intent(context, PendingFriendsActivity::class.java)) }
+        btnPendingFriendsRequest?.setOnClickListener { startActivity(Intent(context, FriendRequestActivity::class.java)) }
     }
 
     override fun getTagFragment(): String {
@@ -83,6 +88,15 @@ class AccountSetting : BaseFragment() {
                     user?.userId?.let { context?.setUserId(it) }
                     btn_update?.setOnClickListener{ val user = context?.getUserData<LoginResponse>()
                         updateUserAPI(userResponse, user?.fileName)}
+                    if (user?.userTypeId.equals("1")or(user?.userTypeId.equals("2"))){
+                        btnShowFriends?.visibility = View.VISIBLE
+                        btnShowPendingFriends?.visibility = View.VISIBLE
+                        btnPendingFriendsRequest?.visibility = View.VISIBLE
+                    }else{
+                        btnShowFriends?.visibility = View.GONE
+                        btnShowPendingFriends?.visibility = View.GONE
+                        btnPendingFriendsRequest?.visibility = View.GONE
+                    }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {

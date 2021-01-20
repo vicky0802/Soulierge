@@ -16,12 +16,10 @@ import com.zk.soulierge.R
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
-import com.zk.soulierge.support.api.model.CategoryItem
-import com.zk.soulierge.support.api.model.FavEventResponseItem
-import com.zk.soulierge.support.api.model.GeneralResponse
-import com.zk.soulierge.support.api.model.UpEventResponseItem
+import com.zk.soulierge.support.api.model.*
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.BottomSheetDialogBuilder
+import com.zk.soulierge.support.utilExt.getUserData
 import com.zk.soulierge.support.utilExt.getUserId
 import com.zk.soulierge.support.utilExt.toDisplayDateFormat
 import com.zk.soulierge.support.utils.confirmationDialog
@@ -43,6 +41,8 @@ import okhttp3.ResponseBody
 class FavouriteEventFragment : BaseFragment() {
     var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
     var categoryList = ArrayList<CategoryItem?>()
+
+    var user = context?.getUserData<LoginResponse>()
 
     //    var selectedCategory = ArrayList<CategoryItem?>()
     var upEventBuilder: RecyclerViewBuilder<FavEventResponseItem>? = null
@@ -70,6 +70,7 @@ class FavouriteEventFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        user = context?.getUserData<LoginResponse>()
     }
 
     private fun openBottomSheetDialog() {
@@ -243,15 +244,102 @@ class FavouriteEventFragment : BaseFragment() {
                 view?.txtEventUpDate.text =
                     item.event.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.event.endTime
 
-                view?.btnDelete?.setOnClickListener {
-                    context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
-                        getString(R.string.del_message), {
-                            deleteEvent(item.eventId.toString())
-                        })
+                if (user?.userTypeId.equals("4")) {
+                    view?.btnDelete?.text = getString(R.string.delete)
+                    view?.btnDelete?.setOnClickListener {
+                        context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                            getString(R.string.del_message), {
+                                deleteEvent(item?.event?.id.toString())
+                            })
+                    }
+                } else {
+                    if (item?.event?.isParticipated == true) {
+                        view?.btnDelete?.text = getString(R.string.cancel_participate)
+                        view?.btnDelete?.setOnClickListener {
+                            context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                                getString(R.string.warning_cancel_participate), {
+                                    cancelParticipateEvent(item?.event?.id.toString())
+                                })
+                        }
+                    } else {
+                        view?.btnDelete?.text = getString(R.string.participate)
+                        view?.btnDelete?.setOnClickListener {
+                            if (item.event?.ageRestriction != null) {
+                                context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                                    "Are you ${item.event?.ageRestriction} years old or above?", {
+                                        participateEvent(item?.event?.id.toString())
+                                    })
+                            } else {
+                                participateEvent(item?.event?.id.toString())
+                            }
+                        }
+                    }
                 }
             }
             isNestedScrollingEnabled = false
         }
+    }
+
+    private fun participateEvent(eventId: String?) {
+        context?.loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .partEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    context?.loadingDialog(false)
+                    context?.showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) { callUpEventListAPI() }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    context?.loadingDialog(false)
+                    context?.simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    context?.loadingDialog(false)
+                    message?.let {
+                        context?.simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
+    private fun cancelParticipateEvent(eventId: String?) {
+        context?.loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .cancelPartEvent(user_id = user?.userId, event_id = eventId),
+            singleCallback = object : SingleCallback<GeneralResponse> {
+                override fun onSingleSuccess(o: GeneralResponse, message: String?) {
+                    context?.loadingDialog(false)
+                    context?.showAppDialog(
+                        if (o.success?.isNotEmpty() == true) o.success else o.failure,
+                    ) { callUpEventListAPI() }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    context?.loadingDialog(false)
+                    context?.simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    context?.loadingDialog(false)
+                    message?.let {
+                        context?.simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
     }
 
     private fun callFavAPI(item: UpEventResponseItem, position: Int) {

@@ -73,6 +73,11 @@ interface WebserviceBuilder {
         @Query("event_id") event_id: String? = null
     ): Observable<ArrayList<EventPartiResponseItem?>>
 
+    @POST("UserService/getfriends")
+    fun getFriends(
+        @Query("user_id") user_id: String? = null
+    ): Observable<FriendsResponse?>
+
     @POST("OrganizationService/addFavouriteOrganization")
     fun favouriteOrgAPI(
         @Query("organization_id") organization_id: String? = null,
@@ -259,6 +264,18 @@ interface WebserviceBuilder {
     @POST("EventService/deleteEvent")
     fun delEvent(
         @Query("id") categoryId: String? = null,
+    ): Observable<GeneralResponse>
+
+    @POST("EventService/bookEventParticipant")
+    fun partEvent(
+        @Query("user_id") user_id: String? = null,
+        @Query("event_id") event_id: String? = null,
+    ): Observable<GeneralResponse>
+
+    @POST("EventService/cancelEventParticipant")
+    fun cancelPartEvent(
+        @Query("user_id") user_id: String? = null,
+        @Query("event_id") event_id: String? = null,
     ): Observable<GeneralResponse>
 
     @POST("EventService/getEventDetail")

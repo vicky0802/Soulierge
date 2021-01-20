@@ -8,7 +8,7 @@ data class FavEventResponseItem(
 )
 
 data class Event(
-    var ageRestriction: Int,
+    var ageRestriction: Int?,
     var availableCapacity: Int,
     var capacity: Int,
     var category: List<String>,

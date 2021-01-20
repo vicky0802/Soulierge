@@ -76,7 +76,6 @@
         </RelativeLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/ll_reciclerView"
         android:layout_width="match_parent"
@@ -114,7 +113,6 @@
             android:layout_above="@+id/btnSelectLocation"
             android:visibility="visible">
 
-
             <fragment
                 android:id="@+id/gMap"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -131,8 +129,7 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/rec_5_blue_fill"
             android:padding="@dimen/_16ddp"
-            android:text="@string/select_location"
+            android:text="@string/save_location"
             android:textColor="@color/white" />
     </RelativeLayout>
-
 </LinearLayout>
