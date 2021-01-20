@@ -78,6 +78,11 @@ interface WebserviceBuilder {
         @Query("user_id") user_id: String? = null
     ): Observable<FriendsResponse?>
 
+    @POST("UserService/getpendingfriendrequests")
+    fun getPendingFriends(
+        @Query("user_id") user_id: String? = null
+    ): Observable<FriendsResponse?>
+
     @POST("OrganizationService/addFavouriteOrganization")
     fun favouriteOrgAPI(
         @Query("organization_id") organization_id: String? = null,

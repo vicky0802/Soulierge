@@ -64,7 +64,7 @@ class FriendRequestActivity : AppCompatActivity() {
         loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getFriends(organizationId),
+                .getPendingFriends(organizationId),
             singleCallback = object : SingleCallback<FriendsResponse?> {
                 override fun onSingleSuccess(
                     o: FriendsResponse?,
