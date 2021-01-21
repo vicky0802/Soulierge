@@ -9,9 +9,8 @@ import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
-import com.zk.soulierge.support.api.model.FriendsResponse
+import com.zk.soulierge.support.api.model.FriendRequestResponse
 import com.zk.soulierge.support.api.model.LoginResponse
-import com.zk.soulierge.support.api.model.UserResponse
 import com.zk.soulierge.support.api.subscribeToSingle
 import com.zk.soulierge.support.utilExt.getUserData
 import com.zk.soulierge.support.utilExt.initToolbar
@@ -22,9 +21,10 @@ import com.zk.soulierge.utlities.RecyclerViewLinearLayout
 import kotlinx.android.synthetic.main.activity_user_friend.*
 import kotlinx.android.synthetic.main.row_org_user.view.*
 import kotlinx.android.synthetic.main.toola_bar.*
+import okhttp3.ResponseBody
 
 class FriendRequestActivity : AppCompatActivity() {
-    var organisationBuilder: RecyclerViewBuilder<UserResponse>? = null
+    var organisationBuilder: RecyclerViewBuilder<FriendRequestResponse>? = null
 
     var user: LoginResponse? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class FriendRequestActivity : AppCompatActivity() {
         user = getUserData<LoginResponse>()
         callOrganisationListAPI(user?.userId)
 
-        setupRecycleView(ArrayList<UserResponse?>())
+        setupRecycleView(ArrayList<FriendRequestResponse?>())
         addOrg?.setOnClickListener {
             val intent = Intent(this, AddOrgUserActivity::class.java)
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
@@ -42,7 +42,7 @@ class FriendRequestActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecycleView(o: ArrayList<UserResponse?>) {
+    private fun setupRecycleView(o: ArrayList<FriendRequestResponse?>) {
         organisationBuilder = rvOrgRec?.setUp(
             R.layout.row_org_user,
             o,
@@ -50,14 +50,79 @@ class FriendRequestActivity : AppCompatActivity() {
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
-                view?.txtUseName?.text = item.name
-                view?.txtMail?.text = item.email
-                view?.txtPhone?.text = item.phoneNumber
-                view?.txtGender?.text = item.gender
+                view?.btnAccept?.visibility = View.VISIBLE
+                view?.btnReject?.visibility = View.VISIBLE
+                view?.txtUseName?.text = item.friendUser?.name
+                view?.txtMail?.text = item.friendUser?.email
+                view?.txtPhone?.text = item.friendUser?.phoneNumber
+                view?.txtGender?.text = item.friendUser?.gender
                 view?.imgUserDelete?.visibility = View.GONE
+                view?.btnAccept?.setOnClickListener { callAcceptAPI(item) }
+                view?.btnReject?.setOnClickListener { callRejectAPI(item) }
             }
             isNestedScrollingEnabled = false
         }
+    }
+
+    private fun callAcceptAPI(item: FriendRequestResponse) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .updateRequest(id = item.id.toString(),status = "1"),
+            singleCallback = object : SingleCallback<ResponseBody> {
+                override fun onSingleSuccess(o: ResponseBody, message: String?) {
+                    loadingDialog(false)
+                    callOrganisationListAPI(user?.userId)
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                    Test@1234
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+
+    }
+
+    private fun callRejectAPI(item: FriendRequestResponse) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .updateRequest(id = item.id.toString(),status = "2"),
+            singleCallback = object : SingleCallback<ResponseBody> {
+                override fun onSingleSuccess(o: ResponseBody, message: String?) {
+                    loadingDialog(false)
+                    callOrganisationListAPI(user?.userId)
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+
     }
 
     private fun callOrganisationListAPI(organizationId: String?) {
@@ -65,17 +130,17 @@ class FriendRequestActivity : AppCompatActivity() {
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
                 .getPendingFriends(organizationId),
-            singleCallback = object : SingleCallback<FriendsResponse?> {
+            singleCallback = object : SingleCallback<ArrayList<FriendRequestResponse?>> {
                 override fun onSingleSuccess(
-                    o: FriendsResponse?,
+                    o: ArrayList<FriendRequestResponse?>,
                     message: String?
                 ) {
                     loadingDialog(false)
-                    if (o?.rejectedFriends.isNullOrEmpty()) {
+                    if (o?.isNullOrEmpty()) {
                         llNoData?.visibility = View.VISIBLE
                     } else {
                         llNoData?.visibility = View.GONE
-                        o?.rejectedFriends?.let { setupRecycleView(it) }
+                        o?.let { setupRecycleView(it) }
 
                     }
                 }

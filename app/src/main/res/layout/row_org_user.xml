@@ -16,10 +16,10 @@
         android:background="@drawable/rec_5_white_fill">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/linearLayoutCompat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -31,9 +31,9 @@
                 android:layout_marginTop="@dimen/_16ddp"
                 android:layout_marginEnd="@dimen/_16ddp"
                 android:padding="@dimen/_8sdp"
-                android:textSize="@dimen/_18ssp"
                 android:text="@string/account_setting"
                 android:textColor="@color/black"
+                android:textSize="@dimen/_18ssp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -71,12 +71,12 @@
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/_16ddp"
                 android:drawablePadding="@dimen/_8sdp"
                 android:maxLines="1"
                 app:drawableStartCompat="@drawable/ic_gender"
                 tools:ignore="MissingConstraints"
-                tools:text="@string/message_join_event"
-                android:layout_marginBottom="@dimen/_16ddp"/>
+                tools:text="@string/message_join_event" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -88,6 +88,44 @@
             android:src="@drawable/ic_delete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btnReject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/color_red"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/reject"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="32dp"
+            android:layout_height="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
+        <TextView
+            android:id="@+id/btnAccept"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:background="@color/app_blue"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/accept"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

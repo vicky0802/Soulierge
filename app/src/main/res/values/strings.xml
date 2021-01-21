@@ -171,5 +171,7 @@
     <string name="users_friends">Users Friends</string>
     <string name="pending_friends">Pending Friends</string>
     <string name="pending_request">Pending Request</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
 
 </resources>

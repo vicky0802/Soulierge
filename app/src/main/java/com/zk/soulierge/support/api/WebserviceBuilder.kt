@@ -37,6 +37,18 @@ interface WebserviceBuilder {
         @Query("longitude") longitude: Double? = 0.0
     ): Observable<LoginResponse>
 
+    @POST("UserService/facebookLogin")
+    fun facebookLogin(
+        @Query("user_type_id") user_type_id: Int = 2,
+        @Query("email") email: String? = null,
+        @Query("name") name: String? = null,
+        @Query("phone_number") phone_number: String? = "",
+        @Query("gender") gender: String? = "",
+        @Query("address") address: String? = "",
+        @Query("latitude") latitude: Double? = 0.0,
+        @Query("longitude") longitude: Double? = 0.0
+    ): Observable<LoginResponse>
+
     @POST("UserService/registerOrganizationUser")
     fun onOrgUserCreate(
         @Query("email") email: String? = null,
@@ -81,7 +93,7 @@ interface WebserviceBuilder {
     @POST("UserService/getpendingfriendrequests")
     fun getPendingFriends(
         @Query("user_id") user_id: String? = null
-    ): Observable<FriendsResponse?>
+    ): Observable<ArrayList<FriendRequestResponse?>>
 
     @POST("OrganizationService/addFavouriteOrganization")
     fun favouriteOrgAPI(
@@ -185,6 +197,12 @@ interface WebserviceBuilder {
     @POST("OrganizationService/deleteOrganization")
     fun deleteOrgAPI(
         @Query("id") id: String? = null,
+    ): Observable<ResponseBody>
+
+    @POST("UserService/updatefriendrequest")
+    fun updateRequest(
+        @Query("id") id: String? = null,
+        @Query("status") status: String? = null,
     ): Observable<ResponseBody>
 
     @POST("UserService/deleteOrganizationUser")

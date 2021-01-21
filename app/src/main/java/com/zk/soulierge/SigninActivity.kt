@@ -2,11 +2,11 @@ package com.zk.soulierge
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.gson.Gson
 import com.zk.soulierge.support.api.ApiClient
@@ -26,6 +26,8 @@ import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.activity_signin.fb_login_button
 import kotlinx.android.synthetic.main.activity_signin.login_button
 import kotlinx.android.synthetic.main.activity_signup.*
+import org.json.JSONException
+import java.util.*
 
 class SigninActivity : AppCompatActivity() {
     private var callbackManager: CallbackManager? = null
@@ -48,14 +50,32 @@ class SigninActivity : AppCompatActivity() {
         }
 
         login_button?.setOnClickListener {
+            LoginManager.getInstance().logOut()
             fb_login_button?.performClick()
         }
 
         // Callback registration
-        // Callback registration
+        fb_login_button?.setReadPermissions(Arrays.asList("public_profile", "email"));
         fb_login_button?.registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
             override fun onSuccess(loginResult: LoginResult?) {
-                // App code
+                val graphRequest = GraphRequest.newMeRequest(
+                    loginResult?.accessToken
+                ) { `object`, response ->
+                    Log.d("JSON", "" + response.jsonObject.toString())
+                    try {
+                        var email = `object`.getString("email")
+                        var name = `object`.getString("name")
+                        callFacebookLoginAPI(email,name)
+//                        https://graph.facebook.com/143990709444026/picture?type=large
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                }
+
+                val parameters = Bundle()
+                parameters.putString("fields", "id,name,first_name,last_name,email,gender")
+                graphRequest.parameters = parameters
+                graphRequest.executeAsync()
             }
 
             override fun onCancel() {
@@ -63,13 +83,14 @@ class SigninActivity : AppCompatActivity() {
             }
 
             override fun onError(exception: FacebookException) {
-                // App code
+                exception.printStackTrace()
             }
         })
 
 
 //        callLoginAPI()
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -106,6 +127,45 @@ class SigninActivity : AppCompatActivity() {
         subscribeToSingle(
             observable = ApiClient.getApiClient().create(WebserviceBuilder::class.java).onLogin(
                 edt_email.text.toString().trim(), edt_password.text.toString().trim()
+            ),
+            singleCallback = object : SingleCallback<LoginResponse> {
+                override fun onSingleSuccess(o: LoginResponse, message: String?) {
+                    loadingDialog(false)
+                    if (o.failure.isNullOrEmpty()) {
+                        setIsLogin(true)
+                        setUserData(Gson().toJson(o))
+                        o.userId?.let { setUserId(it) }
+                        o.name?.let { setUserName(it) }
+                        ActivityNavigationUtility.navigateWith(this@SigninActivity)
+                            .setClearStack().navigateTo(MainActivity::class.java)
+                    } else {
+                        showAppDialog(o.failure)
+                    }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    loadingDialog(false)
+                    simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    loadingDialog(false)
+                    message?.let {
+                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+    private fun callFacebookLoginAPI(email: String, name: String) {
+        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getApiClient().create(WebserviceBuilder::class.java).facebookLogin(
+                email = email,
+                name = name,
             ),
             singleCallback = object : SingleCallback<LoginResponse> {
                 override fun onSingleSuccess(o: LoginResponse, message: String?) {
