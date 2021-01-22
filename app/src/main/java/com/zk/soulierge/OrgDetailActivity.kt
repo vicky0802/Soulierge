@@ -58,9 +58,15 @@ class OrgDetailActivity : AppCompatActivity() {
         if (user?.userTypeId.equals("4")) {
             txtEditOrg?.visibility = View.VISIBLE
             fbAddEvent?.visibility = View.VISIBLE
-        } else {
+            cvOrgUsers?.visibility = View.VISIBLE
+        } else if((user?.userTypeId.equals("3"))){
+            txtEditOrg?.visibility = View.VISIBLE
+            fbAddEvent?.visibility = View.VISIBLE
+            cvOrgUsers?.visibility = View.GONE
+        }else {
             txtEditOrg?.visibility = View.GONE
             fbAddEvent?.visibility = View.GONE
+            cvOrgUsers?.visibility = View.GONE
         }
         callOrgDetailAPI(organisationId)
         setupRecycleView(ArrayList());
@@ -214,7 +220,7 @@ class OrgDetailActivity : AppCompatActivity() {
                     startActivityForResult(eventIntent, 1004)
                 }
 
-                if (user?.userTypeId.equals("4")) {
+                if (user?.userTypeId.equals("4") or (user?.userTypeId.equals("3"))) {
                     view?.btnDelete?.text = getString(R.string.delete)
                     view?.btnDelete?.setOnClickListener {
                         confirmationDialog(getString(R.string.app_name).toUpperCase(),

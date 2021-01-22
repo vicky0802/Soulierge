@@ -2,14 +2,15 @@ package com.zk.soulierge.fragments
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.facebook.appevents.AppEventsLogger.clearUserData
 import com.zk.soulierge.LandingActivity
-
 import com.zk.soulierge.R
+import com.zk.soulierge.support.utilExt.clearUserData
+import com.zk.soulierge.support.utils.confirmationDialog
 import com.zk.soulierge.utlities.ActivityNavigationUtility
 import com.zk.soulierge.utlities.FragmentUtility
 import kotlinx.android.synthetic.main.fragment_setting.*
@@ -72,10 +73,14 @@ class SettingFragment : BaseFragment() {
 //        }
 
         ll_logout.setOnClickListener {
-            clearUserData();
-            ActivityNavigationUtility.navigateWith(activity)
-                .setClearStack()
-                .navigateTo(LandingActivity::class.java)
+            context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                getString(R.string.warning_logout_message), {
+                    clearUserData();
+                    context?.clearUserData();
+                    ActivityNavigationUtility.navigateWith(activity)
+                        .setClearStack()
+                        .navigateTo(LandingActivity::class.java)
+                })
         }
     }
 

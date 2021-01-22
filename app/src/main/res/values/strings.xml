@@ -173,5 +173,13 @@
     <string name="pending_request">Pending Request</string>
     <string name="reject">Reject</string>
     <string name="accept">Accept</string>
+    <string name="current_badge">Current Badge:</string>
+    <string name="current_points">Current Points:</string>
+    <string name="next_milestone_points">Next Milestone Points:</string>
+    <string name="user_chakra">User Chakra</string>
+    <string name="org_events">Organizations Events</string>
+    <string name="organization">Organizations</string>
+    <string name="warning_logout_message">Are you sure you want to Logout?</string>
+    <string name="lbl_add">Add</string>
 
 </resources>

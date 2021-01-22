@@ -90,6 +90,11 @@ interface WebserviceBuilder {
         @Query("user_id") user_id: String? = null
     ): Observable<FriendsResponse?>
 
+    @POST("UserService/getuserbyemail")
+    fun getSearchFiend(
+        @Query("email") user_id: String? = null
+    ): Observable<FriendsResponse?>
+
     @POST("UserService/getpendingfriendrequests")
     fun getPendingFriends(
         @Query("user_id") user_id: String? = null

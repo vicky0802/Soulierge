@@ -35,7 +35,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FriendRequestActivity"></activity>
+        <activity android:name=".AddFriendsActivity"></activity>
+        <activity android:name=".UserChakraActivity" />
+        <activity android:name=".FriendRequestActivity" />
         <activity android:name=".PendingFriendsActivity" />
         <activity android:name=".UserFriendActivity" />
         <activity

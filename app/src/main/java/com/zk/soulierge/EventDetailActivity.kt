@@ -55,7 +55,7 @@ class EventDetailActivity : AppCompatActivity() {
             callEventDetailAPI(intent.getStringExtra("eventId"))
         }
         user = getUserData<LoginResponse>()
-        if (user?.userTypeId.equals("4")) {
+        if (user?.userTypeId.equals("4") or (user?.userTypeId.equals("3"))) {
             txtTotalCapacity?.visibility = View.VISIBLE
             txtAvailable?.visibility = View.VISIBLE
             ll_total?.visibility = View.VISIBLE
@@ -192,7 +192,7 @@ class EventDetailActivity : AppCompatActivity() {
                         callCategoriesListAPI(true, o.category)
                     }
         }
-        if (user?.userTypeId.equals("4")) {
+        if (user?.userTypeId.equals("4") or (user?.userTypeId.equals("3"))) {
             btnDeleteEvnet?.text = getString(R.string.delete)
             btnDeleteEvnet?.setOnClickListener {
                 confirmationDialog(getString(R.string.app_name).toUpperCase(),
@@ -383,7 +383,7 @@ class EventDetailActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (user?.userTypeId.equals("4")) {
+        if (user?.userTypeId.equals("4") or (user?.userTypeId.equals("3"))) {
             val inflater = menuInflater
             inflater.inflate(R.menu.menu_event, menu)
         }

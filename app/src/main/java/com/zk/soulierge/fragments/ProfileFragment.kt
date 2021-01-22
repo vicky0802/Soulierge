@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.zk.soulierge.R
+import com.zk.soulierge.UserChakraActivity
 import com.zk.soulierge.adapter.ProfileTabAdapter
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
@@ -53,6 +54,13 @@ class ProfileFragment : BaseFragment() {
             .load(ApiClient.BASE_IMAGE_URL + context?.getUserData<LoginResponse>()?.fileName)
             .placeholder(R.drawable.event_smaple)
             .into(imgUserImage)
+        val user = context?.getUserData<LoginResponse>()
+        if (user?.userTypeId.equals("4")) {
+            img_chakra?.visibility = View.GONE
+        } else {
+            img_chakra?.visibility = View.VISIBLE
+            getUseAPI(null,false)
+        }
         ll_setting.setOnClickListener {
             FragmentUtility.withManager(activity?.supportFragmentManager)
                 .addToBackStack("")
@@ -115,12 +123,18 @@ class ProfileFragment : BaseFragment() {
             singleCallback = object : SingleCallback<UserResponse> {
                 override fun onSingleSuccess(o: UserResponse, message: String?) {
                     context?.loadingDialog(false)
+                    if (o?.userTypeId.equals("4") or (o?.userTypeId.equals("3"))) {
+                        img_chakra?.visibility = View.GONE
+                    } else {
+                        img_chakra?.visibility = View.VISIBLE
+                        setChakra(o)
+                    }
                     if (isUpdateCall == true) {
                         updateUserAPI(o, fileName)
                     } else {
                         val user = context?.getUserData<LoginResponse>()
                         user?.dateCreated = o.dateCreated
-                        user?.fileName = fileName
+                        user?.fileName = fileName ?: user?.fileName
                         user?.name = o.name
                         user?.userTypeId = o.userTypeId
                         o.name?.let { context?.setUserName(it) }
@@ -149,6 +163,18 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         )
+    }
+
+    private fun setChakra(o: UserResponse?) {
+        when(o?.badge){
+            1->{img_chakra.setImageResource(R.drawable.chakar_2)}
+            2->{img_chakra.setImageResource(R.drawable.chakar_3)}
+            3->{img_chakra.setImageResource(R.drawable.chakar_4)}
+            4->{img_chakra.setImageResource(R.drawable.chakar_5)}
+            5->{img_chakra.setImageResource(R.drawable.chakar_6)}
+            6->{img_chakra.setImageResource(R.drawable.chakar_7)}
+        }
+        img_chakra?.setOnClickListener { startActivity(Intent(context, UserChakraActivity::class.java)) }
     }
 
     private fun updateUserAPI(user: UserResponse, fileName: String?) {

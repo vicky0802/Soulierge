@@ -244,7 +244,7 @@ class FavouriteEventFragment : BaseFragment() {
                 view?.txtEventUpDate.text =
                     item.event.endDate.toDisplayDateFormat("dd/MM/yyyy") + " | " + item.event.endTime
 
-                if (user?.userTypeId.equals("4")) {
+                if (user?.userTypeId.equals("4") or (user?.userTypeId.equals("3"))) {
                     view?.btnDelete?.text = getString(R.string.delete)
                     view?.btnDelete?.setOnClickListener {
                         context?.confirmationDialog(getString(R.string.app_name).toUpperCase(),

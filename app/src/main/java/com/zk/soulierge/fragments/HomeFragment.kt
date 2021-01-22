@@ -64,6 +64,10 @@ class HomeFragment : BaseFragment() {
         cv_event.txtEditOrg.text = getString(R.string.ph_find_event)
         cv_organization.txtEditOrg.text = getString(R.string.ph_find_organisation)
         cv_categories.txtEditOrg.text = getString(R.string.categories)
+        if (user?.userTypeId.equals("3")){
+            cv_event.txtEditOrg.text = getString(R.string.org_events)
+            cv_organization.txtEditOrg.text = getString(R.string.organization)
+        }
         cv_event?.setOnClickListener {
             if (activity is MainActivity) {
                 (activity as MainActivity)?.exploreEvent()
