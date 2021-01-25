@@ -72,7 +72,7 @@ class OrganiseListActivity : AppCompatActivity() {
                 Glide.with(this@OrganiseListActivity).load(ApiClient.BASE_IMAGE_URL + item.fileName)
                     .placeholder(R.drawable.event_smaple)
                     .into(view.row_event_image)
-                if (user?.userTypeId.equals("3")){
+                if ((user?.userTypeId.equals("1")) or (user?.userTypeId.equals("2"))) {
                     view?.img_whishlist?.visibility = View.VISIBLE
                 }
                 if (item.isFavorite == true) {

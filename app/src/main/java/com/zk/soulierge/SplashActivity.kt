@@ -1,15 +1,17 @@
 package com.zk.soulierge
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.subscribeToSingle
+import com.zk.soulierge.support.utilExt.isLogin
 import com.zk.soulierge.support.utils.loadingDialog
 import com.zk.soulierge.support.utils.simpleAlert
-import kotlinx.android.synthetic.main.activity_splash.*
+import com.zk.soulierge.utlities.ActivityNavigationUtility
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.json.JSONException
@@ -20,21 +22,21 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        var str:String = editText?.text.toString().trim()
-        var test = test()
-        test.computeSHAHash(str)
-        callFacebookLoginAPI()
-//        Handler().postDelayed({
-//            if (isLogin()) {
-//                ActivityNavigationUtility.navigateWith(this)
-//                    .setClearStack().navigateTo(MainActivity::class.java)
-//            } else {
-//                ActivityNavigationUtility.navigateWith(this)
-//                    .navigateTo(LandingActivity::class.java)
-//            }
-//            finish()
-////            viewModel.shouldShowEnterButton.set(true)
-//        }, 2000)
+//        var str:String = editText?.text.toString().trim()
+//        var test = test()
+//        test.computeSHAHash(str)
+//        callFacebookLoginAPI()
+        Handler().postDelayed({
+            if (isLogin()) {
+                ActivityNavigationUtility.navigateWith(this)
+                    .setClearStack().navigateTo(MainActivity::class.java)
+            } else {
+                ActivityNavigationUtility.navigateWith(this)
+                    .navigateTo(LandingActivity::class.java)
+            }
+            finish()
+//            viewModel.shouldShowEnterButton.set(true)
+        }, 2000)
     }
 
 

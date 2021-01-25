@@ -222,6 +222,11 @@ interface WebserviceBuilder {
         @Query("user_id") user_id: String? = null
     ): Observable<ArrayList<FavEventResponseItem?>>
 
+    @POST("OrganizationService/getFavouriteOrganizationsForUser")
+    fun getFavOrg(
+        @Query("user_id") user_id: String? = null
+    ): Observable<ArrayList<FavOrgResponseItem?>>
+
 
     @POST("EventService/getEventsForOrganization")
     fun getEventForOrg(

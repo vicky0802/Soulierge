@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.RecyclerViewBuilder
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
 import com.zk.soulierge.EventDetailActivity
+import com.zk.soulierge.OrgDetailActivity
 import com.zk.soulierge.R
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
@@ -28,24 +29,33 @@ import com.zk.soulierge.support.utils.showAppDialog
 import com.zk.soulierge.support.utils.simpleAlert
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
-import kotlinx.android.synthetic.main.dialog_category.view.*
-import kotlinx.android.synthetic.main.dialog_filter.view.*
+import kotlinx.android.synthetic.main.dialog_org_event.view.*
 import kotlinx.android.synthetic.main.fragment_favourites_event.*
-import kotlinx.android.synthetic.main.row_dialog_category.view.*
+import kotlinx.android.synthetic.main.row_event.view.img_whishlist
+import kotlinx.android.synthetic.main.row_event.view.row_event_image
+import kotlinx.android.synthetic.main.row_organisation.view.*
 import kotlinx.android.synthetic.main.row_upcoming_event.view.*
+import kotlinx.android.synthetic.main.row_upcoming_event.view.txtLocation
+import kotlinx.android.synthetic.main.row_upcoming_event.view.txtOrganisationName
 import okhttp3.ResponseBody
 
 /**
  * A simple [Fragment] subclass.
  */
 class FavouriteEventFragment : BaseFragment() {
-    var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
-    var categoryList = ArrayList<CategoryItem?>()
+//    var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
+//    var categoryList = ArrayList<CategoryItem?>()
 
     var user = context?.getUserData<LoginResponse>()
 
     //    var selectedCategory = ArrayList<CategoryItem?>()
     var upEventBuilder: RecyclerViewBuilder<FavEventResponseItem>? = null
+
+    var organisationBuilder: RecyclerViewBuilder<FavOrgResponseItem>? = null
+
+    var isOrg: Boolean = false
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,11 +71,25 @@ class FavouriteEventFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecycleView(ArrayList());
-        callUpEventListAPI()
+        callListAPI()
+        if ((user?.userTypeId.equals("1")) or (user?.userTypeId.equals("2"))) {
+            fabFilter?.visibility = View.VISIBLE
+        }else
+        {
+            fabFilter?.visibility = View.GONE
+        }
         fabFilter?.setOnClickListener {
             openBottomSheetDialog()
         }
-        callCategoriesListAPI(false)
+//        callCategoriesListAPI(false)
+    }
+
+    fun callListAPI(){
+        if (isOrg) {
+            callFavOrgListAPI()
+        } else {
+            callUpEventListAPI()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,102 +98,94 @@ class FavouriteEventFragment : BaseFragment() {
     }
 
     private fun openBottomSheetDialog() {
-        val view = View.inflate(context, R.layout.dialog_filter, null)
+        val view = View.inflate(context, R.layout.dialog_org_event, null)
         val builder = context?.let { BottomSheetDialogBuilder(it) }
         builder?.customView(view)
-        view?.btn_1_week?.setOnClickListener { callUpEventListAPI(filtersDay = "7",);builder?.dismiss(); }
-        view?.btn_2_week?.setOnClickListener { callUpEventListAPI(filtersDay = "14",);builder?.dismiss(); }
-        view?.btn_3_week?.setOnClickListener { callUpEventListAPI(filtersDay = "21",);builder?.dismiss(); }
-        view?.btn_near_me?.setOnClickListener { }
-        view?.btn_category?.setOnClickListener {
-            builder?.dismiss();
-            if (categoryList.size > 0) {
-                openCategoryBottomSheet()
-            } else {
-                callCategoriesListAPI(true)
-            }
-        }
-        view?.btn_all?.setOnClickListener { callUpEventListAPI(); builder?.dismiss(); }
+        view?.btn_org?.setOnClickListener {isOrg = true;callListAPI();builder?.dismiss() }
+        view?.btn_event?.setOnClickListener {isOrg = false;callListAPI();builder?.dismiss() }
         view?.btnCancel?.setOnClickListener { builder?.dismiss(); }
         builder?.dialog?.show()
     }
 
-    private fun openCategoryBottomSheet() {
-        var selectedCategory = ArrayList<CategoryItem?>()
-        val view = View.inflate(context, R.layout.dialog_category, null)
-        val builder = context?.let { BottomSheetDialogBuilder(it) }
-        builder?.customView(view)
-        view?.btnCategoryDone?.setOnClickListener {
-            if (selectedCategory.size > 0) callUpEventListAPI(
-//                selectedCategory = selectedCategory
-            ); builder?.dismiss()
+    private fun setupOrgRecycleView(o: ArrayList<FavOrgResponseItem?>) {
+        rvOrgRec?.visibility = View.VISIBLE
+        rvUpComingEvent?.visibility = View.GONE
+        if (o.size > 0) {
+            llNoData?.visibility = View.GONE
+        } else {
+            llNoData?.visibility = View.VISIBLE
         }
-        categoryBuilder = view?.rvCategory?.setUp(
-            R.layout.row_dialog_category,
-            categoryList,
+        organisationBuilder = rvOrgRec?.setUp(
+            R.layout.row_organisation,
+            o,
             RecyclerViewLayoutManager.LINEAR,
             RecyclerViewLinearLayout.VERTICAL
         ) {
             contentBinder { item, view, position ->
-                if (item.isSelected) {
-                    view?.imgSelected.visibility = View.VISIBLE
+                if (user?.userTypeId.equals("4")) {
+                    view?.img_delete?.visibility = View.VISIBLE
                 } else {
-                    view?.imgSelected.visibility = View.GONE
+                    view?.img_delete?.visibility = View.GONE
                 }
-                view?.txtCategoryTitle.text = item.name
-                view?.setOnClickListener {
-                    if (item.isSelected) {
-                        item.isSelected = !item.isSelected
-                        view?.imgSelected.visibility = View.GONE
-                        selectedCategory.remove(item)
+                context?.let {
+                    Glide.with(it).load(ApiClient.BASE_IMAGE_URL + item.organization?.fileName)
+                        .placeholder(R.drawable.event_smaple)
+                        .into(view.row_event_image)
+                }
+                if (user?.userTypeId.equals("3") or (user?.userTypeId.equals("1")) or (user?.userTypeId.equals("2"))) {
+                    view?.img_whishlist?.visibility = View.VISIBLE
+                }
+                if (item.organization?.isFavorite == true) {
+                    view?.img_whishlist?.setImageResource(R.drawable.ic_heart_fill)
+                } else {
+                    view?.img_whishlist?.setImageResource(R.drawable.ic_heart)
+                }
+                view?.img_whishlist?.setOnClickListener {
+                    if (item.organization?.isFavorite == true) {
+                        callUnFavOrgAPI(item.organization, position)
                     } else {
-                        item.isSelected = !item.isSelected
-                        view?.imgSelected.visibility = View.VISIBLE
-                        selectedCategory.add(item)
+//                        callFavAPI(item, position)
                     }
+                }
+                view?.txtOrganisationName.text = item.organization?.name
+                view?.txtLocation.text = item.organization?.location
+                view?.setOnClickListener {
+                    val intent = Intent(context, OrgDetailActivity::class.java)
+                    intent.putExtra("organisationId", item.id)
+                    startActivityForResult(intent, 1002)
                 }
             }
             isNestedScrollingEnabled = false
         }
-        builder?.show()
     }
 
-    private fun callCategoriesListAPI(callAgain: Boolean?) {
-//        loadingDialog(true)
+    private fun callUnFavOrgAPI(item: OrganisationModalItem?, position: Int) {
+        context?.loadingDialog(true)
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getCategories(),
-            singleCallback = object : SingleCallback<ArrayList<CategoryItem?>> {
-                override fun onSingleSuccess(o: ArrayList<CategoryItem?>, message: String?) {
-//                    loadingDialog(false)
-                    categoryList = o
-                    if (callAgain == true) {
-                        if (o.size > 0) {
-                            context?.showAppDialog("No Category Available")
-                        } else {
-                            openCategoryBottomSheet()
-                        }
-                    }
-//                    if (o.size > 0) {
-//                        llNoData?.visibility = View.GONE
-//                    } else {
-//                        llNoData?.visibility = View.VISIBLE
-//                    }
+                .unFavouriteOrgAPI(
+                    organization_id = item?.id,
+                    user_who_favourited_id = context?.getUserId()
+                ),
+            singleCallback = object : SingleCallback<ResponseBody> {
+                override fun onSingleSuccess(o: ResponseBody, message: String?) {
+                    context?.loadingDialog(false)
+                    callFavOrgListAPI()
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
-//                    loadingDialog(false)
-//                    simpleAlert(
-//                        getString(R.string.app_name).toUpperCase(),
-//                        throwable.message
-//                    )
+                    context?.loadingDialog(false)
+                    context?.simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
                 }
 
                 override fun onError(message: String?) {
-//                    loadingDialog(false)
-//                    message?.let {
-//                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
-//                    }
+                    context?.loadingDialog(false)
+                    message?.let {
+                        context?.simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
                 }
             }
         )
@@ -185,7 +201,7 @@ class FavouriteEventFragment : BaseFragment() {
                     context?.loadingDialog(false)
                     context?.showAppDialog(
                         if (o.success?.isNotEmpty() == true) o.success else o.failure,
-                    ) { callUpEventListAPI() }
+                    ) { callListAPI() }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -207,6 +223,13 @@ class FavouriteEventFragment : BaseFragment() {
     }
 
     private fun setupRecycleView(o: ArrayList<FavEventResponseItem?>) {
+        rvOrgRec?.visibility = View.GONE
+        rvUpComingEvent?.visibility = View.VISIBLE
+        if (o.size > 0) {
+            llNoData?.visibility = View.GONE
+        } else {
+            llNoData?.visibility = View.VISIBLE
+        }
         upEventBuilder = rvUpComingEvent?.setUp(
             R.layout.row_upcoming_event,
             o,
@@ -290,7 +313,7 @@ class FavouriteEventFragment : BaseFragment() {
                     context?.loadingDialog(false)
                     context?.showAppDialog(
                         if (o.success?.isNotEmpty() == true) o.success else o.failure,
-                    ) { callUpEventListAPI() }
+                    ) { callListAPI() }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -321,7 +344,7 @@ class FavouriteEventFragment : BaseFragment() {
                     context?.loadingDialog(false)
                     context?.showAppDialog(
                         if (o.success?.isNotEmpty() == true) o.success else o.failure,
-                    ) { callUpEventListAPI() }
+                    ) { callListAPI() }
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -388,7 +411,7 @@ class FavouriteEventFragment : BaseFragment() {
                     context?.loadingDialog(false)
 //                    item.isFavorite = false
 //                    upEventBuilder?.notifyItemChanged(position)
-                    callUpEventListAPI()
+                    callListAPI()
                 }
 
                 override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
@@ -450,11 +473,46 @@ class FavouriteEventFragment : BaseFragment() {
         )
     }
 
+    private fun callFavOrgListAPI(
+    ) {
+        context?.loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .getFavOrg(user_id = context?.getUserId()),
+            singleCallback = object : SingleCallback<ArrayList<FavOrgResponseItem?>> {
+                override fun onSingleSuccess(
+                    o: ArrayList<FavOrgResponseItem?>,
+                    message: String?
+                ) {
+                    context?.loadingDialog(false)
+                    setupOrgRecycleView(o)
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+                    context?.loadingDialog(false)
+                    llNoData?.visibility = View.VISIBLE
+                    context?.simpleAlert(
+                        getString(R.string.app_name).toUpperCase(),
+                        throwable.message
+                    )
+                }
+
+                override fun onError(message: String?) {
+                    context?.loadingDialog(false)
+                    llNoData?.visibility = View.VISIBLE
+                    message?.let {
+                        context?.simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+                    }
+                }
+            }
+        )
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1005) {
             if (resultCode == RESULT_OK) {
-                callUpEventListAPI()
+                callListAPI()
             }
         }
     }
