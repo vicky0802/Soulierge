@@ -1,15 +1,14 @@
 package com.zk.soulierge
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.RecyclerViewBuilder
 import com.example.parth.worldz_code.utils.RecyckerViewBuilder.setUp
 import com.zk.soulierge.support.api.ApiClient
 import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
-import com.zk.soulierge.support.api.model.EventPartiResponseItem
 import com.zk.soulierge.support.api.model.FriendsResponse
 import com.zk.soulierge.support.api.model.LoginResponse
 import com.zk.soulierge.support.api.model.UserResponse
@@ -39,7 +38,7 @@ class UserFriendActivity : AppCompatActivity() {
 
         setupRecycleView(ArrayList<UserResponse?>())
         addOrg?.setOnClickListener {
-            val intent = Intent(this, AddOrgUserActivity::class.java)
+            val intent = Intent(this, AddFriendsActivity::class.java)
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
             startActivityForResult(intent, 1002)
         }

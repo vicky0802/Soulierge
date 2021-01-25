@@ -49,6 +49,22 @@ interface WebserviceBuilder {
         @Query("longitude") longitude: Double? = 0.0
     ): Observable<LoginResponse>
 
+    @POST("course/mycourse")
+    @Headers("Content-Type: application/json")
+    fun myCourse(@Body requestBody: RequestBody?): Observable<Any?>
+
+    @POST("course/browse_course")
+    @Headers("Content-Type: application/json")
+    fun browseCourse(@Body requestBody: RequestBody?): Observable<Any?>
+
+    @POST("course/course_curriculum")
+    @Headers("Content-Type: application/json")
+    fun getCurriculumDetails(@Body requestBody: RequestBody?): Observable<Any?>
+
+    @POST("course/get_lecture")
+    @Headers("Content-Type: application/json")
+    fun getLectureDetails(@Body requestBody: RequestBody?): Observable<Any?>
+
     @POST("UserService/registerOrganizationUser")
     fun onOrgUserCreate(
         @Query("email") email: String? = null,
@@ -70,8 +86,17 @@ interface WebserviceBuilder {
     fun getOrganisation(
     ): Observable<ArrayList<OrganisationModalItem?>>
 
+    @POST("OrganizationService/getOrganizationsOfUser")
+    fun getOrgOrganisation(
+    ): Observable<ArrayList<OrganisationModalItem?>>
+
     @POST("OrganizationService/searchOrganizations")
     fun searchOrganisation(
+        @Query("search_query") search_query: String? = "",
+    ): Observable<ArrayList<OrganisationModalItem?>>
+
+    @POST("OrganizationService/searchOrganizationsForOrganizationUser")
+    fun searchOrgOrganisation(
         @Query("search_query") search_query: String? = "",
     ): Observable<ArrayList<OrganisationModalItem?>>
 
@@ -92,8 +117,14 @@ interface WebserviceBuilder {
 
     @POST("UserService/getuserbyemail")
     fun getSearchFiend(
-        @Query("email") user_id: String? = null
-    ): Observable<FriendsResponse?>
+        @Body category: RequestBody? = null,
+    ): Observable<ArrayList<UserResponse?>>
+
+    @POST("UserService/addfriend")
+    fun addFriend(
+        @Query("user_id") user_id: String? = null,
+        @Query("friend_user_id") friend_user_id: String? = null
+    ): Observable<GeneralResponse>
 
     @POST("UserService/getpendingfriendrequests")
     fun getPendingFriends(
@@ -167,11 +198,23 @@ interface WebserviceBuilder {
         @Query("filter_days") filter_days: String? = null,
     ): Observable<ArrayList<UpEventResponseItem?>>
 
+    @POST("EventService/getEventsOfOrganizationUser")
+    fun getOrgEvents(
+        @Body body: RequestBody,
+        @Query("filter_days") filter_days: String? = null,
+    ): Observable<ArrayList<UpEventResponseItem?>>
+
     @POST("EventService/searchEvents")
     fun searchEvents(
         @Body body: RequestBody,
         @Query("search_query") search_query: String? = null,
     ): Observable<ArrayList<UpEventResponseItem?>>
+
+ @POST("EventService/searchEventsForOrganizationUser")
+    fun searchOrgEvents(
+     @Body body: RequestBody,
+     @Query("search_query") search_query: String? = null,
+ ): Observable<ArrayList<UpEventResponseItem?>>
 
     @POST("EventService/getFavouriteEventsForUser")
     fun getFavEvent(
@@ -212,13 +255,13 @@ interface WebserviceBuilder {
 
     @POST("UserService/deleteOrganizationUser")
     fun deleteOrgUserAPI(
-            @Query("user_id") id: String? = null,
+        @Query("user_id") id: String? = null,
     ): Observable<ResponseBody>
 
     @POST("EventService/cancelEventParticipant")
     fun deletePartiUserAPI(
-            @Query("user_id") user_id: String? = null,
-            @Query("event_id") event_id: String? = null,
+        @Query("user_id") user_id: String? = null,
+        @Query("event_id") event_id: String? = null,
     ): Observable<ResponseBody>
 
     @POST("OrganizationService/addOrganization")

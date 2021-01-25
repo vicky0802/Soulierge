@@ -36,7 +36,7 @@ import okhttp3.RequestBody
 import java.util.*
 
 class AddEventActivity : AppCompatActivity() {
-    var organisation: OrganisationModalItem? = null
+    var organisationId: String? = null
     val REQUEST_CODE_PROFILE_IMAGE = 1008
     var fileName = System.currentTimeMillis().toString()
 
@@ -72,13 +72,13 @@ class AddEventActivity : AppCompatActivity() {
             selectedLocation = Address(Locale.getDefault())
             selectedLocation?.latitude = event?.latitude?.toDouble() ?: 0.0
             selectedLocation?.longitude = event?.longitude?.toDouble() ?: 0.0
-
+            organisationId = event?.organizationId.toString()
         } else {
             initToolbar(tool_bar, true, getString(R.string.add_event))
             btnCreateEvent?.text = getString(R.string.create)
         }
-        if (intent.hasExtra("organisation")) {
-            organisation = intent.getParcelableExtra<OrganisationModalItem>("organisation")
+        if (intent.hasExtra("organisationId")) {
+            organisationId = intent.getStringExtra("organisationId")
         }
         callCategoriesListAPI(false)
         btnImage?.setOnClickListener {
@@ -266,9 +266,27 @@ class AddEventActivity : AppCompatActivity() {
         json.add("category", categories)
         val mediaType: MediaType? = MediaType.parse("application/json")
         val body = RequestBody.create(mediaType, json.toJson())
-        subscribeToSingle(
+        var observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+            .addEvent(
+                name = edtEventName?.text?.toString()?.trim(),
+                description = edtEventDetail.text?.toString()?.trim(),
+                location = edtEventLocation?.text.toString()?.trim(),
+                latitude = selectedLocation?.latitude.toString(),
+                longitude = selectedLocation?.longitude?.toString(),
+                file_name = uploadedImgaeFileName,
+                capacity = edtEventCapacity?.text.toString()?.trim(),
+                age_restriction = edtEventAgeRestriction?.text.toString()?.trim(),
+                date = eventStartDate?.tag.toString().toDate().toAPIDateFormat("dd/MM/yyyy"),
+                time = eventStartDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
+                end_date = eventEndDate?.tag.toString().toDate().toAPIDateFormat("dd/MM/yyyy"),
+                end_time = eventEndDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
+                organization_id = organisationId,
+                user_id = getUserId(), body = body
+            )
+        if (intent.hasExtra("event")){
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .addEvent(
+                .updateEvent(
+                    id = event?.id,
                     name = edtEventName?.text?.toString()?.trim(),
                     description = edtEventDetail.text?.toString()?.trim(),
                     location = edtEventLocation?.text.toString()?.trim(),
@@ -281,9 +299,12 @@ class AddEventActivity : AppCompatActivity() {
                     time = eventStartDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
                     end_date = eventEndDate?.tag.toString().toDate().toAPIDateFormat("dd/MM/yyyy"),
                     end_time = eventEndDate?.tag.toString().toDate().toAPIDateFormat("HH:mm"),
-                    organization_id = organisation?.id,
+                    organization_id = organisationId,
                     user_id = getUserId(), body = body
-                ),
+                )
+        }
+        subscribeToSingle(
+            observable = observable,
             singleCallback = object : SingleCallback<AddOrgResponse> {
                 override fun onSingleSuccess(o: AddOrgResponse, message: String?) {
                     loadingDialog(false)

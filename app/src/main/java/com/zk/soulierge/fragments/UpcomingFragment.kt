@@ -103,7 +103,7 @@ class UpcomingFragment : BaseFragment() {
         val builder = context?.let { BottomSheetDialogBuilder(it) }
         builder?.customView(view)
         view?.btnCategoryDone?.setOnClickListener {
-            if (selectedCategory.size > 0) callUpEventListAPI(
+             callUpEventListAPI(
                 selectedCategory = selectedCategory
             ); builder?.dismiss()
         }
@@ -442,9 +442,14 @@ class UpcomingFragment : BaseFragment() {
         json.add("category", categories)
         val mediaType: MediaType? = MediaType.parse("application/json")
         val body = RequestBody.create(mediaType, json.toJson())
+        var observation = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+            .getEvents(body, filter_days = filtersDay)
+        if (user?.userTypeId.equals("3")){
+            observation = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .getOrgEvents(body, filter_days = filtersDay)
+        }
         subscribeToSingle(
-            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getEvents(body, filter_days = filtersDay),
+            observable = observation,
             singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
                 override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
                     context?.loadingDialog(false)

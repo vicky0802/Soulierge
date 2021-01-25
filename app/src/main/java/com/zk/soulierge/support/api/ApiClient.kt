@@ -43,7 +43,8 @@ object ApiClient {
 //    const val BASE_URL = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest/"
 
     //Development Server (Development)
-    const val BASE_URL = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest/"
+//    const val BASE_URL = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest/"
+    const val BASE_URL = "https://elearn.maven-silicon.com/api/"
     const val BASE_IMAGE_URL = "https://soulierge-images.s3.amazonaws.com/"
 
 

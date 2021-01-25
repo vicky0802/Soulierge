@@ -72,6 +72,9 @@ class OrganiseListActivity : AppCompatActivity() {
                 Glide.with(this@OrganiseListActivity).load(ApiClient.BASE_IMAGE_URL + item.fileName)
                     .placeholder(R.drawable.event_smaple)
                     .into(view.row_event_image)
+                if (user?.userTypeId.equals("3")){
+                    view?.img_whishlist?.visibility = View.VISIBLE
+                }
                 if (item.isFavorite == true) {
                     view?.img_whishlist?.setImageResource(R.drawable.ic_heart_fill)
                 } else {
@@ -193,9 +196,14 @@ class OrganiseListActivity : AppCompatActivity() {
 
     private fun callOrganisationListAPI() {
         loadingDialog(true)
-        subscribeToSingle(
+        var observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+            .getOrganisation()
+        if (user?.userTypeId.equals("3")){
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getOrganisation(),
+                .getOrgOrganisation()
+        }
+        subscribeToSingle(
+            observable = observable,
             singleCallback = object : SingleCallback<ArrayList<OrganisationModalItem?>> {
                 override fun onSingleSuccess(
                     o: ArrayList<OrganisationModalItem?>,

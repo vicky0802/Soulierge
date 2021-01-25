@@ -191,6 +191,8 @@ class EventDetailActivity : AppCompatActivity() {
                     } else {
                         callCategoriesListAPI(true, o.category)
                     }
+                else showAppDialog("No Category Available")
+            else showAppDialog("No Category Available")
         }
         if (user?.userTypeId.equals("4") or (user?.userTypeId.equals("3"))) {
             btnDeleteEvnet?.text = getString(R.string.delete)

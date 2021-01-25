@@ -29,9 +29,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ph_check_event">Check Event</string>
     <string name="message_join_event">Join event to enjoy or celebrate Join event to enjoy or celebrate</string>
-    <string name="ph_find_event">Explore Event</string>
+    <string name="ph_find_event">Explore Events</string>
     <string name="try_soulierge">Try Soulierge</string>
-    <string name="ph_find_organisation">Find Organization</string>
+    <string name="ph_find_organisation">Find Organizations</string>
     <string name="search_events">Find Event or Organisation</string>
     <string name="title_activity_maps">Map</string>
     <string name="ph_organisation">Organisation</string>

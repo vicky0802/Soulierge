@@ -450,7 +450,7 @@ class PastEventFragments : BaseFragment() {
         val body = RequestBody.create(mediaType, json.toJson())
         subscribeToSingle(
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getEvents(body, filter_days = filtersDay),
+                .getEvents(body = body, filter_days = filtersDay),
             singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
                 override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
                     context?.loadingDialog(false)

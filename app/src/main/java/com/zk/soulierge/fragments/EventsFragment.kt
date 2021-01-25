@@ -52,16 +52,7 @@ import com.zk.soulierge.support.utilExt.logMsg
 import com.zk.soulierge.support.utils.*
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
-import kotlinx.android.synthetic.main.activity_location_search.*
 import kotlinx.android.synthetic.main.fragment_events.*
-import kotlinx.android.synthetic.main.fragment_events.img_clear
-import kotlinx.android.synthetic.main.fragment_events.ll_NoData
-import kotlinx.android.synthetic.main.fragment_events.ll_map
-import kotlinx.android.synthetic.main.fragment_events.ll_reciclerView
-import kotlinx.android.synthetic.main.fragment_events.rb_event
-import kotlinx.android.synthetic.main.fragment_events.rb_org
-import kotlinx.android.synthetic.main.fragment_events.rv_search
-import kotlinx.android.synthetic.main.fragment_events.serch_event
 import kotlinx.android.synthetic.main.row_search.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -78,7 +69,7 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
     var recyclerViewBuilder: RecyclerViewBuilder<Any>? = null
 
     var extraDataObj: Map<Marker, Any> = HashMap()
-
+    var user: LoginResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,6 +83,7 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        user = context?.getUserData<LoginResponse>()
         rb_event?.setOnClickListener {
             rb_org?.isChecked = false
             callAPI()
@@ -114,7 +106,8 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
                         activity?.hideSoftKeyboard()
                     }
                     true
-                } else false            }
+                } else false
+            }
         })
 
         img_clear?.setOnClickListener {
@@ -245,7 +238,7 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
                                 }, 18F
                             )
                         )
-                       clearSearch()
+                        clearSearch()
                     }
                 }
             }
@@ -400,9 +393,14 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
         json.add("category", categories)
         val mediaType: MediaType? = MediaType.parse("application/json")
         val body = RequestBody.create(mediaType, json.toJson())
+        var observation = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+            .getEvents(body, filter_days = filtersDay)
+        if (user?.userTypeId.equals("3")) {
+            observation = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .getOrgEvents(body, filter_days = filtersDay)
+        }
         subscribeToSingle(
-            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getEvents(body, filter_days = filtersDay),
+            observable = observation,
             singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
                 override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
                     context?.loadingDialog(false)
@@ -461,9 +459,14 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
         json.add("category", categories)
         val mediaType: MediaType? = MediaType.parse("application/json")
         val body = RequestBody.create(mediaType, json.toJson())
-        subscribeToSingle(
+        var observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+            .searchEvents(body, search_query = query)
+        if (user?.userTypeId.equals("3")) {
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .searchEvents(body, search_query = query),
+                .searchOrgEvents(body, search_query = query)
+        }
+        subscribeToSingle(
+            observable = observable,
             singleCallback = object : SingleCallback<ArrayList<UpEventResponseItem?>> {
                 override fun onSingleSuccess(o: ArrayList<UpEventResponseItem?>, message: String?) {
                     context?.loadingDialog(false)
@@ -490,9 +493,14 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
 
     private fun callOrganisationListAPI() {
         context?.loadingDialog(true)
-        subscribeToSingle(
+        var observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+            .getOrganisation()
+        if (user?.userTypeId.equals("3")) {
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .getOrganisation(),
+                .getOrgOrganisation()
+        }
+        subscribeToSingle(
+            observable = observable,
             singleCallback = object : SingleCallback<ArrayList<OrganisationModalItem?>> {
                 override fun onSingleSuccess(
                     o: ArrayList<OrganisationModalItem?>,
@@ -546,9 +554,15 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
 
     private fun callSearchOrganisationListAPI(query: String?) {
         context?.loadingDialog(true)
-        subscribeToSingle(
+
+        var observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+            .searchOrganisation(query)
+        if (user?.userTypeId.equals("3")) {
             observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
-                .searchOrganisation(query),
+                .searchOrgOrganisation(query)
+        }
+        subscribeToSingle(
+            observable = observable,
             singleCallback = object : SingleCallback<ArrayList<OrganisationModalItem?>> {
                 override fun onSingleSuccess(
                     o: ArrayList<OrganisationModalItem?>,

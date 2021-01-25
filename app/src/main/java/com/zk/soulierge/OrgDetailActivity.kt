@@ -44,7 +44,9 @@ class OrgDetailActivity : AppCompatActivity() {
     var organisationId: String? = null
     var upEventBuilder: RecyclerViewBuilder<UpEventResponseItem>? = null
 
-    var user:LoginResponse? =null
+    var organisationModalItem: OrganisationModalItem? = null
+
+    var user: LoginResponse? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,11 +61,11 @@ class OrgDetailActivity : AppCompatActivity() {
             txtEditOrg?.visibility = View.VISIBLE
             fbAddEvent?.visibility = View.VISIBLE
             cvOrgUsers?.visibility = View.VISIBLE
-        } else if((user?.userTypeId.equals("3"))){
+        } else if ((user?.userTypeId.equals("3"))) {
             txtEditOrg?.visibility = View.VISIBLE
             fbAddEvent?.visibility = View.VISIBLE
             cvOrgUsers?.visibility = View.GONE
-        }else {
+        } else {
             txtEditOrg?.visibility = View.GONE
             fbAddEvent?.visibility = View.GONE
             cvOrgUsers?.visibility = View.GONE
@@ -89,6 +91,7 @@ class OrgDetailActivity : AppCompatActivity() {
         txtEditOrg?.setOnClickListener {
             val intent = Intent(this, AddOrganisation::class.java)
             this.intent.extras?.let { it1 -> intent.putExtras(it1) }
+            organisationModalItem?.let { intent.putExtra("organisation", it) }
             startActivityForResult(intent, 1006)
         }
 
@@ -217,6 +220,7 @@ class OrgDetailActivity : AppCompatActivity() {
                         EventDetailActivity::class.java
                     )
                     eventIntent.putExtra("eventId", item.id)
+                    organisationModalItem?.let { intent.putExtra("organisation", it) }
                     startActivityForResult(eventIntent, 1004)
                 }
 
@@ -241,7 +245,7 @@ class OrgDetailActivity : AppCompatActivity() {
                         view?.btnDelete?.text = getString(R.string.participate)
                         view?.btnDelete?.setOnClickListener {
                             if (item.ageRestriction != null) {
-                               confirmationDialog(getString(R.string.app_name).toUpperCase(),
+                                confirmationDialog(getString(R.string.app_name).toUpperCase(),
                                     "Are you ${item.ageRestriction} years old or above?", {
                                         participateEvent(item.id)
                                     })
@@ -525,6 +529,7 @@ class OrgDetailActivity : AppCompatActivity() {
                 override fun onSingleSuccess(o: OrganisationModalItem, message: String?) {
                     loadingDialog(false)
                     changeTitle(o?.name)
+                    organisationModalItem = o
                     Glide.with(this@OrgDetailActivity)
                         .load(ApiClient.BASE_IMAGE_URL + o?.fileName)
                         .placeholder(R.drawable.event_smaple)
