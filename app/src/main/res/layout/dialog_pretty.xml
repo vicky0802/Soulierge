@@ -79,6 +79,6 @@
             android:layout_width="@dimen/pretty_dialog_icon"
             android:layout_height="@dimen/pretty_dialog_icon"
             android:layout_margin="@dimen/space_4"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@mipmap/ic_launcher" />
     </LinearLayout>
 </FrameLayout>

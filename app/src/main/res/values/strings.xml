@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Soulierge</string>
     <string name="landing_screen_create_event">Create Events to make your life special with us.</string>
-    <string name="landing_screen_desc">We can add some information about the app here. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </string>
+    <string name="landing_screen_desc">To empower individuals in serving and building communities in the world</string>
     <string name="label_sign_up">Sign up</string>
     <string name="label_sign_in">Sign in</string>
     <string name="btn_facebook_text">Sign in with Facebook</string>

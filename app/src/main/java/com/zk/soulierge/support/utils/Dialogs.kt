@@ -26,7 +26,7 @@ fun Context.simpleAlert(
     title: String?,
     msg: String?,
     positiveButton: (() -> Unit)? = null,
-    icon: Int? = R.mipmap.ic_launcher_round
+    icon: Int? = R.mipmap.ic_launcher
 ) {
     simpleAlert(title, msg, R.string.ok.string(this), positiveButton, icon)
 }
@@ -36,7 +36,7 @@ fun Context.simpleAlert(
     msg: String?,
     btnTitle: String,
     positiveButton: (() -> Unit)? = null,
-    icon: Int? = R.mipmap.ic_launcher_round
+    icon: Int? = R.mipmap.ic_launcher
 ) {
     val mDialog = PrettyDialog(this)
 //    mDialog.setTypeface(this.font(R.font.montserrat_regular))
@@ -61,7 +61,7 @@ fun Context.appForceUpdate(
 //    mDialog.setTypeface(this.font(R.font.montserrat_regular))
     mDialog.setCanceledOnTouchOutside(false)
     mDialog.setCancelable(false)
-    mDialog.setIcon(R.mipmap.ic_launcher_round)
+    mDialog.setIcon(R.mipmap.ic_launcher)
         .setTitle(title)
         .setMessage(msg)
         .addButton(btnTitle, R.color.white, R.color.app_blue) {
@@ -78,7 +78,7 @@ fun Context.confirmationDialog(
 //    mDialog.setTypeface(this.font(R.font.montserrat_regular))
     mDialog.setCanceledOnTouchOutside(false)
     mDialog.setCancelable(false)
-    mDialog.setIcon(R.mipmap.ic_launcher_round)
+    mDialog.setIcon(R.mipmap.ic_launcher)
         //.setTitle(getString(R.string.application_name))
         .setMessage(msg)
         .addButton(getString(R.string.cancel), R.color.white, R.color.app_blue) {
@@ -101,7 +101,7 @@ fun Context.confirmationDialog(
 //    mDialog.setTypeface(this.font(R.font.montserrat_regular))
     mDialog.setCanceledOnTouchOutside(false)
     mDialog.setCancelable(false)
-    mDialog.setIcon(R.mipmap.ic_launcher_round)
+    mDialog.setIcon(R.mipmap.ic_launcher)
         .setTitle(title)
         .setMessage(msg)
         .addButton(getString(R.string.no), R.color.white, R.color.app_blue) {
@@ -123,7 +123,7 @@ fun Context.markerDialog(
 //    mDialog.setTypeface(this.font(R.font.montserrat_regular))
     mDialog.setCanceledOnTouchOutside(false)
     mDialog.setCancelable(false)
-    mDialog.setIcon(R.mipmap.ic_launcher_round)
+    mDialog.setIcon(R.mipmap.ic_launcher)
         .setTitle(title)
         .setMessage(msg)
         .addButton(getString(R.string.view_details), R.color.white, R.color.app_blue) {
@@ -142,7 +142,7 @@ fun Context.confirmationDialog(
     btnNegative: String,
     btnPositiveClick: (() -> Unit)? = null,
     btnNegativeClick: (() -> Unit)? = null,
-    icon: Int? = R.mipmap.ic_launcher_round
+    icon: Int? = R.mipmap.ic_launcher
 ) {
     val mDialog = PrettyDialog(this)
 //    mDialog.setTypeface(this.font(R.font.montserrat_regular))
@@ -165,7 +165,7 @@ fun Context.confirmationDialog(
     msg: String,
     btnPositive: String,
     btnPositiveClick: (() -> Unit)? = null,
-    icon: Int? = R.mipmap.ic_launcher_round
+    icon: Int? = R.mipmap.ic_launcher
 ) {
     val mDialog = PrettyDialog(this)
 //    mDialog.setTypeface(this.font(R.font.montserrat_regular))

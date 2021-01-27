@@ -154,7 +154,7 @@ class PrettyDialog(internal var context: Context) : AppCompatDialog(context) {
     }
 
     fun setIcon(icon: Int?): PrettyDialog {
-        iv_icon?.setImageResource(icon ?: R.mipmap.ic_launcher_round)
+        iv_icon?.setImageResource(icon ?: R.mipmap.ic_launcher)
         icon_animation = false
         iv_icon?.setOnTouchListener(null)
         return this
@@ -183,7 +183,7 @@ class PrettyDialog(internal var context: Context) : AppCompatDialog(context) {
     @SuppressLint("ClickableViewAccessibility")
     fun setIcon(icon: Int?, callback: () -> Unit): PrettyDialog {
         icon_animation = false
-        iv_icon?.setImageResource(icon ?: R.mipmap.ic_launcher_round)
+        iv_icon?.setImageResource(icon ?: R.mipmap.ic_launcher)
         iv_icon?.setOnTouchListener(null)
         iv_icon?.setOnTouchListener { v, event ->
             when (event.action) {
