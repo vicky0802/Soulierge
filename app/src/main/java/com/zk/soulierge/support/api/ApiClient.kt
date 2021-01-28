@@ -33,14 +33,23 @@ object ApiClient {
     var BUILD_TYPE_DEBUG = false
         get() = BuildConfig.DEBUG
 
-    // Live Server (Production)
-// public var WebServiceUrl = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest"
-
-    // Development Server (Development)
-//    public var WebServiceUrl = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest"
+//    // Live Server (Production)
+//// public var WebServiceUrl = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest"
+//
+//    // Development Server (Development)
+////    public var WebServiceUrl = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest"
+//
+//    //Live Server (Production)
+//    const val BASE_URL = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest/"
 
     //Live Server (Production)
-    const val BASE_URL = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest/"
+ const val BASE_URL = "http://soulierge-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest/"
+
+    //Development Server (Development)
+//    const val BASE_URL = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest/"
+
+////App Store Server (Production)
+// const val BASE_URL = "http://soulierge-prod-env.eba-g8p39p3h.us-east-1.elasticbeanstalk.com/rest/"
 
     //Development Server (Development)
 //    const val BASE_URL = "http://soulierge-test-env.us-east-1.elasticbeanstalk.com/rest/"

@@ -45,14 +45,14 @@ import com.zk.soulierge.support.api.SingleCallback
 import com.zk.soulierge.support.api.WebserviceBuilder
 import com.zk.soulierge.support.api.model.*
 import com.zk.soulierge.support.api.subscribeToSingle
-import com.zk.soulierge.support.utilExt.getUserData
-import com.zk.soulierge.support.utilExt.hideSoftKeyboard
-import com.zk.soulierge.support.utilExt.isPermissionGranted
-import com.zk.soulierge.support.utilExt.logMsg
+import com.zk.soulierge.support.utilExt.*
 import com.zk.soulierge.support.utils.*
 import com.zk.soulierge.utlities.RecyclerViewLayoutManager
 import com.zk.soulierge.utlities.RecyclerViewLinearLayout
+import kotlinx.android.synthetic.main.dialog_category.view.*
+import kotlinx.android.synthetic.main.dialog_filter.view.*
 import kotlinx.android.synthetic.main.fragment_events.*
+import kotlinx.android.synthetic.main.row_dialog_category.view.*
 import kotlinx.android.synthetic.main.row_search.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -71,6 +71,11 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
     var extraDataObj: Map<Marker, Any> = HashMap()
     var user: LoginResponse? = null
 
+    var isNearMe: Boolean? = false
+
+    var categoryList = ArrayList<CategoryItem?>()
+    var categoryBuilder: RecyclerViewBuilder<CategoryItem>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,10 +92,12 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
         rb_event?.setOnClickListener {
             rb_org?.isChecked = false
             callAPI()
+            fabFilter?.visibility = View.VISIBLE
         }
         rb_org?.setOnClickListener {
             rb_event?.isChecked = false
             callAPI()
+            fabFilter?.visibility = View.GONE
         }
         getUserLocation()
 
@@ -104,6 +111,11 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
                         callSearchAPI(serch_event?.text?.toString())
                         serch_event?.clearFocus()
                         activity?.hideSoftKeyboard()
+                        if (rb_event?.isChecked==true){
+                            fabFilter?.visibility = View.VISIBLE
+                        }else{
+                            fabFilter?.visibility = View.GONE
+                        }
                     }
                     true
                 } else false
@@ -113,6 +125,9 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
         img_clear?.setOnClickListener {
             clearSearch()
         }
+
+        fabFilter?.setOnClickListener { openBottomSheetDialog() }
+
 //        serch_event?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 //            override fun onQueryTextSubmit(query: String?): Boolean {
 //                if (query?.isEmpty() == true) {
@@ -137,6 +152,122 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
 //        })
     }
 
+    private fun openBottomSheetDialog() {
+        val view = View.inflate(context, R.layout.dialog_filter, null)
+        val builder = context?.let { BottomSheetDialogBuilder(it) }
+        builder?.customView(view)
+        view?.btn_1_week?.setOnClickListener {
+            isNearMe = false; callUpEventListAPI(filtersDay = "7");builder?.dismiss();
+        }
+        view?.btn_2_week?.setOnClickListener {
+            isNearMe = false; callUpEventListAPI(filtersDay = "14");builder?.dismiss();
+        }
+        view?.btn_3_week?.setOnClickListener {
+            isNearMe = false;callUpEventListAPI(filtersDay = "21");builder?.dismiss();
+        }
+        view?.btn_near_me?.setOnClickListener {
+            isNearMe = true
+            getUserLocation()
+            builder?.dismiss();
+        }
+        view?.btn_category?.setOnClickListener {
+            isNearMe = false;
+            builder?.dismiss();
+            if (categoryList.size > 0) {
+                openCategoryBottomSheet()
+            } else {
+                callCategoriesListAPI(true)
+            }
+        }
+        view?.btn_all?.setOnClickListener {
+            isNearMe = false; callUpEventListAPI(); builder?.dismiss();
+        }
+        view?.btnCancel?.setOnClickListener { builder?.dismiss(); }
+        builder?.show()
+    }
+
+    private fun openCategoryBottomSheet() {
+        var selectedCategory = ArrayList<CategoryItem?>()
+        val view = View.inflate(context, R.layout.dialog_category, null)
+        val builder = context?.let { BottomSheetDialogBuilder(it) }
+        builder?.customView(view)
+        view?.btnCategoryDone?.setOnClickListener {
+            callUpEventListAPI(
+                selectedCategory = selectedCategory
+            ); builder?.dismiss()
+        }
+        categoryBuilder = view?.rvCategory?.setUp(
+            R.layout.row_dialog_category,
+            categoryList,
+            RecyclerViewLayoutManager.LINEAR,
+            RecyclerViewLinearLayout.VERTICAL
+        ) {
+            contentBinder { item, view, position ->
+                if (item.isSelected) {
+                    view?.imgSelected.visibility = View.VISIBLE
+                } else {
+                    view?.imgSelected.visibility = View.GONE
+                }
+                view?.txtCategoryTitle.text = item.name
+                view?.setOnClickListener {
+                    if (item.isSelected) {
+                        item.isSelected = !item.isSelected
+                        view?.imgSelected.visibility = View.GONE
+                        selectedCategory.remove(item)
+                    } else {
+                        item.isSelected = !item.isSelected
+                        view?.imgSelected.visibility = View.VISIBLE
+                        selectedCategory.add(item)
+                    }
+                }
+            }
+            isNestedScrollingEnabled = false
+        }
+        builder?.show()
+    }
+
+    private fun callCategoriesListAPI(callAgain: Boolean?) {
+//        loadingDialog(true)
+        subscribeToSingle(
+            observable = ApiClient.getHeaderClient().create(WebserviceBuilder::class.java)
+                .getCategories(),
+            singleCallback = object : SingleCallback<ArrayList<CategoryItem?>> {
+                override fun onSingleSuccess(o: ArrayList<CategoryItem?>, message: String?) {
+//                    loadingDialog(false)
+                    categoryList = o
+                    if (callAgain == true) {
+                        if (o.size > 0) {
+                            context?.showAppDialog("No Category Available")
+                        } else {
+                            openCategoryBottomSheet()
+                        }
+                    }
+//                    if (o.size > 0) {
+//                        llNoData?.visibility = View.GONE
+//                    } else {
+//                        llNoData?.visibility = View.VISIBLE
+//                    }
+                }
+
+                override fun onFailure(throwable: Throwable, isDisplay: Boolean) {
+//                    loadingDialog(false)
+//                    simpleAlert(
+//                        getString(R.string.app_name).toUpperCase(),
+//                        throwable.message
+//                    )
+                }
+
+                override fun onError(message: String?) {
+//                    loadingDialog(false)
+//                    message?.let {
+//                        simpleAlert(getString(R.string.app_name).toUpperCase(), it)
+//                    }
+                }
+            }
+        )
+    }
+
+
     private fun clearSearch() {
         serch_event.setText("")
         ll_reciclerView.visibility = View.GONE
@@ -145,6 +276,11 @@ class EventsFragment : BaseFragment(), OnMapReadyCallback, LocationListener {
         serch_event?.clearFocus()
         ll_map?.requestFocus()
         activity?.hideSoftKeyboard()
+        if (rb_event?.isChecked==true){
+            fabFilter?.visibility = View.VISIBLE
+        }else{
+            fabFilter?.visibility = View.GONE
+        }
     }
 
     fun hideKeyboard() {
